@@ -1,17 +1,17 @@
 ---
 title: "TBD"
 subtitle: "TBD"
-author: "TBD"
-thanks: "Code and data are available at: LINK."
+author: "Yingying Zhou, Yang Wu, Xinyi Xu, Hong Pan"
+thanks: "Code and data are available at: https://github.com/yangg1224/Political_Deepfake_Videos.git."
 date: "`r format(Sys.time(), '%d %B %Y')`"
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
 output:
   bookdown::pdf_document2:
-toc: FALSE
+  toc: FALSE
 bibliography: references.bib
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
@@ -28,7 +28,7 @@ library(ggthemes)
 # Data
 
 
-```{r loaddata, echo=FALSE}
+```{r loaddata, echo=FALSE, warning=FALSE, message=FALSE}
 library(here) # locate the file path
 
 data<- load(here::here("inputs/data/deepfake.RData"))
@@ -40,9 +40,9 @@ EDA<-na.omit(EDA)
 ```
 
 
-# EDA
+## EDA
 
-## treat distribution 
+### treat distribution 
 ```{r treat, fig.cap = "Employee numbers distribution",echo=FALSE, fig.width=10, fig.height=4}
 
 treat_map <- 
@@ -57,11 +57,24 @@ treat_map <-
 treat_map
 ```
 
-## education level distribution by PID 
+### education level distribution by PID 
+```{r educationPID, fig.cap = "Educational level by PID",echo=FALSE, fig.width=10, fig.height=7}
+edu <- 
+  EDA%>%
+  ggplot(aes(x = EDA$educ,fill=EDA$PID, )) +
+  geom_bar(position="dodge") +
+  labs(title = "Citizens with a high school degree or above are more likely to suppprt democratic and republican party",x= "Educational Level", y="Count")+
+  scale_fill_manual(name = "Political Parties",values = c("#DB7558", "#FFCF57","#8FCDD4"))
+
+edu
+```
 
 
 
-## sexim by education level 
+
+
+
+### sexim by education level 
 ```{r sexim, fig.cap = "sexim by education level",echo=FALSE, fig.width=5, fig.height=4}
 
 s1<-
@@ -75,14 +88,14 @@ s1
 ```
 
 
-## internet usage by meta.os
+### internet usage by meta.os
 ```{r internet, fig.cap = "internet usage by os",echo=FALSE, fig.width=5, fig.height=4}
 
 
 ```
 
 
-## post favor by treat
+### post favor by treat
 
   
 
@@ -106,24 +119,20 @@ We can use maths by including latex between dollar signs, for instance $\theta$.
 
 ## First discussion point
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
-
 ## Second discussion point
 
 ## Third discussion point
 
 ## Weaknesses and next steps
 
-Weaknesses and next steps should also be included.
+
 
 \newpage
 
 \appendix
 
-# Appendix {-}
+# Appendix
 
-
-# Additional details
 
 
 
