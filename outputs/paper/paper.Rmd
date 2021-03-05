@@ -16,6 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(palmerpenguins)
+library(ggplot2)
 ```
 
 # Introduction
@@ -25,37 +26,39 @@ library(palmerpenguins)
 
 # Data
 
-Our data is of penguins (Figure \@ref(fig:bills)).
 
-```{r bills, fig.cap="Bills of penguins", echo = FALSE}
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = FALSE) +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+```{r loaddata, echo=FALSE}
+library(here) # locate the file path
+
+data<- load(here::here("inputs/data/deepfake.RData"))
+
+EDA<- dat%>%
+        select(treat, response_wave_ID, exp_1_prompt, meta_OS, age_65, educ, PID, crt, gender, age, polknow, internet_usage, ambivalent_sexism, post_favor_Sanders)
+
+EDA<-na.omit(EDA)
 ```
 
-Talk more about it.
 
-Also bills and their average (Figure \@ref(fig:billssssss)). (Notice how you can change the height and width so they don't take the whole page?)
+# EDA
 
-```{r billssssss, fig.cap="More bills of penguins", echo = FALSE, fig.width=8, fig.height=4}
+## treat distribution 
+```{r employee, fig.cap = "Employee numbers distribution",echo=FALSE, fig.width=10, fig.height=4}
 
-# This needs to be about the random data tha tI sasmpled?
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = FALSE) +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+treat_map <- 
+  EDA%>%
+  ggplot(aes(x = EDA$treat, fill = treat)) +
+  geom_bar(width = 0.7,position = "dodge") + 
+  coord_polar()+
+    scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6", "#ACD8CB","#3E737D"))+
+  labs(title = "Treat distribution",x="", y="Count") +
+  theme_minimal()
+treat_map
 ```
 
-Talk way more about it. 
+## Age distribution 
 
 
+## 
 
 # Model
 
