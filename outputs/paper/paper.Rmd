@@ -18,6 +18,8 @@ library(tidyverse)
 library(palmerpenguins)
 library(ggplot2)
 library(ggthemes)
+library(ggpubr)
+library(hrbrthemes)
 ```
 
 # Introduction
@@ -36,7 +38,10 @@ data<- load(here::here("inputs/data/deepfake.RData"))
 EDA<- dat%>%
         select(treat, response_wave_ID, exp_1_prompt, meta_OS, age_65, educ, PID, crt, gender, age, polknow, internet_usage, ambivalent_sexism, post_favor_Sanders)
 
-EDA<-na.omit(EDA)
+EDA<-na.omit(EDA) #remove NA
+
+write_csv(EDA, 'EDA.csv')
+table(EDA$internet_usage)
 ```
 
 
@@ -75,10 +80,33 @@ s1
 ```
 
 
-## internet usage by meta.os
-```{r internet, fig.cap = "internet usage by os",echo=FALSE, fig.width=5, fig.height=4}
+## internet usage frequency by education level
+```{r internet, fig.cap = "internet usages",echo=FALSE, fig.width=15, fig.height=5}
+
+G1<-ggplot(EDA, aes(x=internet_usage, fill=EDA$educ)) + 
+    geom_area(alpha=0.8 , size=0.2, colour="black", stat = "count")+
+    labs(title = "Internet usage frequency by education level ",y="Counts",x="Days")+
+    scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
+
+G2<-ggplot(EDA, aes(x=internet_usage, fill=EDA$meta_OS)) + 
+    geom_area(alpha=0.8 , size=0.2, colour="black", stat = "count")+
+    labs(title = "Internet usage frequency by devices ",y="Counts",x="Days")+
+    scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
 
 
+G3<-ggplot(EDA, aes(x=internet_usage, fill=EDA$age_65)) + 
+    geom_area(alpha=0.8 , size=0.2, colour="black", stat = "count")+
+    labs(title = "Internet usage frequency by age group ",y="Counts",x="Days")+
+    scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
+
+
+# combine two diagram in one graph
+ggarrange(
+  G1, G2, G3, 
+  ncol = 3, nrow = 1,
+  hjust = -0.5,
+  align = "hv"
+  )
 ```
 
 
