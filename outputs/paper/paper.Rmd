@@ -18,7 +18,7 @@ library(tidyverse)
 library(palmerpenguins)
 library(ggplot2)
 library(ggthemes)
-
+library(kableExtra)
 ```
 
 # Introduction
@@ -61,11 +61,12 @@ treat_map
 
 ```
 
+
 ### education level distribution by PID 
 ```{r educationPID, fig.cap = "Educational level by PID",echo=FALSE, fig.width=10, fig.height=7}
 edu <- 
   EDA%>%
-  ggplot(aes(x = EDA$educ,fill=EDA$PID, )) +
+  ggplot(aes(x = educ,fill=PID, )) +
   geom_bar(position="dodge") +
   labs(title = "Citizens with a high school degree or above are more likely to suppprt democratic and republican party",x= "Educational Level", y="Count")+
   scale_fill_manual(name = "Political Parties",values = c("#DB7558", "#FFCF57","#8FCDD4"))
@@ -102,7 +103,7 @@ s1
 
 
 
-## post favor by treat
+### post favor by treat
 ```{r postfavor, fig.cap="Distribution of feelings towards Sanders in six different situations",echo=FALSE}
 #histogram for each treat
 EDA<-EDA%>%
@@ -113,7 +114,7 @@ ggplot(EDA, aes(x = post_favor_Sanders,fill=treat)) +
   facet_grid(treat ~ .)+
   scale_fill_manual(values = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))+
   xlab("Feelings towards Sanders")+
-  ggtitle("Distribution of feelings towards Sanders in six different situations")+
+  ggtitle("Distribution of feelings towards Sanders in six different conditions")+
   theme_minimal()
 
 
@@ -126,24 +127,21 @@ post_S<-EDA%>%
 
 ggplot(aes(x=treat,y=Average_mark),data=post_S)+
   geom_bar(stat="identity",fill=c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))+
-  ggtitle("Distribution of feelings towards Sanders in six different situations")+
+  ggtitle("Distribution of feelings towards Sanders in six different conditions")+
   xlab("Feelings towards Sanders")
 
 
 
 ```
-# Average deception level by treat
-```{r table1,tab.cap="Average deception level of each media format", echo = FALSE}
+### Average deception level by treat
+```{r table1,tab.cap="Average deception level of each media format", echo = FALSE,warning=FALSE}
 EDA%>%
   group_by(treat)%>%
   filter(treat != "control")%>%
   summarise("Average Deception Level"=mean(believed_true,na.rm = T))%>%
   knitr::kable(caption = "Average deception level of each media format")
-
 ```
-=======
-### post favor by treat
->>>>>>> 0d76115c88f7b80d6fef4e0a358a9f0f2186dedd
+
 
   
 
