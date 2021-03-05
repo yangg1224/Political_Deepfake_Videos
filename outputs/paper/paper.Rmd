@@ -17,6 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(palmerpenguins)
 library(ggplot2)
+library(ggthemes)
 ```
 
 # Introduction
@@ -42,23 +43,49 @@ EDA<-na.omit(EDA)
 # EDA
 
 ## treat distribution 
-```{r employee, fig.cap = "Employee numbers distribution",echo=FALSE, fig.width=10, fig.height=4}
+```{r treat, fig.cap = "Employee numbers distribution",echo=FALSE, fig.width=10, fig.height=4}
 
 treat_map <- 
   EDA%>%
   ggplot(aes(x = EDA$treat, fill = treat)) +
   geom_bar(width = 0.7,position = "dodge") + 
   coord_polar()+
-    scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6", "#ACD8CB","#3E737D"))+
+  scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6", "#ACD8CB","#3E737D"))+
   labs(title = "Treat distribution",x="", y="Count") +
   theme_minimal()
+
 treat_map
 ```
 
-## Age distribution 
+## education level distribution by PID 
 
 
-## 
+
+## sexim by education level 
+```{r sexim, fig.cap = "sexim by education level",echo=FALSE, fig.width=5, fig.height=4}
+
+s1<-
+  ggplot(EDA, aes(x = PID, y= ambivalent_sexism)) +
+  geom_boxplot(outlier.colour="red", 
+               outlier.shape=5,
+               outlier.size=4) +
+  labs(title="sexim by education level", x="PID", y="Sexism")+
+  theme_economist() + scale_fill_economist()
+s1
+```
+
+
+## internet usage by meta.os
+```{r internet, fig.cap = "internet usage by os",echo=FALSE, fig.width=5, fig.height=4}
+
+
+```
+
+
+## post favor by treat
+
+  
+
 
 # Model
 
