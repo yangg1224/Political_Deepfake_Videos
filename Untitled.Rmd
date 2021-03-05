@@ -1,0 +1,52 @@
+---
+title: "Untitled"
+output: pdf_document
+---
+
+## post favor by treat
+```{r postfavor, fig.cap="Distribution of feelings towards Sanders in six different situations",echo=FALSE}
+#histogram for each treat
+EDA<-EDA%>%
+  drop_na(post_favor_Sanders)
+
+ggplot(EDA, aes(x = post_favor_Sanders,fill=treat)) +
+  geom_histogram(bins=15,color="white") +
+  facet_grid(treat ~ .)+
+  scale_fill_manual(values = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))+
+  xlab("Feelings towards Sanders")+
+  ggtitle("Distribution of feelings towards Sanders in six different situations")+
+  theme_minimal()
+# Similar distribution
+
+
+#bar chart (table?)
+post_S<-EDA%>%
+  group_by(treat)%>%
+  summarise(Average_mark=mean(post_favor_Sanders))
+
+ggplot(aes(x=treat,y=Average_mark),data=post_S)+
+  geom_bar(stat="identity",fill=c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))+
+  ggtitle("Distribution of feelings towards Sanders in six different situations")+
+  xlab("Feelings towards Sanders")
+
+#Takeaways: Compared with the control group, the video format with a scandal will increase negative affect toward Sanders.
+```
+
+
+
+``
+# Average deception level by treat (result)
+```{r table1,tab.cap="Average deception level of each media format", echo = FALSE}
+
+EDA%>%
+  group_by(treat)%>%
+  filter(treat != "control")%>%
+  summarise(Average=mean(believed_true,na.rm = T))%>%
+  arrange(desc(Average))%>%
+  knitr::kable(caption = "Average deception level of each media format",
+               col.names = c("Media format", "Average Deception Level"))
+
+#Takeaways:
+# The video format was not better than audio or text in deceiving under presenting the same information.
+
+```

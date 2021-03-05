@@ -34,9 +34,9 @@ library(here) # locate the file path
 data<- load(here::here("inputs/data/deepfake.RData"))
 
 EDA<- dat%>%
-        select(treat, response_wave_ID, exp_1_prompt, meta_OS, age_65, educ, PID, crt, gender, age, polknow, internet_usage, ambivalent_sexism, post_favor_Sanders)
+        select(treat, response_wave_ID, exp_1_prompt, meta_OS, age_65, educ, PID, crt, gender, age, polknow, internet_usage, ambivalent_sexism, post_favor_Sanders,believed_true)
 
-EDA<-na.omit(EDA)
+
 ```
 
 
@@ -44,10 +44,12 @@ EDA<-na.omit(EDA)
 
 ## treat distribution 
 ```{r treat, fig.cap = "Employee numbers distribution",echo=FALSE, fig.width=10, fig.height=4}
+EDA<-EDA%>%
+  drop_na(treat)
 
 treat_map <- 
   EDA%>%
-  ggplot(aes(x = EDA$treat, fill = treat)) +
+  ggplot(aes(x = treat, fill = treat)) +
   geom_bar(width = 0.7,position = "dodge") + 
   coord_polar()+
   scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6", "#ACD8CB","#3E737D"))+
@@ -55,6 +57,7 @@ treat_map <-
   theme_minimal()
 
 treat_map
+
 ```
 
 ## education level distribution by PID 
@@ -63,6 +66,8 @@ treat_map
 
 ## sexim by education level 
 ```{r sexim, fig.cap = "sexim by education level",echo=FALSE, fig.width=5, fig.height=4}
+EDA<-EDA%>%
+  drop_na(ambivalent_sexism)
 
 s1<-
   ggplot(EDA, aes(x = PID, y= ambivalent_sexism)) +
@@ -83,6 +88,44 @@ s1
 
 
 ## post favor by treat
+```{r postfavor, fig.cap="Distribution of feelings towards Sanders in six different situations",echo=FALSE}
+#histogram for each treat
+EDA<-EDA%>%
+  drop_na(post_favor_Sanders)
+
+ggplot(EDA, aes(x = post_favor_Sanders,fill=treat)) +
+  geom_histogram(bins=15,color="white") +
+  facet_grid(treat ~ .)+
+  scale_fill_manual(values = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))+
+  xlab("Feelings towards Sanders")+
+  ggtitle("Distribution of feelings towards Sanders in six different situations")+
+  theme_minimal()
+
+
+
+#bar chart
+
+post_S<-EDA%>%
+  group_by(treat)%>%
+  summarise(Average_mark=mean(post_favor_Sanders))
+
+ggplot(aes(x=treat,y=Average_mark),data=post_S)+
+  geom_bar(stat="identity",fill=c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))+
+  ggtitle("Distribution of feelings towards Sanders in six different situations")+
+  xlab("Feelings towards Sanders")
+
+
+
+```
+# Average deception level by treat
+```{r table1,tab.cap="Average deception level of each media format", echo = FALSE}
+EDA%>%
+  group_by(treat)%>%
+  filter(treat != "control")%>%
+  summarise("Average Deception Level"=mean(believed_true,na.rm = T))%>%
+  knitr::kable(caption = "Average deception level of each media format")
+
+```
 
   
 
