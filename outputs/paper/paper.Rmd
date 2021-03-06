@@ -21,6 +21,7 @@ library(ggthemes)
 library(ggpubr)
 library(hrbrthemes)
 library(kableExtra)
+library(broom)
 
 ```
 
@@ -85,8 +86,8 @@ edu
 
 
 
-### sexim by education level 
-```{r sexim, fig.cap = "sexim by education level",echo=FALSE, fig.width=5, fig.height=4}
+### sexism by education level 
+```{r sexism, fig.cap = "sexism by education level",echo=FALSE, fig.width=5, fig.height=4}
 EDA<-EDA%>%
   drop_na(ambivalent_sexism)
 
@@ -95,7 +96,7 @@ s1<-
   geom_boxplot(outlier.colour="red", 
                outlier.shape=5,
                outlier.size=4) +
-  labs(title="sexim by education level", x="PID", y="Sexism")+
+  labs(title="Sexism by education level", x="PID", y="Sexism")+
   theme_economist() + scale_fill_economist()
 s1
 ```
@@ -108,18 +109,18 @@ s1
 G1<-ggplot(EDA, aes(x=internet_usage, fill=EDA$educ)) + 
     geom_area(alpha=0.8 , size=0.2, colour="black", stat = "count")+
     labs(title = "Internet usage frequency by education level ",y="Counts",x="Days")+
-    scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
+    scale_fill_manual(name = "Education level", values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
 
 G2<-ggplot(EDA, aes(x=internet_usage, fill=EDA$meta_OS)) + 
     geom_area(alpha=0.8 , size=0.2, colour="black", stat = "count")+
     labs(title = "Internet usage frequency by devices ",y="Counts",x="Days")+
-    scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
+    scale_fill_manual(name = "Devices", values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
 
 
 G3<-ggplot(EDA, aes(x=internet_usage, fill=EDA$age_65)) + 
     geom_area(alpha=0.8 , size=0.2, colour="black", stat = "count")+
     labs(title = "Internet usage frequency by age group ",y="Counts",x="Days")+
-    scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
+    scale_fill_manual(name = "Age group", values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
 
 
 # combine two diagram in one graph
@@ -164,6 +165,90 @@ EDA%>%
 
 
 # Model
+
+## T test1
+```{r ttest1, echo=FALSE, fig.width=10, fig.height=3}
+
+
+t1<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]), 
+       na.omit(dat$believed_true[dat$treat_fake_audio == 1]))
+
+m1<-tidy(t1, digits=1)
+m1 %>%
+  select(-c(estimate,statistic,parameter))%>%
+  rename(
+    AVG_deception_video=estimate1,
+    AVG_deception_audio=estimate2
+  )%>%
+  kableExtra::kbl(caption="T test: Deception level of video vs audio")%>%
+  kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+
+## T test2
+```{r ttest2, echo=FALSE, fig.width=10, fig.height=3}
+
+
+t2<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]), 
+       na.omit(dat$believed_true[dat$treat_fake_text == 1]))
+
+m2<-tidy(t2, digits=1)
+
+m2 %>%
+  select(-c(estimate,statistic,parameter))%>%
+  rename(
+    AVG_deception_video=estimate1,
+    AVG_deception_text=estimate2
+  )%>%
+  kableExtra::kbl(caption="T test: Deception level of video vs text")%>%
+  kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+## T test3
+```{r ttest3, echo=FALSE, fig.width=10, fig.height=3}
+
+t3<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]), 
+       na.omit(dat$believed_true[dat$treat_skit == 1]))
+
+m3<-tidy(t3, digits=1)
+
+m3 %>%
+  select(-c(estimate,statistic,parameter))%>%
+  rename(
+    AVG_deception_video=estimate1,
+    AVG_deception_skit=estimate2
+  )%>%
+  kableExtra::kbl(caption="T test: Deception level of video vs skit")%>%
+  kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+## Feature selection 
+
+```{r }
+library(randomForest)
+library(plyr)
+
+map(dat, ~sum(is.na(.)))
+
+set.seed(123)
+FS<-randomForest(post_favor_Sanders~., data=dat, ntree=500)
+FS_importance <- importance(FS)
+FS_varImportance <- data.frame(Variables = row.names(FS_importance), 
+                            Importance = FS_importance[ ,'MeanDecreaseGini'])
+FS_varImportance <- as.data.frame(FS_varImportance)
+max(FS_varImportance$Importance)
+FS_varImportance_sort <- arrange(FS_varImportance,desc(Importance))
+
+
+```
+
+
+
+
+
 
 \begin{equation}
 Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}  (\#eq:bayes)
