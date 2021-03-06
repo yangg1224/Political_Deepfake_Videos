@@ -40,7 +40,6 @@ data<- load(here::here("inputs/data/deepfake.RData"))
 EDA<- dat%>%
         select(treat, response_wave_ID, exp_1_prompt, meta_OS, age_65, educ, PID, crt, gender, age, polknow, internet_usage, ambivalent_sexism, post_favor_Sanders,believed_true)
 
-EDA<-na.omit(EDA) #remove NA
 
 ```
 
@@ -49,6 +48,9 @@ EDA<-na.omit(EDA) #remove NA
 
 ### treat distribution 
 ```{r treat, fig.cap = "Employee numbers distribution",echo=FALSE, fig.width=10, fig.height=4}
+
+
+
 EDA<-EDA%>%
   drop_na(treat)
 
@@ -99,7 +101,7 @@ s1
 ```
 
 
-<<<<<<< HEAD
+
 ## internet usage frequency by education level
 ```{r internet, fig.cap = "internet usages",echo=FALSE, fig.width=15, fig.height=5}
 
@@ -140,7 +142,7 @@ EDA<-EDA%>%
 ggplot(EDA, aes(x = post_favor_Sanders,fill=treat)) +
   geom_histogram(bins=15,color="white") +
   facet_grid(treat ~ .)+
-  scale_fill_manual(values = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))+
+  scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6", "#ACD8CB","#3E737D"))+
   xlab("Feelings towards Sanders")+
   ggtitle("Distribution of feelings towards Sanders in six different conditions")+
   theme_minimal()
