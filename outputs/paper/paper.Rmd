@@ -227,15 +227,19 @@ m3 %>%
 
 ## Feature selection 
 
-```{r }
+
+
+```{r fs, fig.width=10, fig.height=10 }
 library(randomForest)
 library(plyr)
-
-map(dat, ~sum(is.na(.)))
+# deal with missing value
+FS<- dat%>%
+select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt,exp_2_prompt,post_favor_Klobuchar,post_favor_Warren,post_favor_Biden,post_favor_Bloomberg,exp_2,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7))%>%
+na.omit()
 
 set.seed(123)
-FS<-randomForest(post_favor_Sanders~., data=dat, ntree=500)
-FS_importance <- importance(FS)
+FS_tree<-randomForest(post_favor_Sanders~., data=FS, ntree=500)
+FS_importance <- importance(FS_tree)
 FS_varImportance <- data.frame(Variables = row.names(FS_importance), 
                             Importance = FS_importance[ ,'MeanDecreaseGini'])
 FS_varImportance <- as.data.frame(FS_varImportance)
@@ -281,7 +285,12 @@ We can use maths by including latex between dollar signs, for instance $\theta$.
 
 # Appendix
 
+## missing value
+```{r missing, fig.cap="Missing value Visualization ", echo=FALSE, fig.width=10, fig.height=10}
+library("VIM")
+aggr(dat,prop=FALSE,numbers=TRUE)
 
+```
 
 
 
