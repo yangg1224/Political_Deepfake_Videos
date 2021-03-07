@@ -241,27 +241,21 @@ set.seed(123)
 FS_tree<-randomForest(post_favor_Sanders~., data=FS, importance=TRUE,proximity=TRUE)
 
 FS_tree<-as.data.frame(FS_tree$importanceSD)
-plot(FS_tree$`FS_tree$importanceSD`,top=20)
-
-FS_importance <- importance(FS_tree)
-
-library(caret)
-FS_varImportance <- varImp(FS_tree,scale = FALSE)
-
-plot(FS_varImportance, top = 20)
 
 
-FS_varImportance <- data.frame(Variables = row.names(FS_importance), 
-                            Importance = FS_importance[ ,'MeanDecreaseGini'])
-FS_varImportance <- as.data.frame(FS_varImportance)
-max(FS_varImportance$Importance)
-FS_varImportance_sort <- arrange(FS_varImportance,desc(Importance))
-
+  
 
 ```
 
+```{r}
+FS_tree[order(-FS_tree[,1]),,drop=FALSE]%>%
+  head(20)%>%
+  kableExtra::kbl(caption="Feature importance")%>%
+  kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
+  kableExtra::kable_styling(latex_options = c("hold_position"))
 
 
+```
 
 
 
