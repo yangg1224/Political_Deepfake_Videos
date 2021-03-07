@@ -232,9 +232,10 @@ m3 %>%
 ```{r fs, fig.width=10, fig.height=10 }
 library(randomForest)
 library(plyr)
+
 # deal with missing value
 FS<- dat%>%
-select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt,exp_2_prompt,post_favor_Klobuchar,post_favor_Warren,post_favor_Biden,post_favor_Bloomberg,exp_2,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7))%>%
+select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt,exp_2_prompt,post_favor_Klobuchar,post_favor_Warren,post_favor_Biden,post_favor_Bloomberg,exp_2,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main))%>%
 na.omit()
 
 set.seed(123)
@@ -242,18 +243,25 @@ FS_tree<-randomForest(post_favor_Sanders~., data=FS, importance=TRUE,proximity=T
 
 FS_tree<-as.data.frame(FS_tree$importanceSD)
 
-
-  
-
+FS_tree<- FS_tree[order(-FS_tree[,]),,drop=FALSE]
+FS_tree<- cbind(Variable_name = rownames(FS_tree), FS_tree)
+rownames(FS_tree) <- 1:nrow(FS_tree)
+FS_tree<- as.data.frame(FS_tree)
 ```
 
-```{r}
-FS_tree[order(-FS_tree[,1]),,drop=FALSE]%>%
-  head(20)%>%
-  kableExtra::kbl(caption="Feature importance")%>%
-  kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
-  kableExtra::kable_styling(latex_options = c("hold_position"))
-
+```{r tree, echo=FALSE, fig.width=8, fig.height=7}
+ggplot(FS_tree, aes(x=FS_tree$Variable_name, y=FS_tree$`FS_tree$importanceSD`)) +
+  geom_segment( aes(x=FS_tree$Variable_name,xend=FS_tree$Variable_name, y=0, yend=FS_tree$`FS_tree$importanceSD`), color="grey") +
+  geom_point( color="orange", size=4) +
+  theme_light() +
+  coord_flip()+
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.x = element_blank()
+  ) +
+  xlab("") +
+  ylab("Value of Y")
 
 ```
 
