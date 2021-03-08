@@ -268,12 +268,15 @@ ggplot(FS_tree, aes(x=FS_tree$Variable_name, y=FS_tree$`FS_tree$importanceSD`)) 
 ## regression model 
 
 ```{r regression, echo=FALSE, warning=FALSE, fig.width=8, fig.height=7}
+
+## transfer data into dummy
 library(fastDummies)
 Dummy_data<- fastDummies::dummy_cols(FS, remove_first_dummy = TRUE, remove_selected_columns = TRUE)%>%
   select(-c(2:4))#  change categorical var to factors 
 
-
-
+##create model
+model <- lm(post_favor_Sanders ~., data =Dummy_data )
+summary(model)
 ```
 
 \begin{equation}
