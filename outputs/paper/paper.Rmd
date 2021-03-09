@@ -97,7 +97,7 @@ s1<-
                outlier.shape=5,
                outlier.size=4) +
   labs(title="Sexism by education level", x="PID", y="Sexism")+
-  theme_economist() + scale_fill_economist()
+  theme_economist() + scale_fill_economist() 
 s1
 ```
 
@@ -235,22 +235,26 @@ library(plyr)
 
 # deal with missing value
 FS<- dat%>%
-select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt,exp_2_prompt,post_favor_Klobuchar,post_favor_Warren,post_favor_Biden,post_favor_Bloomberg,exp_2,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main,crt1,crt2,crt3,agegroup,treat_control,treat_attackad,treat_fake_text,treat_fake_video,treat_fake_audio,treat_skit,polknow_speaker,polknow_boris,polknow_house,polknow_senate,polknow_veto,polknow_warren,polknow_medicare))%>%
+select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt_control,exp_1_prompt_info,exp_2_prompt_control,exp_2_prompt_accuracy,post_favor_Klobuchar,post_favor_Warren,post_favor_Biden,post_favor_Bloomberg,,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main,crt1,crt2,crt3,agegroup,treat_control,treat_attackad,treat_fake_text,treat_fake_video,treat_fake_audio,treat_skit,polknow_speaker,polknow_boris,polknow_house,polknow_senate,polknow_veto,polknow_warren,polknow_medicare,quality_demographic_mismatch,quality_failed_backend_attncheck,duration_secs,age,meta_screenres,StartDate,EndDate,meta_resolution,exp_2_hifake,exp_2_lofake,exp_2_nofake))%>%
 na.omit()
-
+## feature selection 
 set.seed(123)
-FS_tree<-randomForest(post_favor_Sanders~., data=FS, importance=TRUE,proximity=TRUE)
+FS_tree<-randomForest(post_favor_Sanders~., data=FS, importance=TRUE,proximity=TRUE) ## variable importance
 
-FS_tree<-as.data.frame(FS_tree$importanceSD)
+FS_tree<-as.data.frame(FS_tree$importanceSD) # transform to dataframe
 
-FS_tree<- FS_tree[order(-FS_tree[,]),,drop=FALSE]
+FS_tree<- FS_tree[order(-FS_tree[,]),,drop=FALSE] # sort importance by descending order
+
 FS_tree<- cbind(Variable_name = rownames(FS_tree), FS_tree)
 rownames(FS_tree) <- 1:nrow(FS_tree)
 FS_tree<- as.data.frame(FS_tree)
 ```
 
 ```{r tree, echo=FALSE, warning=FALSE, fig.width=8, fig.height=7}
-ggplot(FS_tree, aes(x=FS_tree$Variable_name, y=FS_tree$`FS_tree$importanceSD`)) +
+
+FS_tree%>%
+  mutate(name = fct_reorder(FS_tree$Variable_name,FS_tree$`FS_tree$importanceSD`))%>%
+  ggplot(aes(x=FS_tree$Variable_name, y=FS_tree$`FS_tree$importanceSD`)) +
   geom_segment( aes(x=FS_tree$Variable_name,xend=FS_tree$Variable_name, y=0, yend=FS_tree$`FS_tree$importanceSD`), color="grey") +
   geom_point( color="orange", size=4) +
   theme_light() +
@@ -261,7 +265,9 @@ ggplot(FS_tree, aes(x=FS_tree$Variable_name, y=FS_tree$`FS_tree$importanceSD`)) 
     axis.ticks.x = element_blank()
   ) +
   xlab("") +
-  ylab("Value of Y")
+  ylab("Importance value")+
+  ggtitle("Variable importance plot")
+
 
 ```
 
@@ -271,6 +277,7 @@ ggplot(FS_tree, aes(x=FS_tree$Variable_name, y=FS_tree$`FS_tree$importanceSD`)) 
 
 ## transfer data into dummy
 library(fastDummies)
+
 Dummy_data<- fastDummies::dummy_cols(FS, remove_first_dummy = TRUE, remove_selected_columns = TRUE)%>%
   select(-c(2:4))#  change categorical var to factors 
 
