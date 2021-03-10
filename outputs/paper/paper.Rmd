@@ -10,7 +10,7 @@ output:
   toc: FALSE
 bibliography: references.bib
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
@@ -168,7 +168,9 @@ EDA%>%
 
 # Model
 
-## T test1
+## Deception Level
+### T test1
+
 ```{r ttest1, echo=FALSE, fig.width=10, fig.height=3}
 
 
@@ -188,7 +190,7 @@ m1 %>%
 ```
 
 
-## T test2
+### T test2
 ```{r ttest2, echo=FALSE, fig.width=10, fig.height=3}
 
 
@@ -208,7 +210,7 @@ m2 %>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-## T test3
+### T test3
 ```{r ttest3, echo=FALSE, fig.width=10, fig.height=3}
 
 t3<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]), 
@@ -226,6 +228,88 @@ m3 %>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
+
+## Affect Level
+
+### T test 1
+
+```{r}
+#video vs control
+t1_a<-t.test(na.omit(dat$post_favor_Sanders[dat$treat_fake_video == 1]), 
+       na.omit(dat$post_favor_Sanders[dat$treat_control == 1]))
+
+m1_a<-tidy(t1_a,digits=1)
+
+m1_a%>%
+  select(-c(estimate,statistic,parameter))%>%
+  rename(
+    AVG_affect_video=estimate1,
+    AVG_affect_control=estimate2
+  )%>%
+  kableExtra::kbl(caption = "T test: Affect level of video vs control")%>%
+  kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+
+### T test2
+```{r}
+#video vs text
+t2_a<-t.test(na.omit(dat$post_favor_Sanders[dat$treat_fake_video == 1]), 
+       na.omit(dat$post_favor_Sanders[dat$treat_fake_text == 1]))
+
+m2_a<-tidy(t2_a,digits=1)
+
+m2_a%>%
+  select(-c(estimate,statistic,parameter))%>%
+  rename(
+    AVG_affect_video=estimate1,
+    AVG_affect_text=estimate2
+  )%>%
+  kableExtra::kbl(caption = "T test: Affect level of video vs text")%>%
+  kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+### T test3
+```{r}
+#video vs audio
+t3_a<-t.test(na.omit(dat$post_favor_Sanders[dat$treat_fake_video == 1]), 
+       na.omit(dat$post_favor_Sanders[dat$treat_fake_audio == 1]))
+
+m3_a<-tidy(t3_a,digits=1)
+
+m3_a%>%
+  select(-c(estimate,statistic,parameter))%>%
+  rename(
+    AVG_affect_video=estimate1,
+    AVG_affect_audio=estimate2
+  )%>%
+  kableExtra::kbl(caption = "T test: Affect level of video vs audio")%>%
+  kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+### T test 4
+```{r}
+#video vs skit
+t4_a<-t.test(na.omit(dat$post_favor_Sanders[dat$treat_fake_video == 1]), 
+       na.omit(dat$post_favor_Sanders[dat$treat_skit == 1]))
+
+m4_a<-tidy(t4_a,digits=1)
+
+m4_a%>%
+  select(-c(estimate,statistic,parameter))%>%
+  rename(
+    AVG_affect_video=estimate1,
+    AVG_affect_skit=estimate2
+  )%>%
+  kableExtra::kbl(caption = "T test: Affect level of video vs skit")%>%
+  kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+
+
+
 
 ## Feature selection 
 
