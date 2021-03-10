@@ -10,7 +10,7 @@ output:
   toc: FALSE
 bibliography: references.bib
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
@@ -168,7 +168,9 @@ EDA%>%
 
 # Model
 
-## T test1
+## Deception Level
+### T test1
+
 ```{r ttest1, echo=FALSE, fig.width=10, fig.height=3}
 
 
@@ -188,7 +190,7 @@ m1 %>%
 ```
 
 
-## T test2
+### T test2
 ```{r ttest2, echo=FALSE, fig.width=10, fig.height=3}
 
 
@@ -208,7 +210,7 @@ m2 %>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-## T test3
+### T test3
 ```{r ttest3, echo=FALSE, fig.width=10, fig.height=3}
 
 t3<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]), 
@@ -226,6 +228,17 @@ m3 %>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
+
+## Affect Level
+
+### T test 1
+
+
+
+
+
+
+
 
 ## Feature selection 
 
