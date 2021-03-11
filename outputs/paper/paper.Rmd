@@ -235,8 +235,8 @@ m3 %>%
 
 ```{r}
 #video vs control
-t1_a<-t.test(na.omit(dat$post_favor_Sanders[dat$treat_fake_video == 1]), 
-       na.omit(dat$post_favor_Sanders[dat$treat_control == 1]))
+t1_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
+       na.omit(dat$post_favor_Warren[dat$treat_control == 1]))
 
 m1_a<-tidy(t1_a,digits=1)
 
@@ -255,8 +255,8 @@ m1_a%>%
 ### T test2
 ```{r}
 #video vs text
-t2_a<-t.test(na.omit(dat$post_favor_Sanders[dat$treat_fake_video == 1]), 
-       na.omit(dat$post_favor_Sanders[dat$treat_fake_text == 1]))
+t2_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
+       na.omit(dat$post_favor_Warren[dat$treat_fake_text == 1]))
 
 m2_a<-tidy(t2_a,digits=1)
 
@@ -273,8 +273,8 @@ m2_a%>%
 ### T test3
 ```{r}
 #video vs audio
-t3_a<-t.test(na.omit(dat$post_favor_Sanders[dat$treat_fake_video == 1]), 
-       na.omit(dat$post_favor_Sanders[dat$treat_fake_audio == 1]))
+t3_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
+       na.omit(dat$post_favor_Warren[dat$treat_fake_audio == 1]))
 
 m3_a<-tidy(t3_a,digits=1)
 
@@ -291,8 +291,8 @@ m3_a%>%
 ### T test 4
 ```{r}
 #video vs skit
-t4_a<-t.test(na.omit(dat$post_favor_Sanders[dat$treat_fake_video == 1]), 
-       na.omit(dat$post_favor_Sanders[dat$treat_skit == 1]))
+t4_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
+       na.omit(dat$post_favor_Warren[dat$treat_skit == 1]))
 
 m4_a<-tidy(t4_a,digits=1)
 
