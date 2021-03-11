@@ -364,11 +364,11 @@ FS_tree%>%
 ## transfer data into dummy
 library(fastDummies)
 
-Dummy_data<- fastDummies::dummy_cols(FS, remove_first_dummy = TRUE, remove_selected_columns = TRUE)%>%
-  select(-c(4))#  change categorical var to factors 
+#Dummy_data<- fastDummies::dummy_cols(FS, remove_first_dummy = TRUE, #remove_selected_columns = TRUE)%>%
+#  select(-c(4))#  change categorical var to factors 
 
 ##create model
-model <- lm(post_favor_Warren ~., data =Dummy_data )
+model <- lm(post_favor_Warren ~., data =FS )
 summary(model)
 
 ```
