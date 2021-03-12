@@ -147,7 +147,7 @@ ggplot(EDA, aes(x = post_favor_Warren,fill=treat)) +
   facet_grid(treat ~ .)+
   scale_fill_manual(values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6", "#ACD8CB","#3E737D"))+
   xlab("Feelings towards Sanders")+
-  ggtitle("Distribution of feelings towards Sanders in six different conditions")+
+  ggtitle("Distribution of feelings towards Warren in six different conditions")+
   theme_minimal()
 
 
@@ -334,6 +334,7 @@ FS_tree<- FS_tree[order(-FS_tree[,]),,drop=FALSE] # sort importance by descendin
 FS_tree<- cbind(Variable_name = rownames(FS_tree), FS_tree)
 rownames(FS_tree) <- 1:nrow(FS_tree)
 FS_tree<- as.data.frame(FS_tree)
+
 
 ```
 
