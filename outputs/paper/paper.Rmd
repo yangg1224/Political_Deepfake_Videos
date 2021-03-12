@@ -375,7 +375,6 @@ library(fastDummies)
 model <- lm(post_favor_Warren ~., data =FS )
 summary(model)
 
-
 ```
 
 \begin{equation}
@@ -411,6 +410,7 @@ We can use maths by including latex between dollar signs, for instance $\theta$.
 
 ## missing value
 ```{r missing, fig.cap="Missing value Visualization ", echo=FALSE, fig.width=10, fig.height=10}
+
 library("VIM")
 aggr(dat,prop=FALSE,numbers=TRUE)
 
