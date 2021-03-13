@@ -362,7 +362,7 @@ FS<- FS%>%select(-c(script_loans,quality,Hispanic))
 
 ## regression model 
 
-```{r regression, echo=FALSE, warning=FALSE, fig.width=8, fig.height=7}
+```{r regression, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4}
 
 ## transfer data into dummy
 library(fastDummies)
@@ -373,7 +373,28 @@ library(fastDummies)
 ##create model
 
 model <- lm(post_favor_Warren ~., data =FS )
-summary(model)
+
+## stargazer package to show table results
+#install.packages("array")
+library(stargazer)
+
+result<-
+  model%>%
+  stargazer(
+          type="text",
+          title = "Multiple linear regression model",
+          align=TRUE,
+          no.space=TRUE,
+          digits=2,
+          notes.align = "l",
+          style = "default",
+          dep.var.labels = c("\\normalsize Elizabeth Warren Feeling Thermometer"),
+          omit.stat=c("f", "ser"),
+          column.sep.width = "-2pt",
+          font.size = "footnotesize",
+          label = "firststage_feelings",
+          omit = "response_wave_ID")
+
 
 ```
 
