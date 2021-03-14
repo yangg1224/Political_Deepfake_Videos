@@ -11,6 +11,12 @@ output:
 bibliography: references.bib
 editor_options: 
   chunk_output_type: inline
+  
+  
+header-includes:
+ - \usepackage{float}
+ - \floatplacement{figure}{H}
+ - \floatplacement{table}{H}
 ---
 
 ```{r setup, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
@@ -153,8 +159,18 @@ ggplot(EDA, aes(x = post_favor_Warren,fill=treat)) +
 
 ```
 
-### Average deception level by treat
+
+
+  
+# Result
+
+## Two-Sample T-test results
+
+### Deception Level
+In the descriptive analysis aspect, Table \@ref(tab:table1), shown below, illustrates the average deception level of each media format. The result shows that although deepfake videos have an average deception level of 3.23 out of 5, it is lower than the average level of audio(3.35) and text(3.30). Audio has the highest average deception level, and skit (2.57) has the lowest average deception level.
+
 ```{r table1,tab.cap="Average deception level of each media format", echo = FALSE,warning=FALSE}
+#Average deception level by treat
 EDA%>%
   group_by(treat)%>%
   filter(treat != "control")%>%
@@ -163,17 +179,9 @@ EDA%>%
 ```
 
 
-  
-
-
-# Model
-
-## Deception Level
-### T test1
+In the statistical analysis aspect, unpaired two-sample t-tests were applied to test whether deepfake videos are statistically different from other media formats at the deception level. The results from Table \@ref(tab:ttest1) to Table \@ref(tab:ttest3) show that only the difference in the deception level between video and skit is significant(p<0.01). The p-values for comparing video and text, video and audio are larger than 0.05, which means there is not sufficient evidence to support video is different from the audio or text. In other words, videos do not differ from audio or text significantly. 
 
 ```{r ttest1, echo=FALSE, fig.width=10, fig.height=3}
-
-
 t1<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]), 
        na.omit(dat$believed_true[dat$treat_fake_audio == 1]))
 
@@ -190,7 +198,6 @@ m1 %>%
 ```
 
 
-### T test2
 ```{r ttest2, echo=FALSE, fig.width=10, fig.height=3}
 
 
@@ -210,7 +217,6 @@ m2 %>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-### T test3
 ```{r ttest3, echo=FALSE, fig.width=10, fig.height=3}
 
 t3<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]), 
@@ -229,11 +235,12 @@ m3 %>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-## Affect Level
+### Affect Level
+The unpaired two-sample t-tests were utilized to investigate whether there is a different emotional impact on the target elite between deepfake videos and other conditions, including different deepfake formats and control groups that no clip at all.
 
-### T test 1
+The result of comparing the deepfake video and the control group in Table \@ref(tab:attest1) demonstrates that the video condition will cause a negative sentimental effect from people to Elizabeth Warren. The 95% confidence interval shows that the true difference in means is between -1.35 and -7.72. Given the p-value less than 0.05, the difference between the two groups is significant.
 
-```{r}
+```{r attest1, echo=FALSE, fig.width=10, fig.height=3}
 #video vs control
 t1_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_control == 1]))
@@ -247,13 +254,13 @@ m1_a%>%
     AVG_affect_control=estimate2
   )%>%
   kableExtra::kbl(caption = "T test: Affect level of video vs control")%>%
-  kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
+  kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
+Similarly, the same analysis has been done for the rest unpaired two-sample t-tests. In our study, we used 5% significance level. Table \@ref(tab:attest2) shows the test result of how deepfake videos and texts impact audiences feeling. The result shows that the difference in affect level between video (Mean = 41.28) and text (Mean=44.22) was not significant given the p-value is greater than 0.05.
 
-### T test2
-```{r}
+```{r attest2, echo=FALSE, fig.width=10, fig.height=3}
 #video vs text
 t2_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_fake_text == 1]))
@@ -270,8 +277,10 @@ m2_a%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
-### T test3
-```{r}
+
+
+Table \@ref(tab:attest3) shows the test result of how deepfake videos and audios impact audiences feeling. The difference in affect level between video(Mean = 41.28) and audio (Mean=43.93) was not significant given the p-value is greater than 0.05.
+```{r attest3, echo=FALSE, fig.width=10, fig.height=3}
 #video vs audio
 t3_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_fake_audio == 1]))
@@ -288,8 +297,9 @@ m3_a%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
-### T test 4
-```{r}
+
+Table \@ref(tab:attest4) shows the test result of how deepfake videos and skit impact audiences feeling. The difference in affect level between video(Mean = 41.28) and skit (Mean=43) was not significant given the p-value is greater than 0.05.
+```{r attest4, echo=FALSE, fig.width=10, fig.height=3}
 #video vs skit
 t4_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_skit == 1]))
@@ -309,63 +319,101 @@ m4_a%>%
 
 
 
-
+```{r fs, echo=FALSE, fig.width=10, fig.height=10,results=FALSE,message=FALSE,include=FALSE }
 
 ## Feature selection 
-
-
-
-```{r fs, echo=FALSE, fig.width=10, fig.height=10 }
-library(randomForest)
-library(plyr)
+# library(randomForest)
+# library(plyr)
 
 # deal with missing value
 FS<- dat%>%
-select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt_control,exp_1_prompt_info,exp_2_prompt_control,exp_2_prompt_accuracy,post_favor_Klobuchar,post_favor_Sanders,post_favor_Biden,post_favor_Bloomberg,,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main,crt1,crt2,crt3,agegroup,treat_control,treat_attackad,treat_fake_text,treat_fake_video,treat_fake_audio,treat_skit,polknow_speaker,polknow_boris,polknow_house,polknow_senate,polknow_veto,polknow_warren,polknow_medicare,quality_demographic_mismatch,quality_failed_backend_attncheck,duration_secs,age,meta_screenres,StartDate,EndDate,meta_resolution,exp_2_hifake,exp_2_lofake,exp_2_nofake,exp_2,exp_2_prompt_accuracy,exp_2_after_debrief,exp_2_prompt,Zip,believed_true))%>%
-na.omit()
+ select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt_control,exp_1_prompt_info,exp_2_prompt_control,exp_2_prompt_accuracy,post_favor_Klobuchar,post_favor_Sanders,post_favor_Biden,post_favor_Bloomberg,,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main,crt1,crt2,crt3,agegroup,treat_control,treat_attackad,treat_fake_text,treat_fake_video,treat_fake_audio,treat_skit,polknow_speaker,polknow_boris,polknow_house,polknow_senate,polknow_veto,polknow_warren,polknow_medicare,quality_demographic_mismatch,quality_failed_backend_attncheck,duration_secs,age,meta_screenres,StartDate,EndDate,meta_resolution,exp_2_hifake,exp_2_lofake,exp_2_nofake,exp_2,exp_2_prompt_accuracy,exp_2_after_debrief,exp_2_prompt,Zip,believed_true))%>% na.omit()
 ## feature selection 
-set.seed(123)
-FS_tree<-randomForest(post_favor_Warren~., data=FS, ntree=500, importance=TRUE,proximity=TRUE) ## variable importance
+#set.seed(123)
+#FS_tree<-randomForest(post_favor_Warren~., data=FS, ntree=500, importance=TRUE,proximity=TRUE) ## variable importance
 
-FS_tree<-as.data.frame(FS_tree$importanceSD) # transform to dataframe
+#FS_tree<-as.data.frame(FS_tree$importanceSD) # transform to dataframe
 
-FS_tree<- FS_tree[order(-FS_tree[,]),,drop=FALSE] # sort importance by descending order
+#FS_tree<- FS_tree[order(-FS_tree[,]),,drop=FALSE] # sort importance by descending order
 
-FS_tree<- cbind(Variable_name = rownames(FS_tree), FS_tree)
-rownames(FS_tree) <- 1:nrow(FS_tree)
-FS_tree<- as.data.frame(FS_tree)
+#FS_tree<- cbind(Variable_name = rownames(FS_tree), FS_tree)
+#rownames(FS_tree) <- 1:nrow(FS_tree)
+#FS_tree<- as.data.frame(FS_tree)
 
 
 ```
 
-```{r tree, echo=FALSE, warning=FALSE, fig.width=8, fig.height=7}
+```{r tree, echo=FALSE, warning=FALSE, fig.width=8, fig.height=7,results=FALSE,include=FALSE,message=FALSE}
 
-FS_tree%>%
-  mutate(name = fct_reorder(FS_tree$Variable_name,FS_tree$`FS_tree$importanceSD`))%>%
-  ggplot(aes(x=FS_tree$Variable_name, y=FS_tree$`FS_tree$importanceSD`)) +
-  geom_segment( aes(x=FS_tree$Variable_name,xend=FS_tree$Variable_name, y=0, yend=FS_tree$`FS_tree$importanceSD`), color="grey") +
-  geom_point( color="orange", size=4) +
-  theme_light() +
-  coord_flip()+
-  theme(
-    panel.grid.major.x = element_blank(),
-    panel.border = element_blank(),
-    axis.ticks.x = element_blank()
-  ) +
-  xlab("") +
-  ylab("Importance value")+
-  ggtitle("Variable importance plot")
+#FS_tree%>%
+  #mutate(name = fct_reorder(FS_tree$Variable_name,FS_tree$`FS_tree$importanceSD`))%>%
+  #ggplot(aes(x=FS_tree$Variable_name, y=FS_tree$`FS_tree$importanceSD`)) +
+  #geom_segment( aes(x=FS_tree$Variable_name,xend=FS_tree$Variable_name, y=0, yend=FS_tree$`FS_tree$importanceSD`), color="grey") +
+  #geom_point( color="orange", size=4) +
+  #theme_light() +
+  #coord_flip()+
+  #theme(
+    #panel.grid.major.x = element_blank(),
+   # panel.border = element_blank(),
+   # axis.ticks.x = element_blank()
+ # ) +
+ # xlab("") +
+ # ylab("Importance value")+
+#  ggtitle("Variable importance plot")
 
 ## remove low importance feature 
-FS<- FS%>%select(-c(script_loans,quality,Hispanic))
+#FS<- FS%>%select(-c(script_loans,quality,Hispanic))
 ```
 
-## regression model 
 
-```{r regression, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4}
+
+## Multiple Linear Regression Results
+
+### Model Results
+Multiple linear regression was applied to use the top 20 important explanatory variables generated from the random forests model to predict the affect level.
+
+As shown in the summary table, only 9 variables are significant (p<0.05) to the affect level to Elizabeth Warren which are education level is postgraduate; income in the range of \$100k to $150k; live in the Northeast in the US; whether age larger than 65; partisan; ambivalent sexism; and treat is advertisement.
+
+In this model, the intercept represents the average affect level for the reference group which includes the following characteristics: 
+
+* Gender: Female
+*	Education Level: lower than high school degree 
+* Income: Less than $25K
+*	Ethnicity: Asian
+* Region: Midwest
+*	Response_wave_ID: SV_OxlqWIOfO10wuYI
+* Device: Desktop
+*	Age group: Less than 65 years old
+*	Partisan: Democrat
+* Media condition: Control
+*	Prompt: Control
+
+
+
+The coefficient for 
+Postgraduate is 9.32, suggesting that the average affect level from people whose education level is postgraduate is on average 9.32 units higher than people whose education level is less than high school level, holding other variables constant.
+
+The coefficient for HHI\$100k to \$150k is 3.90, suggesting that the average affect level from people whose income are in the range of \$100k to \$150k is on average 3.90 units higher than people whose income are less than $25k, holding other variables constant.
+
+The coefficient for HHI > \$150K is 4, suggesting that the average affect level from people whose income are in the range of \$100k to \$150k is on average 4 units higher than people whose income are less than $25k, holding other variables constant.
+
+The coefficient for RegionNortheast is 3.89. The average affect level from people who live in the Northeast in the US is 3.89 units higher than people who live in Midwest in the US, holding all other variables unchanged.
+
+The coefficient for people older than 65 is -4.36. When other variables are unchanged, the average affect level from people who order than 65 is average 4.36 units lower than those less than 65.
+
+The coefficient for the variable, PIDIndependent, is -26.69. Holding other variables constant, the Independent gives the feeling scores are on average 26.69 units lower than the scores given by the Democrats.
+
+The coefficient for the variable, PIDRepublican, is -39.52. Holding other variables constant, the average feeling score from the people who are Republican is on average 39.52 units lower than the people who are Democrats.
+
+The coefficient for Ambivalent Sexism is  -4.06, suggesting that one unit increase in ambivalent sexism score is associated with 4.06 units decrease in affect level, holding other variables constant.
+
+The coefficient for Ad is -3.84, suggesting that the average affect level from people whose media condition is advertisement is on average 3.84 units lower than people whose media condition is control, holding other variables constant.
+
+
+```{r, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4,message=FALSE}
 
 ## transfer data into dummy
-library(fastDummies)
+#library(fastDummies)
 
 #Dummy_data<- fastDummies::dummy_cols(FS, remove_first_dummy = TRUE, #remove_selected_columns = TRUE)%>%
 #  select(-c(4))#  change categorical var to factors 
@@ -373,7 +421,9 @@ library(fastDummies)
 ##create model
 
 model <- lm(post_favor_Warren ~., data =FS )
+```
 
+```{r regression, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4,message=FALSE}
 ## stargazer package to show table results
 #install.packages("array")
 library(stargazer)
@@ -387,16 +437,61 @@ result<-
           no.space=TRUE,
           digits=2,
           notes.align = "l",
+          notes = c("\\textit{Notes}: Reference category for medium is Control."),
+          covariate.labels= c("gender.L",
+                             "gender.Q",
+                             "High school",
+                             "College",
+                             "Postgraduate",
+                             "HHI$100k to $150k",
+                             "HHI>$150k",
+                             "HHI$25k to $49k",
+                             "HHI$50k to $74k",
+                             "HHI$75k to $99k",
+                             "HHIN/A",
+                             "EthnicityBlack",
+                             "EthnicityOther",
+                             "EthnicityWhite",
+                             "RegionNortheast",
+                             "RegionSouth",
+                             "RegionWest",
+                             "Response wave ID:SVeyxdeXOuISXzakt",
+                             "Meta: OSmobile",
+                             "Age 65+",
+                             "PIDIndependent",
+                             "PIDRepublican",
+                             "Ambivalent Sexism",
+                             "Political Knowledge",
+                             "Video",
+                             "Audio",
+                             "Text",
+                             "Skit",
+                             "Ad",
+                             "Script:bidenshit",
+                             "Script:trumpshit",
+                             "Script:cherokee",
+                             "Script:lgbtq",
+                             "Info Provided",
+                             "Post Dig Lit",
+                             "Internet Usage",
+                             "CRT"),
           style = "default",
           dep.var.labels = c("\\normalsize Elizabeth Warren Feeling Thermometer"),
           omit.stat=c("f", "ser"),
           column.sep.width = "-2pt",
           font.size = "footnotesize",
-          label = "firststage_feelings",
-          omit = "response_wave_ID")
-
+          label = "firststage_feelings")
+          
 
 ```
+
+### Model Assessment Results
+The summary table above shows that the R-square value for the multiple linear regression model is 0.39, which means about 39% of the variation in the dependent variable(affect level) can be explained by the multiple linear regression model. 
+
+In addition, in the Scale-Location plot (Figure \@ref(fig:figure1) in Appendix), an approximate horizontal line being shown, which means the residuals are randomly distributed and have constant variance. The Normal QQ-plot (Figure \@ref(fig:figure2) in Appendix) shows almost all the residuals match the diagonal line. The Residual versus Leverage plot(Figure \@ref(fig:figure3) in Appendix) shows that there is no evident of outliers, and none of the points come close to having both high residual and leverage.
+
+
+### 
 
 \begin{equation}
 Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}  (\#eq:bayes)
@@ -438,6 +533,19 @@ aggr(dat,prop=FALSE,numbers=TRUE)
 ```
 
 
+```{r figure1,fig.cap="Scale-Location plot", echo=FALSE, fig.width=10, fig.height=10}
+plot(model,which = 3)
+```
+
+
+
+```{r figure2,fig.cap="Normal QQ-plot", echo=FALSE, fig.width=10, fig.height=10}
+plot(model,which = 2)
+```
+
+```{r figure3,fig.cap="Residual versus Leverage plot", echo=FALSE, fig.width=10, fig.height=10}
+plot(model,which = 5)
+```
 
 \newpage
 
