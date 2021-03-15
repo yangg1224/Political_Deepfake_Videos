@@ -20,8 +20,10 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
+chooseCRANmirror(graphics=FALSE, ind=1)
 knitr::opts_chunk$set(echo = TRUE)
 
+library(tinytex)
 library(tidyverse)
 library(palmerpenguins)
 library(ggplot2)
@@ -160,8 +162,19 @@ ggplot(EDA, aes(x = post_favor_Warren,fill=treat)) +
 ```
 
 
+# Model
 
-  
+
+$$
+\hat Y =\hat \beta_0+\hat \beta_1I_{gender:male}+\hat \beta_2I_{gender:other}+\hat \beta_3I_{High school} +\hat \beta_4I_{College}+\hat \beta_5I_{Postgraduate}+\hat \beta_6I_{HHI100K-150k}+\hat \beta_7I_{HHI>150K}$$
+$$+\hat \beta_8I_{HHI25K-49K}+\hat \beta_9I_{HHI50K-74K}+\hat \beta_{10}I_{HHI75K-99K}+\hat \beta_{11}I_{HHIN/A}+\hat \beta_{12}I_{Ethnicity:Black}+\hat \beta_{13}I_{Ethnicity:other}$$
+$$+\hat \beta_{14}I_{Ethnicity:white}+\hat \beta_{15}I_{Region:Northeast}+\hat \beta_{16}I_{Region:South}+\hat \beta_{17}I_{Region: West}+\hat \beta_{18}I_{WaveID:SVeyxdeXOuISXzakt}$$
+$$+\hat \beta_{19}I_{Meta:OSmobile}+\hat \beta_{20}I_{Age>65}+\hat \beta_{21}I_{PID:Independent}+\hat \beta_{22}I_{PID:Republican}+\hat \beta_{23}*{AmbivalentSexism}+\hat \beta_{24}*{PLK}$$
+$$+\hat \beta_{25}I_{Video}+\hat \beta_{26}I_{audio}+\hat \beta_{27}I_{Text}+\hat \beta_{28}I_{Skit}+\hat \beta_{29}I_{Ad}+\hat \beta_{30}I_{Script:bidenshit}+\hat \beta_{31}I_{Script:trumpshit}+\hat \beta_{32}I_{Script:cherokee}$$
+$$+\hat \beta_{33}I_{Script:lgbtq}+\hat \beta_{34}I_{Info}+\hat \beta_{35}*{PDL}+\hat \beta_{36}*{InternetUsage}+\hat \beta_{37}*{CRT}+\epsilon$$
+
+
+
 # Result
 
 ## Two-Sample T-test results
@@ -179,7 +192,7 @@ EDA%>%
 ```
 
 
-In the statistical analysis aspect, unpaired two-sample t-tests were applied to test whether deepfake videos are statistically different from other media formats at the deception level. The results from Table \@ref(tab:ttest1) to Table \@ref(tab:ttest3) show that only the difference in the deception level between video and skit is significant(p<0.01). The p-values for comparing video and text, video and audio are larger than 0.05, which means there is not sufficient evidence to support video is different from the audio or text. In other words, videos do not differ from audio or text significantly. 
+In the statistical analysis aspect, unpaired two-sample t-tests were applied to test whether deepfake videos are statistically different from other media formats at the deception level. The results from Table \@ref(tab:ttest1) to Table \@ref(tab:ttest3) show that only the difference in the deception level between video and skit is significant (p<0.01). The p-values for comparing video and text, video and audio are larger than 0.05, which means there is not sufficient evidence to support that video is different from the audio or text. In other words, videos do not differ from audio or text significantly. 
 
 ```{r ttest1, echo=FALSE, fig.width=10, fig.height=3}
 t1<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]), 
@@ -236,9 +249,10 @@ m3 %>%
 ```
 
 ### Affect Level
-The unpaired two-sample t-tests were utilized to investigate whether there is a different emotional impact on the target elite between deepfake videos and other conditions, including different deepfake formats and control groups that no clip at all.
+The unpaired two-sample t-tests were utilized to investigate whether there is a different emotional impact on the target elite between deepfake videos and other conditions, including different deepfake formats and control groups that have no clip at all.
 
-The result of comparing the deepfake video and the control group in Table \@ref(tab:attest1) demonstrates that the video condition will cause a negative sentimental effect from people to Elizabeth Warren. The 95% confidence interval shows that the true difference in means is between -1.35 and -7.72. Given the p-value less than 0.05, the difference between the two groups is significant.
+The result of comparing the deepfake video and the control group in Table \@ref(tab:attest1) demonstrates that the video condition will cause a negative sentimental effect from respondents to Elizabeth Warren. The 95% confidence interval shows that the true difference in means is between -1.35 and -7.72. Given the p-value less than 0.05, the difference between the two groups is significant.
+
 
 ```{r attest1, echo=FALSE, fig.width=10, fig.height=3}
 #video vs control
@@ -258,7 +272,8 @@ m1_a%>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-Similarly, the same analysis has been done for the rest unpaired two-sample t-tests. In our study, we used 5% significance level. Table \@ref(tab:attest2) shows the test result of how deepfake videos and texts impact audiences feeling. The result shows that the difference in affect level between video (Mean = 41.28) and text (Mean=44.22) was not significant given the p-value is greater than 0.05.
+Similarly, the same analysis has been done for the rest unpaired two-sample t-tests. In our study, we used a 5% significance level. Table \@ref(tab:attest2) shows the test result of how deepfake videos and texts impact audiences' feelings. The result shows that the difference in affect level between video (Mean = 41.28) and text (Mean=44.22) was not significant given the p-value is greater than 0.05.
+
 
 ```{r attest2, echo=FALSE, fig.width=10, fig.height=3}
 #video vs text
@@ -279,7 +294,7 @@ m2_a%>%
 ```
 
 
-Table \@ref(tab:attest3) shows the test result of how deepfake videos and audios impact audiences feeling. The difference in affect level between video(Mean = 41.28) and audio (Mean=43.93) was not significant given the p-value is greater than 0.05.
+Table \@ref(tab:attest3) shows the test result of how deepfake videos and audios impact audiences' feelings. The difference in affect level between video(Mean = 41.28) and audio (Mean=43.93) was not significant given the p-value is greater than 0.05.
 ```{r attest3, echo=FALSE, fig.width=10, fig.height=3}
 #video vs audio
 t3_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
@@ -370,9 +385,9 @@ FS<- dat%>%
 ## Multiple Linear Regression Results
 
 ### Model Results
-Multiple linear regression was applied to use the top 20 important explanatory variables generated from the random forests model to predict the affect level.
+Multiple linear regression was applied to use the top 20 important explanatory variables generated from the random forest model to predict the affect level.
 
-As shown in the summary table, only 9 variables are significant (p<0.05) to the affect level to Elizabeth Warren which are education level is postgraduate; income in the range of \$100k to $150k; live in the Northeast in the US; whether age larger than 65; partisan; ambivalent sexism; and treat is advertisement.
+As shown in the summary table, only 9 variables are significant (p<0.05) to the affect level to Elizabeth Warren which are postgraduate education level is; income ranging in $100k to $150k; living in the Northeast of  US; whether age older  than 65; partisan; ambivalent sexism; and treat is advertisement.
 
 In this model, the intercept represents the average affect level for the reference group which includes the following characteristics: 
 
@@ -388,28 +403,6 @@ In this model, the intercept represents the average affect level for the referen
 * Media condition: Control
 *	Prompt: Control
 
-
-
-The coefficient for 
-Postgraduate is 9.32, suggesting that the average affect level from people whose education level is postgraduate is on average 9.32 units higher than people whose education level is less than high school level, holding other variables constant.
-
-The coefficient for HHI\$100k to \$150k is 3.90, suggesting that the average affect level from people whose income are in the range of \$100k to \$150k is on average 3.90 units higher than people whose income are less than $25k, holding other variables constant.
-
-The coefficient for HHI > \$150K is 4, suggesting that the average affect level from people whose income are in the range of \$100k to \$150k is on average 4 units higher than people whose income are less than $25k, holding other variables constant.
-
-The coefficient for RegionNortheast is 3.89. The average affect level from people who live in the Northeast in the US is 3.89 units higher than people who live in Midwest in the US, holding all other variables unchanged.
-
-The coefficient for people older than 65 is -4.36. When other variables are unchanged, the average affect level from people who order than 65 is average 4.36 units lower than those less than 65.
-
-The coefficient for the variable, PIDIndependent, is -26.69. Holding other variables constant, the Independent gives the feeling scores are on average 26.69 units lower than the scores given by the Democrats.
-
-The coefficient for the variable, PIDRepublican, is -39.52. Holding other variables constant, the average feeling score from the people who are Republican is on average 39.52 units lower than the people who are Democrats.
-
-The coefficient for Ambivalent Sexism is  -4.06, suggesting that one unit increase in ambivalent sexism score is associated with 4.06 units decrease in affect level, holding other variables constant.
-
-The coefficient for Ad is -3.84, suggesting that the average affect level from people whose media condition is advertisement is on average 3.84 units lower than people whose media condition is control, holding other variables constant.
-
-
 ```{r, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4,message=FALSE}
 
 ## transfer data into dummy
@@ -421,11 +414,11 @@ The coefficient for Ad is -3.84, suggesting that the average affect level from p
 ##create model
 
 model <- lm(post_favor_Warren ~., data =FS )
-```
 
-```{r regression, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4,message=FALSE}
 ## stargazer package to show table results
 #install.packages("array")
+
+
 library(stargazer)
 
 result<-
@@ -481,14 +474,36 @@ result<-
           column.sep.width = "-2pt",
           font.size = "footnotesize",
           label = "firststage_feelings")
-          
-
+  
 ```
+
+
+
+The coefficient for 
+Postgraduate is 9.32, suggesting that the average affect level from people whose education level is postgraduate is on average 9.32 units higher than people whose education level is less than high school level, holding other variables constant.
+
+The coefficient for HHI\$100k to \$150k is 3.90, suggesting that the average affect level from people whose income are in the range of \$100k to \$150k is on average 3.90 units higher than people whose income are less than $25k, holding other variables constant.
+
+The coefficient for HHI > \$150K is 4, suggesting that the average affect level from people whose income are in the range of \$100k to \$150k is on average 4 units higher than people whose income are less than $25k, holding other variables constant.
+
+The coefficient for RegionNortheast is 3.89. The average affect level from people who live in the Northeast in the US is 3.89 units higher than people who live in Midwest in the US, holding all other variables unchanged.
+
+The coefficient for people older than 65 is -4.36. When other variables are unchanged, the average affect level from people who order than 65 is average 4.36 units lower than those less than 65.
+
+The coefficient for the variable, PIDIndependent, is -26.69. Holding other variables constant, the Independent gives the feeling scores are on average 26.69 units lower than the scores given by the Democrats.
+
+The coefficient for the variable, PIDRepublican, is -39.52. Holding other variables constant, the average feeling score from the people who are Republican is on average 39.52 units lower than the people who are Democrats.
+
+The coefficient for Ambivalent Sexism is  -4.06, suggesting that one unit increase in ambivalent sexism score is associated with 4.06 units decrease in affect level, holding other variables constant.
+
+The coefficient for Ad is -3.84, suggesting that the average affect level from people whose media condition is advertisement is on average 3.84 units lower than people whose media condition is control, holding other variables constant.
+
+
 
 ### Model Assessment Results
 The summary table above shows that the R-square value for the multiple linear regression model is 0.39, which means about 39% of the variation in the dependent variable(affect level) can be explained by the multiple linear regression model. 
 
-In addition, in the Scale-Location plot (Figure \@ref(fig:figure1) in Appendix), an approximate horizontal line being shown, which means the residuals are randomly distributed and have constant variance. The Normal QQ-plot (Figure \@ref(fig:figure2) in Appendix) shows almost all the residuals match the diagonal line. The Residual versus Leverage plot(Figure \@ref(fig:figure3) in Appendix) shows that there is no evident of outliers, and none of the points come close to having both high residual and leverage.
+In addition, in the Scale-Location plot (Figure \@ref(fig:figure1) in Appendix), an approximately horizontal line is shown, which means the residuals are randomly distributed and have constant variance. The Normal QQ-plot (Figure \@ref(fig:figure2) in Appendix) shows almost all the residuals match the diagonal line, meaning the residuals are normally distributed. The Residual versus Leverage plot (Figure \@ref(fig:figure3) in Appendix) shows that there is no evidence of outliers, and none of the points come close to having both high residual and leverage.
 
 
 ### 
