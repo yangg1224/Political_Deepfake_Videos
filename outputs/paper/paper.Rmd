@@ -5,6 +5,7 @@ author: "Yingying Zhou, Yang Wu, Xinyi Xu, Hong Pan"
 thanks: "Code and data are available at: https://github.com/yangg1224/Political_Deepfake_Videos.git."
 date: "`r format(Sys.time(), '%d %B %Y')`"
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+
 output:
   bookdown::pdf_document2:
   toc: FALSE
@@ -98,7 +99,7 @@ s1<-
   geom_boxplot(outlier.colour="red", 
                outlier.shape=5,
                outlier.size=4) +
-  labs(title="Sexism by education level", x="PID", y="Sexism")+
+  labs(title="Sexism by partisanship level", x="PID", y="Sexism")+
   theme_economist() + scale_fill_economist() 
 s1
 ```
@@ -108,18 +109,18 @@ s1
 ## internet usage frequency by education level
 ```{r internet, fig.cap = "internet usages",echo=FALSE, fig.width=15, fig.height=5}
 
-G1<-ggplot(EDA, aes(x=internet_usage, fill=EDA$educ)) + 
+G1<-ggplot(EDA, aes(x=internet_usage, fill=educ)) + 
     geom_area(alpha=0.8 , size=0.2, colour="black", stat = "count")+
     labs(title = "Internet usage frequency by education level ",y="Counts",x="Days")+
     scale_fill_manual(name = "Education level", values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
 
-G2<-ggplot(EDA, aes(x=internet_usage, fill=EDA$meta_OS)) + 
+G2<-ggplot(EDA, aes(x=internet_usage, fill=meta_OS)) + 
     geom_area(alpha=0.8 , size=0.2, colour="black", stat = "count")+
     labs(title = "Internet usage frequency by devices ",y="Counts",x="Days")+
     scale_fill_manual(name = "Devices", values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
 
 
-G3<-ggplot(EDA, aes(x=internet_usage, fill=EDA$age_65)) + 
+G3<-ggplot(EDA, aes(x=internet_usage, fill=age_65)) + 
     geom_area(alpha=0.8 , size=0.2, colour="black", stat = "count")+
     labs(title = "Internet usage frequency by age group ",y="Counts",x="Days")+
     scale_fill_manual(name = "Age group", values = c("#DB7558", "#FFCF57","#8FCDD4","#F6A6B6"))
@@ -233,7 +234,7 @@ m3 %>%
 
 ### T test 1
 
-```{r}
+```{r at1, echo=FALSE, fig.width=10, fig.height=3}
 #video vs control
 t1_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_control == 1]))
@@ -253,7 +254,7 @@ m1_a%>%
 
 
 ### T test2
-```{r}
+```{r at2, echo=FALSE, fig.width=10, fig.height=3}
 #video vs text
 t2_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_fake_text == 1]))
@@ -271,7 +272,7 @@ m2_a%>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 ### T test3
-```{r}
+```{r at3, echo=FALSE, fig.width=10, fig.height=3}
 #video vs audio
 t3_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_fake_audio == 1]))
@@ -289,7 +290,7 @@ m3_a%>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 ### T test 4
-```{r}
+```{r at4, echo=FALSE, fig.width=10, fig.height=3}
 #video vs skit
 t4_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_skit == 1]))
@@ -315,7 +316,7 @@ m4_a%>%
 
 
 
-```{r fs, echo=FALSE, fig.width=10, fig.height=10 }
+```{r fs, echo=FALSE, warning=FALSE,fig.width=10, fig.height=10 }
 library(randomForest)
 library(plyr)
 
@@ -362,41 +363,63 @@ FS<- FS%>%select(-c(script_loans,quality,Hispanic))
 
 ## regression model 
 
-```{r regression, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4}
+```{r regression, echo=FALSE, warning=FALSE, fig.width=8, fig.height=8}
 
 ## transfer data into dummy
-library(fastDummies)
-
-#Dummy_data<- fastDummies::dummy_cols(FS, remove_first_dummy = TRUE, #remove_selected_columns = TRUE)%>%
-#  select(-c(4))#  change categorical var to factors 
-
 ##create model
 
 model <- lm(post_favor_Warren ~., data =FS )
 
-## stargazer package to show table results
-#install.packages("array")
-library(stargazer)
-
-result<-
-  model%>%
-  stargazer(
-          type="text",
-          title = "Multiple linear regression model",
-          align=TRUE,
-          no.space=TRUE,
-          digits=2,
-          notes.align = "l",
-          style = "default",
-          dep.var.labels = c("\\normalsize Elizabeth Warren Feeling Thermometer"),
-          omit.stat=c("f", "ser"),
-          column.sep.width = "-2pt",
-          font.size = "footnotesize",
-          label = "firststage_feelings",
-          omit = "response_wave_ID")
-
-
 ```
+
+
+```{r diagnostic, echo=FALSE, warning=FALSE, fig.width=10, fig.height=10}
+#install.packages("see")
+library(performance) ## creates a ggplot2-based graphics 
+performance::check_model(model)
+```
+
+```{r model_improved, echo=FALSE, warning=FALSE, fig.width=10, fig.height=2}
+#model2 <- lm(sqrt(post_favor_Warren)~., data = FS)
+#autoplot(model2,3)
+```
+
+```{r modelsummary, echo=FALSE, warning=FALSE, fig.width=8, fig.height=10}
+#install.packages("modelsummary")
+library(modelsummary)
+
+ms<-
+modelsummary(
+model,
+output = "default",
+fmt = 3,
+estimate = "estimate",
+statistic = "std.error",
+vcov = NULL,
+conf_level = 0.95, #confidence level to use for confidence intervals
+stars = TRUE,
+align = NULL,
+notes = NULL,
+title = "Regression results")
+
+ms%>%
+  kableExtra::kable_styling(bootstrap_options = "basic",
+                            latex_options = "HOLD_position",
+                            table.envir = "table",
+                            font_size =5
+                           )
+  
+```
+
+
+
+
+
+
+
+
+
+
 
 \begin{equation}
 Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}  (\#eq:bayes)
