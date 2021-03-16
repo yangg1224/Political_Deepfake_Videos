@@ -164,14 +164,14 @@ ggplot(EDA, aes(x = post_favor_Warren,fill=treat)) +
 
 # Model
 
-
 $$
-\hat Y =\hat \beta_0+\hat \beta_1I_{gender:male}+\hat \beta_2I_{gender:other}+\hat \beta_3I_{High school} +\hat \beta_4I_{College}+\hat \beta_5I_{Postgraduate}+\hat \beta_6I_{HHI100K-150k}+\hat \beta_7I_{HHI>150K}$$
-$$+\hat \beta_8I_{HHI25K-49K}+\hat \beta_9I_{HHI50K-74K}+\hat \beta_{10}I_{HHI75K-99K}+\hat \beta_{11}I_{HHIN/A}+\hat \beta_{12}I_{Ethnicity:Black}+\hat \beta_{13}I_{Ethnicity:other}$$
-$$+\hat \beta_{14}I_{Ethnicity:white}+\hat \beta_{15}I_{Region:Northeast}+\hat \beta_{16}I_{Region:South}+\hat \beta_{17}I_{Region: West}+\hat \beta_{18}I_{WaveID:SVeyxdeXOuISXzakt}$$
-$$+\hat \beta_{19}I_{Meta:OSmobile}+\hat \beta_{20}I_{Age>65}+\hat \beta_{21}I_{PID:Independent}+\hat \beta_{22}I_{PID:Republican}+\hat \beta_{23}*{AmbivalentSexism}+\hat \beta_{24}*{PLK}$$
-$$+\hat \beta_{25}I_{Video}+\hat \beta_{26}I_{audio}+\hat \beta_{27}I_{Text}+\hat \beta_{28}I_{Skit}+\hat \beta_{29}I_{Ad}+\hat \beta_{30}I_{Script:bidenshit}+\hat \beta_{31}I_{Script:trumpshit}+\hat \beta_{32}I_{Script:cherokee}$$
-$$+\hat \beta_{33}I_{Script:lgbtq}+\hat \beta_{34}I_{Info}+\hat \beta_{35}*{PDL}+\hat \beta_{36}*{InternetUsage}+\hat \beta_{37}*{CRT}+\epsilon$$
+\hat Y=\hat \beta_0+\sum_{a=male}^{other}\hat \beta_a*Gender_a+\sum_{b=High\ school}^{Postgraduate}\hat \beta_b*educ_b+\sum_{c=HHI25K\ -HHI49K}^{HHI>150K}\hat \beta_c*HHI_c+\sum_{d=Ethnicity:white}^{Ethnicity:black}\hat \beta_d*Ethnicity_d$$
+
+$$+\sum_{e=Region:Northeast}^{Region:West}\hat \beta_e*Region_e+\hat \beta_{f}*I_{WaveID}+\hat \beta_{g}*I_{Meta:OSmobile}+\hat \beta_{h}*I_{Age>65}+\sum_{i=PID:Independent}^{Republican}\hat \beta_i*PID_i$$
+$$+\hat \beta_{j}*{Ambivalent\ Sexism}+\hat \beta_{k}*{Polknow}+\sum_{l=treat:video}^{treat:ad}\hat \beta_l*Treat_l+\sum_{m=script:bidenshit}^{script:lgbtq}\hat \beta_m*Script_m+\hat \beta_{n}*I_{exp\_1\_prompt:\ info}$$
+
+$$+\hat \beta_o*{post\_dig\_lit}+\hat \beta_p*{Internet\_usage}+\hat \beta_{q}*{CRT}+\epsilon$$
+
 
 
 
