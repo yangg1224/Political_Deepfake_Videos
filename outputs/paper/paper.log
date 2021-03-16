@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.14)  16 MAR 2021 16:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.14)  16 MAR 2021 16:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -595,195 +595,247 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (./paper.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 3.
-)
+[1
+
+{/Users/yang/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}])
 \tf@toc=\write4
 \openout4 = `paper.toc'.
 
-[1
-
-{/Users/yang/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<paper_files/figure-latex/treat-1.pdf, id=112, 340.27126pt x 247.92625pt>
+<paper_files/figure-latex/treat-1.pdf, id=106, 340.27126pt x 247.92625pt>
 File: paper_files/figure-latex/treat-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/treat-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/treat-1.pdf  used on input li
 ne 121.
 (pdftex.def)             Requested size: 340.27042pt x 247.92564pt.
-<paper_files/figure-latex/educationPID-1.pdf, id=113, 706.64pt x 496.85625pt>
+<paper_files/figure-latex/educationPID-1.pdf, id=107, 706.64pt x 496.85625pt>
 File: paper_files/figure-latex/educationPID-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/educationPID-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/educationPID-1.pdf  used on i
 nput line 130.
 (pdftex.def)             Requested size: 469.75874pt x 330.2991pt.
-<paper_files/figure-latex/sexism-1.pdf, id=114, 363.3575pt x 289.08pt>
+<paper_files/figure-latex/sexism-1.pdf, id=108, 363.3575pt x 289.08pt>
 File: paper_files/figure-latex/sexism-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/sexism-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/sexism-1.pdf  used on input l
 ine 139.
 (pdftex.def)             Requested size: 363.36768pt x 289.0881pt.
-<paper_files/figure-latex/internet-1.pdf, id=115, 1055.945pt x 351.3125pt>
+<paper_files/figure-latex/internet-1.pdf, id=109, 1055.945pt x 351.3125pt>
 File: paper_files/figure-latex/internet-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/internet-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/internet-1.pdf  used on input
  line 148.
 (pdftex.def)             Requested size: 469.7571pt x 156.288pt.
-<paper_files/figure-latex/postfavor-1.pdf, id=116, 453.695pt x 316.18124pt>
+<paper_files/figure-latex/postfavor-1.pdf, id=110, 453.695pt x 316.18124pt>
 File: paper_files/figure-latex/postfavor-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/postfavor-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/postfavor-1.pdf  used on inpu
 t line 157.
 (pdftex.def)             Requested size: 453.6939pt x 316.18047pt.
+
+Overfull \hbox (32.85822pt too wide) detected at line 165
+[] \OT1/lmr/m/n/10 = [] + [] [] \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 Gender[] 
+\OT1/lmr/m/n/10 + [] [] \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 educ[] \OT1/lmr/m
+/n/10 + [] [] \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 HHI[] \OT1/lmr/m/n/10 + [] 
+[] \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 Ethnicity[]
+ []
+
+[2pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.167 ...pendent}^{Republican}\hat \beta_i*PID_i\]
+                                                   <./paper_files/figure-latex/
+treat-1.pdf>] [3pdfTeX warning (ext4): destination with the same identifier (na
+me{figure.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.167 ...pendent}^{Republican}\hat \beta_i*PID_i\]
+                                                   <./paper_files/figure-latex/
+educationPID-1.pdf>] [4pdfTeX warning (ext4): destination with the same identif
+ier (name{figure.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.167 ...pendent}^{Republican}\hat \beta_i*PID_i\]
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{figure.4}) has been already used, duplicat
+e ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.167 ...pendent}^{Republican}\hat \beta_i*PID_i\]
+                                                   <./paper_files/figure-latex/
+sexism-1.pdf> <./paper_files/figure-latex/internet-1.pdf>] [5pdfTeX warning (ex
+t4): destination with the same identifier (name{figure.5}) has been already use
+d, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.167 ...pendent}^{Republican}\hat \beta_i*PID_i\]
+                                                   <./paper_files/figure-latex/
+postfavor-1.pdf>]
+Overfull \hbox (43.80287pt too wide) detected at line 168
+\OT1/lmr/m/n/10 +[] \OMS/lmsy/m/n/10 ^^C [] \OT1/lmr/m/n/10 + [] \OMS/lmsy/m/n/
+10 ^^C [] \OT1/lmr/m/n/10 + [] [] \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 Treat[]
+ \OT1/lmr/m/n/10 + [] [] \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 Script[] \OT1/lm
+r/m/n/10 + [] \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 I[]
+ []
+
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-64.
+83.
 (/Users/yang/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[2pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
-has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.227 \end{table}
-                  <./paper_files/figure-latex/treat-1.pdf>] [3pdfTeX warning (e
-xt4): destination with the same identifier (name{figure.2}) has been already us
-ed, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.227 \end{table}
-                 pdfTeX warning (ext4): destination with the same identifier (n
-ame{table.1}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.227 \end{table}
-                  <./paper_files/figure-latex/educationPID-1.pdf>] [4pdfTeX war
-ning (ext4): destination with the same identifier (name{figure.3}) has been alr
-eady used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.227 \end{table}
-                 pdfTeX warning (ext4): destination with the same identifier (n
-ame{figure.4}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.227 \end{table}
-                  <./paper_files/figure-latex/sexism-1.pdf> <./paper_files/figu
-re-latex/internet-1.pdf>] [5pdfTeX warning (ext4): destination with the same id
-entifier (name{figure.5}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.227 \end{table}
-                  <./paper_files/figure-latex/postfavor-1.pdf>]
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[6pdfTeX warning (ext4): destination with the same identifier (name{table.2}) h
+[6pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.322 \end{verbatim}
-                    pdfTeX warning (ext4): destination with the same identifier
- (name{table.3}) has been already used, duplicate ignored
+l.256 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.2
+}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.322 \end{verbatim}
-                    pdfTeX warning (ext4): destination with the same identifier
- (name{table.4}) has been already used, duplicate ignored
+l.256 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.3
+}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.322 \end{verbatim}
+l.256 
+      ]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[7pdfTeX warning (ext4): destination with the same identifier (name{table.4}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.335 \end{verbatim}
                     pdfTeX warning (ext4): destination with the same identifier
  (name{table.5}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.322 \end{verbatim}
+l.335 \end{verbatim}
                     pdfTeX warning (ext4): destination with the same identifier
  (name{table.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.322 \end{verbatim}
+l.335 \end{verbatim}
                     pdfTeX warning (ext4): destination with the same identifier
  (name{table.7}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.322 \end{verbatim}
-                    ]
-<paper_files/figure-latex/tree-1.pdf, id=219, 554.07pt x 496.85625pt>
-File: paper_files/figure-latex/tree-1.pdf Graphic file (type pdf)
-<use paper_files/figure-latex/tree-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/tree-1.pdf  used on input lin
-e 389.
-(pdftex.def)             Requested size: 469.75275pt x 421.24565pt.
-[7pdfTeX warning (ext4): destination with the same identifier (name{table.8}) h
-as been already used, duplicate ignored
+l.335 \end{verbatim}
+                    ] [8pdfTeX warning (ext4): destination with the same identi
+fier (name{table.8}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.392 ...egression model}\label{regression-model}}
-                                                  ]
-<paper_files/figure-latex/diagnostic-1.pdf, id=228, 717.68124pt x 714.67pt>
+l.408 
+      ]
+<paper_files/figure-latex/diagnostic-1.pdf, id=236, 717.68124pt x 714.67pt>
 File: paper_files/figure-latex/diagnostic-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/diagnostic-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/diagnostic-1.pdf  used on inp
-ut line 411.
+ut line 454.
 (pdftex.def)             Requested size: 469.76161pt x 467.79057pt.
-[8 <./paper_files/figure-latex/tree-1.pdf>] [9 <./paper_files/figure-latex/diag
-nostic-1.pdf>] [10pdfTeX warning (ext4): destination with the same identifier (
-name{table.9}) has been already used, duplicate ignored
+[9] [10 <./paper_files/figure-latex/diagnostic-1.pdf>] [11]
+Overfull \vbox (26.62096pt too high) has occurred while \output is active []
+
+[12pdfTeX warning (ext4): destination with the same identifier (name{table.9}) 
+has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.513 \end{equation}
-                    ] [11]
-Overfull \hbox (18.49356pt too wide) in paragraph at lines 563--563
+l.591 
+      ] [13]
+Overfull \hbox (18.49356pt too wide) in paragraph at lines 634--634
 []\T1/lmtt/m/n/10 ## Suggestions and bug-reports can be submitted at: https://g
 ithub.com/statistikat/VIM/issues[] 
  []
 
-<paper_files/figure-latex/missing-1.pdf, id=278, 698.61pt x 692.5875pt>
+<paper_files/figure-latex/missing-1.pdf, id=288, 698.61pt x 692.5875pt>
 File: paper_files/figure-latex/missing-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/missing-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/missing-1.pdf  used on input 
-line 583.
+line 654.
 (pdftex.def)             Requested size: 469.7612pt x 465.71153pt.
-[12] [13pdfTeX warning (ext4): destination with the same identifier (name{figur
+<paper_files/figure-latex/figure1-1.pdf, id=289, 693.59125pt x 679.53876pt>
+File: paper_files/figure-latex/figure1-1.pdf Graphic file (type pdf)
+<use paper_files/figure-latex/figure1-1.pdf>
+Package pdftex.def Info: paper_files/figure-latex/figure1-1.pdf  used on input 
+line 660.
+(pdftex.def)             Requested size: 469.77315pt x 460.25533pt.
+<paper_files/figure-latex/figure2-1.pdf, id=290, 693.59125pt x 679.53876pt>
+File: paper_files/figure-latex/figure2-1.pdf Graphic file (type pdf)
+<use paper_files/figure-latex/figure2-1.pdf>
+Package pdftex.def Info: paper_files/figure-latex/figure2-1.pdf  used on input 
+line 666.
+(pdftex.def)             Requested size: 469.77315pt x 460.25533pt.
+<paper_files/figure-latex/figure3-1.pdf, id=291, 693.59125pt x 679.53876pt>
+File: paper_files/figure-latex/figure3-1.pdf Graphic file (type pdf)
+<use paper_files/figure-latex/figure3-1.pdf>
+Package pdftex.def Info: paper_files/figure-latex/figure3-1.pdf  used on input 
+line 672.
+(pdftex.def)             Requested size: 469.77315pt x 460.25533pt.
+[14] [15pdfTeX warning (ext4): destination with the same identifier (name{figur
 e.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.587 \newpage
-               <./paper_files/figure-latex/missing-1.pdf>] [14] (./paper.aux)
+l.676 \newpage
+               <./paper_files/figure-latex/missing-1.pdf>] [16pdfTeX warning (e
+xt4): destination with the same identifier (name{figure.7}) has been already us
+ed, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.676 \newpage
+               <./paper_files/figure-latex/figure1-1.pdf>] [17pdfTeX warning (e
+xt4): destination with the same identifier (name{figure.8}) has been already us
+ed, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.676 \newpage
+               <./paper_files/figure-latex/figure2-1.pdf>] [18pdfTeX warning (e
+xt4): destination with the same identifier (name{figure.9}) has been already us
+ed, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.676 \newpage
+               <./paper_files/figure-latex/figure3-1.pdf>] [19] (./paper.aux)
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: 22F6FB66B501955E05202CBAD32C153F;2332.
+(rerunfilecheck)             Checksum: 0643F0084D6553145AB8F2E395920F22;2197.
  ) 
 Here is how much of TeX's memory you used:
- 12070 strings out of 480970
- 174764 string characters out of 5907196
- 502671 words of memory out of 5000000
- 28924 multiletter control sequences out of 15000+600000
- 473133 words of font info for 80 fonts, out of 8000000 for 9000
+ 12083 strings out of 480970
+ 175253 string characters out of 5907196
+ 503675 words of memory out of 5000000
+ 28935 multiletter control sequences out of 15000+600000
+ 472227 words of font info for 81 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 71i,13n,74p,332b,473s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/Users/yang/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/
-yang/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/yang/L
-ibrary/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/yang/Library/Tin
-yTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/yang/Library/TinyTeX/t
-exmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/yang/Library/TinyTeX/texmf-dist
-/fonts/type1/public/lm/lmbx10.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts
-/type1/public/lm/lmbx12.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1
-/public/lm/lmbx9.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public
-/lm/lmmi10.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lm
-mi5.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb
-></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></User
-s/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/yang/
-Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb></Users/yang/Library/
-TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/yang/Library/TinyTeX/
-texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/yang/Library/TinyTeX/texmf-di
-st/fonts/type1/public/lm/lmr9.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts
-/type1/public/lm/lmri10.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1
-/public/lm/lmsy10.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/publi
-c/lm/lmtt10.pfb>
-Output written on paper.pdf (14 pages, 1368151 bytes).
+ 71i,13n,74p,749b,471s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/Users/yang/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Us
+ers/yang/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/yang/L
+ibrary/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/yang/Library/Ti
+nyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/yang/Library/TinyTeX/
+texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/yang/Library/TinyTeX/texmf-
+dist/fonts/enc/dvips/lm/lm-rm.enc}</Users/yang/Library/TinyTeX/texmf-dist/fonts
+/type1/public/lm/lmbx10.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1
+/public/lm/lmbx12.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/publi
+c/lm/lmbx9.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lm
+ex10.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.p
+fb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb></Us
+ers/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/yan
+g/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/yang/Libra
+ry/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/yang/Library/Tiny
+TeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/yang/Library/TinyTeX/tex
+mf-dist/fonts/type1/public/lm/lmr5.pfb></Users/yang/Library/TinyTeX/texmf-dist/
+fonts/type1/public/lm/lmr6.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/ty
+pe1/public/lm/lmr7.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/publ
+ic/lm/lmr8.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lm
+r9.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb
+></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></User
+s/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+Output written on paper.pdf (19 pages, 2414683 bytes).
 PDF statistics:
- 389 PDF objects out of 1000 (max. 8388607)
- 330 compressed objects within 4 object streams
- 96 named destinations out of 1000 (max. 500000)
- 185 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 439 PDF objects out of 1000 (max. 8388607)
+ 366 compressed objects within 4 object streams
+ 95 named destinations out of 1000 (max. 500000)
+ 187 words of extra memory for PDF output out of 10000 (max. 10000000)
 

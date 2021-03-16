@@ -4,7 +4,9 @@ subtitle: "TBD"
 author: "Yingying Zhou, Yang Wu, Xinyi Xu, Hong Pan"
 thanks: "Code and data are available at: https://github.com/yangg1224/Political_Deepfake_Videos.git."
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+
+
+abstract: "With the growing ubiquity of deepfake technology, here comes one more channel for the spread of misinformation. We reproduce Soubhik Barari (2021) paper and identify several additional demographic traits contributing to the persuasion power of deepfake on political defamation through its material effect on feeling manipulation in a RCT field experiment on the 2020 Presidential election. We find little evidence that deepfake videos have a unique ability to shift viewers’ perceptions on politicians. Apart from partisanship, education, and other socioeconomic factors identified by the original paper, we discover that income and internet usage would also significantly impact the candidate’s affective appeal to the news feed viewer. "
 
 output:
   bookdown::pdf_document2:
@@ -12,11 +14,17 @@ output:
 bibliography: references.bib
 editor_options: 
   chunk_output_type: inline
+header-includes:
+ - \usepackage{float}
+ - \floatplacement{figure}{H}
+ - \floatplacement{table}{H}
 ---
 
 ```{r setup, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
+chooseCRANmirror(graphics=FALSE, ind=1)
 knitr::opts_chunk$set(echo = TRUE)
 
+library(tinytex)
 library(tidyverse)
 library(palmerpenguins)
 library(ggplot2)
@@ -25,7 +33,8 @@ library(ggpubr)
 library(hrbrthemes)
 library(kableExtra)
 library(broom)
-
+library(randomForest)
+library(plyr)
 ```
 
 # Introduction
@@ -38,12 +47,9 @@ library(broom)
 
 ```{r loaddata, echo=FALSE, warning=FALSE, message=FALSE}
 library(here) # locate the file path
-
 data<- load(here::here("inputs/data/deepfake.RData"))
-
 EDA<- dat%>%
         select(treat, response_wave_ID, exp_1_prompt, meta_OS, age_65, educ, PID, crt, gender, age, polknow, internet_usage, ambivalent_sexism, post_favor_Warren,believed_true)
-
 
 ```
 
@@ -84,11 +90,6 @@ edu <-
 edu
 ```
 
-
-
-
-
-
 ### sexism by education level 
 ```{r sexism, fig.cap = "sexism by education level",echo=FALSE, fig.width=5, fig.height=4}
 EDA<-EDA%>%
@@ -103,7 +104,6 @@ s1<-
   theme_economist() + scale_fill_economist() 
 s1
 ```
-
 
 
 ## internet usage frequency by education level
@@ -154,8 +154,29 @@ ggplot(EDA, aes(x = post_favor_Warren,fill=treat)) +
 
 ```
 
-### Average deception level by treat
+
+# Model
+
+$$
+\hat Y=\hat \beta_0+\sum_{a=male}^{other}\hat \beta_a*Gender_a+\sum_{b=High\ school}^{Postgraduate}\hat \beta_b*educ_b+\sum_{c=HHI25K\ -HHI49K}^{HHI>150K}\hat \beta_c*HHI_c+\sum_{d=Ethnicity:white}^{Ethnicity:black}\hat \beta_d*Ethnicity_d$$
+
+$$+\sum_{e=Region:Northeast}^{Region:West}\hat \beta_e*Region_e+\hat \beta_{f}*I_{WaveID}+\hat \beta_{g}*I_{Meta:OSmobile}+\hat \beta_{h}*I_{Age>65}+\sum_{i=PID:Independent}^{Republican}\hat \beta_i*PID_i$$
+$$+\hat \beta_{j}*{Ambivalent\ Sexism}+\hat \beta_{k}*{Polknow}+\sum_{l=treat:video}^{treat:ad}\hat \beta_l*Treat_l+\sum_{m=script:bidenshit}^{script:lgbtq}\hat \beta_m*Script_m+\hat \beta_{n}*I_{exp\_1\_prompt:\ info}$$
+
+$$+\hat \beta_o*{post\_dig\_lit}+\hat \beta_p*{Internet\_usage}+\hat \beta_{q}*{CRT}+\epsilon$$
+
+
+
+
+# Result
+
+## Two-Sample T-test results
+
+### Deception Level
+In the descriptive analysis aspect, Table \@ref(tab:table1), shown below, illustrates the average deception level of each media format. The result shows that although deepfake videos have an average deception level of 3.23 out of 5, it is lower than the average level of audio(3.35) and text(3.30). Audio has the highest average deception level, and skit (2.57) has the lowest average deception level.
+
 ```{r table1,tab.cap="Average deception level of each media format", echo = FALSE,warning=FALSE}
+#Average deception level by treat
 EDA%>%
   group_by(treat)%>%
   filter(treat != "control")%>%
@@ -164,36 +185,26 @@ EDA%>%
 ```
 
 
-  
+In the statistical analysis aspect, unpaired two-sample t-tests were applied to test whether deepfake videos are statistically different from other media formats at the deception level. The results from Table \@ref(tab:ttest1) to Table \@ref(tab:ttest3) show that only the difference in the deception level between video and skit is significant (p<0.01). The p-values for comparing video and text, video and audio are larger than 0.05, which means there is not sufficient evidence to support that video is different from the audio or text. In other words, videos do not differ from audio or text significantly. 
 
-
-# Model
-
-## Deception Level
-### T test1
 
 ```{r ttest1, echo=FALSE, fig.width=10, fig.height=3}
-
-
 t1<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]), 
        na.omit(dat$believed_true[dat$treat_fake_audio == 1]))
-
 m1<-tidy(t1, digits=1)
 m1 %>%
   select(-c(estimate,statistic,parameter))%>%
-  rename(
-    AVG_deception_video=estimate1,
-    AVG_deception_audio=estimate2
-  )%>%
+ # rename(
+   # AVG_deception_video=estimate1,
+   # AVG_deception_audio=estimate2
+ # )%>%
   kableExtra::kbl(caption="T test: Deception level of video vs audio")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
 
-### T test2
 ```{r ttest2, echo=FALSE, fig.width=10, fig.height=3}
-
 
 t2<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]), 
        na.omit(dat$believed_true[dat$treat_fake_text == 1]))
@@ -211,7 +222,6 @@ m2 %>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-### T test3
 ```{r ttest3, echo=FALSE, fig.width=10, fig.height=3}
 
 t3<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]), 
@@ -230,11 +240,16 @@ m3 %>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-## Affect Level
+### Affect Level
+The unpaired two-sample t-tests were utilized to investigate whether there is a different emotional impact on the target elite between deepfake videos and other conditions, including different deepfake formats and control groups that have no clip at all.
 
-### T test 1
+The result of comparing the deepfake video and the control group in Table \@ref(tab:attest1) demonstrates that the video condition will cause a negative sentimental effect from respondents to Elizabeth Warren. The 95% confidence interval shows that the true difference in means is between -1.35 and -7.72. Given the p-value less than 0.05, the difference between the two groups is significant.
 
-```{r at1, echo=FALSE, fig.width=10, fig.height=3}
+
+
+
+```{r attest1, echo=FALSE, fig.width=10, fig.height=3}
+
 #video vs control
 t1_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_control == 1]))
@@ -248,13 +263,17 @@ m1_a%>%
     AVG_affect_control=estimate2
   )%>%
   kableExtra::kbl(caption = "T test: Affect level of video vs control")%>%
-  kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
+  kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
+Similarly, the same analysis has been done for the rest unpaired two-sample t-tests. In our study, we used a 5% significance level. Table \@ref(tab:attest2) shows the test result of how deepfake videos and texts impact audiences' feelings. The result shows that the difference in affect level between video (Mean = 41.28) and text (Mean=44.22) was not significant given the p-value is greater than 0.05.
+
 
 ### T test2
-```{r at2, echo=FALSE, fig.width=10, fig.height=3}
+
+```{r attest2, echo=FALSE, fig.width=10, fig.height=3}
+
 #video vs text
 t2_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_fake_text == 1]))
@@ -271,8 +290,16 @@ m2_a%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
+
 ### T test3
-```{r at3, echo=FALSE, fig.width=10, fig.height=3}
+
+
+Table \@ref(tab:attest3) shows the test result of how deepfake videos and audios impact audiences' feelings. The difference in affect level between video(Mean = 41.28) and audio (Mean=43.93) was not significant given the p-value is greater than 0.05.
+
+
+```{r attest3, echo=FALSE, fig.width=10, fig.height=3}
+
+
 #video vs audio
 t3_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_fake_audio == 1]))
@@ -289,8 +316,13 @@ m3_a%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
+
 ### T test 4
-```{r at4, echo=FALSE, fig.width=10, fig.height=3}
+
+Table \@ref(tab:attest4) shows the test result of how deepfake videos and skit impact audiences feeling. The difference in affect level between video(Mean = 41.28) and skit (Mean=43) was not significant given the p-value is greater than 0.05.
+
+```{r attest4, echo=FALSE, fig.width=10, fig.height=3}
+
 #video vs skit
 t4_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
        na.omit(dat$post_favor_Warren[dat$treat_skit == 1]))
@@ -311,20 +343,16 @@ m4_a%>%
 
 
 
-
 ## Feature selection 
 
 
-
 ```{r fs, echo=FALSE, warning=FALSE,fig.width=10, fig.height=10 }
-library(randomForest)
-library(plyr)
-
 # deal with missing value
 FS<- dat%>%
-select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt_control,exp_1_prompt_info,exp_2_prompt_control,exp_2_prompt_accuracy,post_favor_Klobuchar,post_favor_Sanders,post_favor_Biden,post_favor_Bloomberg,,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main,crt1,crt2,crt3,agegroup,treat_control,treat_attackad,treat_fake_text,treat_fake_video,treat_fake_audio,treat_skit,polknow_speaker,polknow_boris,polknow_house,polknow_senate,polknow_veto,polknow_warren,polknow_medicare,quality_demographic_mismatch,quality_failed_backend_attncheck,duration_secs,age,meta_screenres,StartDate,EndDate,meta_resolution,exp_2_hifake,exp_2_lofake,exp_2_nofake,exp_2,exp_2_prompt_accuracy,exp_2_after_debrief,exp_2_prompt,Zip,believed_true))%>%
-na.omit()
+ select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt_control,exp_1_prompt_info,exp_2_prompt_control,exp_2_prompt_accuracy,post_favor_Klobuchar,post_favor_Sanders,post_favor_Biden,post_favor_Bloomberg,,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main,crt1,crt2,crt3,agegroup,treat_control,treat_attackad,treat_fake_text,treat_fake_video,treat_fake_audio,treat_skit,polknow_speaker,polknow_boris,polknow_house,polknow_senate,polknow_veto,polknow_warren,polknow_medicare,quality_demographic_mismatch,quality_failed_backend_attncheck,duration_secs,age,meta_screenres,StartDate,EndDate,meta_resolution,exp_2_hifake,exp_2_lofake,exp_2_nofake,exp_2,exp_2_prompt_accuracy,exp_2_after_debrief,exp_2_prompt,Zip,believed_true))%>% na.omit()
+
 ## feature selection 
+
 set.seed(123)
 FS_tree<-randomForest(post_favor_Warren~., data=FS, ntree=500, importance=TRUE,proximity=TRUE) ## variable importance
 
@@ -339,7 +367,9 @@ FS_tree<- as.data.frame(FS_tree)
 
 ```
 
-```{r tree, echo=FALSE, warning=FALSE, fig.width=8, fig.height=7}
+
+
+```{r tree, echo=FALSE, warning=FALSE, fig.width=8, fig.height=7,results=FALSE,include=FALSE,message=FALSE}
 
 FS_tree%>%
   mutate(name = fct_reorder(FS_tree$Variable_name,FS_tree$`FS_tree$importanceSD`))%>%
@@ -361,11 +391,34 @@ FS_tree%>%
 FS<- FS%>%select(-c(script_loans,quality,Hispanic))
 ```
 
-## regression model 
 
-```{r regression, echo=FALSE, warning=FALSE, fig.width=8, fig.height=8}
+
+
+
+### Model Results
+
+Multiple linear regression was applied to use the top 20 important explanatory variables generated from the random forest model to predict the affect level.
+
+As shown in the summary table, only 9 variables are significant (p<0.05) to the affect level to Elizabeth Warren which are postgraduate education level is; income ranging in $100k to $150k; living in the Northeast of  US; whether age older  than 65; partisan; ambivalent sexism; and treat is advertisement.
+
+In this model, the intercept represents the average affect level for the reference group which includes the following characteristics: 
+
+* Gender: Female
+*	Education Level: lower than high school degree 
+* Income: Less than $25K
+*	Ethnicity: Asian
+* Region: Midwest
+*	Response_wave_ID: SV_OxlqWIOfO10wuYI
+* Device: Desktop
+*	Age group: Less than 65 years old
+*	Partisan: Democrat
+* Media condition: Control
+*	Prompt: Control
+
+```{r model, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4,message=FALSE}
 
 ## transfer data into dummy
+#  select(-c(4))#  change categorical var to factors 
 ##create model
 
 model <- lm(post_favor_Warren ~., data =FS )
@@ -379,10 +432,47 @@ library(performance) ## creates a ggplot2-based graphics
 performance::check_model(model)
 ```
 
+
 ```{r model_improved, echo=FALSE, warning=FALSE, fig.width=10, fig.height=2}
 #model2 <- lm(sqrt(post_favor_Warren)~., data = FS)
 #autoplot(model2,3)
 ```
+
+
+The coefficient for 
+Postgraduate is 9.32, suggesting that the average affect level from people whose education level is postgraduate is on average 9.32 units higher than people whose education level is less than high school level, holding other variables constant.
+
+The coefficient for HHI\$100k to \$150k is 3.90, suggesting that the average affect level from people whose income are in the range of \$100k to \$150k is on average 3.90 units higher than people whose income are less than $25k, holding other variables constant.
+
+The coefficient for HHI > \$150K is 4, suggesting that the average affect level from people whose income are in the range of \$100k to \$150k is on average 4 units higher than people whose income are less than $25k, holding other variables constant.
+
+The coefficient for RegionNortheast is 3.89. The average affect level from people who live in the Northeast in the US is 3.89 units higher than people who live in Midwest in the US, holding all other variables unchanged.
+
+The coefficient for people older than 65 is -4.36. When other variables are unchanged, the average affect level from people who order than 65 is average 4.36 units lower than those less than 65.
+
+The coefficient for the variable, PIDIndependent, is -26.69. Holding other variables constant, the Independent gives the feeling scores are on average 26.69 units lower than the scores given by the Democrats.
+
+The coefficient for the variable, PIDRepublican, is -39.52. Holding other variables constant, the average feeling score from the people who are Republican is on average 39.52 units lower than the people who are Democrats.
+
+The coefficient for Ambivalent Sexism is  -4.06, suggesting that one unit increase in ambivalent sexism score is associated with 4.06 units decrease in affect level, holding other variables constant.
+
+The coefficient for treataudio is -2.82, suggesting that the average affect level from people whose media condition is audio is on average 2.82 units lower than people whose media condition is control, holding other variables constant.
+ 
+The coefficient for treatskit is -2.85, suggesting that the average affect level from people whose media condition is audio is on average 2.85 units lower than people whose media condition is control, holding other variables constant.
+ 
+The coefficient for treated is -3.84, suggesting that the average affect level from people whose media condition is advertisement is on average 3.84 units lower than people whose media condition is control, holding other variables constant.
+ 
+The coefficient for Internet Usage is 1.12, suggesting that one unit increase in internet usage is associated with 1.12 units increase in affect level, holding other variables constant.
+
+
+
+
+### Model Assessment Results
+The summary table above shows that the R-square value for the multiple linear regression model is 0.39, which means about 39% of the variation in the dependent variable(affect level) can be explained by the multiple linear regression model. 
+
+In addition, in the Scale-Location plot (Figure \@ref(fig:figure1) in Appendix), an approximately horizontal line is shown, which means the residuals are randomly distributed and have constant variance. The Normal QQ-plot (Figure \@ref(fig:figure2) in Appendix) shows almost all the residuals match the diagonal line, meaning the residuals are normally distributed. The Residual versus Leverage plot (Figure \@ref(fig:figure3) in Appendix) shows that there is no evidence of outliers, and none of the points come close to having both high residual and leverage.
+
+
 
 ```{r modelsummary, echo=FALSE, warning=FALSE, fig.width=8, fig.height=10}
 #install.packages("modelsummary")
@@ -410,27 +500,6 @@ ms%>%
                            )
   
 ```
-
-
-
-
-
-
-
-
-
-
-
-\begin{equation}
-Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}  (\#eq:bayes)
-\end{equation}
-
-Equation \@ref(eq:bayes) seems useful, eh?
-
-Here's a dumb example of how to use some references: In paper we run our analysis in `R` [@citeR]. We also use the `tidyverse` which was written by @thereferencecanbewhatever If we were interested in baseball data then @citeLahman could be useful. 
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
 
 # Results
 
@@ -461,6 +530,19 @@ aggr(dat,prop=FALSE,numbers=TRUE)
 ```
 
 
+```{r figure1,fig.cap="Scale-Location plot", echo=FALSE, fig.width=10, fig.height=10}
+plot(model,which = 3)
+```
+
+
+
+```{r figure2,fig.cap="Normal QQ-plot", echo=FALSE, fig.width=10, fig.height=10}
+plot(model,which = 2)
+```
+
+```{r figure3,fig.cap="Residual versus Leverage plot", echo=FALSE, fig.width=10, fig.height=10}
+plot(model,which = 5)
+```
 
 \newpage
 
