@@ -2,22 +2,14 @@
 title: "TBD"
 subtitle: "TBD"
 author: "Yingying Zhou, Yang Wu, Xinyi Xu, Hong Pan"
-thanks: "Code and data are available at: https://github.com/yangg1224/Political_Deepfake_Videos.git."
-date: "`r format(Sys.time(), '%d %B %Y')`"
-
-
+output:
+ bookdown::pdf_document2:
+ toc: no
 abstract: "With the growing ubiquity of deepfake technology, here comes one more channel for the spread of misinformation. We reproduce Soubhik Barari (2021) paper and identify several additional demographic traits contributing to the persuasion power of deepfake on political defamation through its material effect on feeling manipulation in a RCT field experiment on the 2020 Presidential election. We find little evidence that deepfake videos have a unique ability to shift viewers’ perceptions on politicians. Apart from partisanship, education, and other socioeconomic factors identified by the original paper, we discover that income and internet usage would also significantly impact the candidate’s affective appeal to the news feed viewer. "
 
-output:
-  bookdown::pdf_document2:
-  toc: FALSE
+
+thanks: "Code and data are available at: https://github.com/yangg1224/Political_Deepfake_Videos.git."
 bibliography: references.bib
-editor_options: 
-  chunk_output_type: inline
-header-includes:
- - \usepackage{float}
- - \floatplacement{figure}{H}
- - \floatplacement{table}{H}
 ---
 
 ```{r setup, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
@@ -35,15 +27,55 @@ library(kableExtra)
 library(broom)
 library(randomForest)
 library(plyr)
+
 ```
 
 # Introduction
+Political misinformation stems the spread of proper knowledge and threatens the electorate's ability to evaluate politicians’ public credibility [ref: ]. Since the advent of popular deep learning technology that enables the fabrication of deepfake videos, concerns have been aroused about their defamation effect on the target politicians.
 
+Soubhik Barari (CITATION) examines the news feed intervention through two Randomized Controlled Trial field experiments on the 2020 U.S. Democratic presidential election to investigate the persuasion power of deepfake. In the first experiment, Soubhik Barari (CITATION) exposes participants to one of five different forms of false media treatment including deepfaked videos and compares viewer’s deceptive level and affective response. In the second experiment, Soubhik Barari (CITATION) measures the viewer's ability to discriminate between a feed of 8 real and fake videos. 
+Soubhik Barari (CITATION) finds that the marginal deceptive and affective effects of a deepfaked political scandal are insignificant relative to other false media. In addition, subgroups aged above 65, with partisanship, holding ambivalent sexist views, being highly educated, constrained by cognitive resources, or with little political knowledge are more susceptible to deepfake misinformation.
 
+Using replication dataset and code provided by Soubhik Barari (CITATION), we re-implement the first experiment to further study the persuasion power of deepfake through the channel of its affective manipulation on viewer’s political perception. We review the media heterogeneity via t-tests between alternative false media with the deepfake video. We analyse the heterogeneity in affective response by viewer traits with a multiple linear regression model. Feature selection is performed via the Random Forest classifier to select the top 20 relevant variables into our model input. 
 
+Our findings about differential effects by media are consistent with Soubhik Barari (CITATION) that the degree of detriment from deepfake video is no different from false audio or text in terms of deception and affective impression. For the linear regression statistical inference, in addition to the socioeconomic features identified by the original paper (age, party identification, sexism, cognitive ability, and education), we find that demographic traits of household income, internet usage, and region play an important part in influencing viewer’s affective response to the involved politician as well. 
+Ethical concerns about deepfake experiments are addressed by an extensive post-experiment debrief to educate participants about deepfake media. During modelling design, location information is proxied by region and zip code was excluded from the model to avoid privacy leakage. Internal validity is ensured by stratified sampling and randomized intervention in the experiment as well as having controlled confounders and sufficient sample size for modelling. The external validity of the study is enhanced by the use of customized deepfake contents and running two waves of experiment in different time periods. Due to the limitation in the topic itself, U.S. presidential election, the research result cannot be generalized to outside of the U.S.
+
+Deepfake technology has the potency to sway viewer’s belief on their political understanding and in turn exert real impact in altering viewer’s sentiment towards the targeted politician. Consequently, deepfake and other false media can dispute politician’s  credibility and even manipulate election results. Given that heterogeneity in affective response is observed for subgroups with different levels of internet usage and cognitive reflection, which are intervenable characteristics in information processing for viewers, we can reduce deepfake’s deceptive potential by intervening via information provision and promoting public digital literacy.   
+
+The remainder of the paper is constructed as follows. Section 2 describes the dataset, experiment design, and exploratory data analysis on feature visualization. Section 3 outlines the reproduced experiment models, which is designed to discover relationships between features and the target variable. Section 4 summarizes the model results according to evaluation criteria. Finally, Section 5 discusses our research findings and provides directions for future research.    
 
 # Data
+## Dataset features
+The paper intends to replicate the experimental report by Soubhik Barari, Christopher Lucas, and Kevin Munger. We are going to analyze the dataset collected by their experiment. The survey dataset records 5,750 observations with 100 variables. In this case, we focus on the top 20 most important features related to the favorability towards the Democratic politician Elizabeth Warren. It covers viewer traits on demographic, socioeconomic status, and political related positions that are immutable or intervenable characteristics to deepfakes' misinformation. The authors hypothesized several risky subgroups that may be differentially susceptible to deepfakes. That included the following categories of media consumers:
+* Age Group
+* Directional motivated reasoning
+* Evaluation driven by negative stereotypes
+* Constraints on cognitive resources or knowledge
+* Political knowledge
+* Digital literacy
+In particular, they divide respondents into two age groups: below 65 and above 65. Ambivalent Sexism evaluates negative stereotypes towards women on a scale of 1 to 5. PID shows the party identification of Republican, Independent, or Democrat. Polknow is scaled to be within 0 to 1, reflecting respondents’ political knowledge that might influence public attitudes and opinions. Treat records one of the six treatment conditions in the experiment: deepfake video, false media in audio, text, skit, campaign attack ad, or control.  Exp_1_prompt collects information about the intervention: received information and received no information on deepfake prior to the newsfeed experiment. Internet_usage aims to collect information about the frequency of using the internet per week. Meta_OS indicates the platforms of internet access, namely either mobile devices or desktop. The dataset also includes additional demographic information  such as gender, income and education. Educ identifies subjects into four categories by educational level including <High school, High school, College, and Postgraduates. Similarly, HHI divides participants into six groups on the basis of their income including <$25k, $25k-$49k, $50k-$74k, $75k-$99k, $100k-$150k, and >$150k. In addition, they recorded the post_favor_Warren, ranging from 0 to 100  as the effective response to Warren after subjects receive the news feed treatment.
 
+## Population, frame, and sample 
+The sampling population included all citizens in the US. A total of 17,501 national representatives were recruited  in the survey experiment on the Lucid survey research platform. To qualify for the experiment, all observations should complete quality checks which consist of randomly dispersed attention checks and technology checks.  629 respondents failed the front-end pre-treatment attention check; in order words, the gender or age that they entered did not match up with the demographic characteristics. Finally, only 5,750 of 17,501 subjects passed a series of quality checks and completed the survey experiment. 
+##  Experiment in the paper
+They first created a collection of realistic deepfake with industry partners. At the early stage of the experiment, some of the participants received a brief informational message reminding them of the existence of deepfake. During the experiment, all participants obtained a news feed in a natural environment setting where the experience of scrolling on the Facebook news feed was replicated. They watched or listened to posts about Elizabeth Warren, one of the 2020 democratic primary candidates. With the fixed order and the content of these media, the news feed scenario design primarily minimized the influence of alternative characteristics other than the intervention on the final results. Participants accessed two conditions before and three conditions after watching a video.
+During the experiment, participants were randomly exposed to one of the five different fictitious scandals, namely that respondents were able to watch or listen to five possible defamation strategies: incivility toward an in-party member, incivility toward an out-party member, a past controversy, a novel controversy, or political insincerity.
+They chose Elizabeth Warren to be the target for the political scandal of the 2020 democratic election because she is a salient politician who is more valid than those politicians with low profiles. Also, she is not slated for re-election until 2024 which minimized the influence of the 2020 election. Finally, as a female candidate, she is more likely to be involved in non-political deepfakes.
+## what is good and bad about the data
+The experiment is very well-designed in experiment treatment settings. To receive a rich answer to the experiment, they conducted the experiment in a realistic setting. Deepfake was combined with authentic campaign news to replicate a natural news-browsing experience. They provided a series of realistic deepfake videos with a sufficient sample size. In terms of the external validity, the deepfakes used in the experiment are high-quality face-swap videos of a single elite depicted in a number of slightly different scandals that they have produced to be maximally deceptive.
+Since the experiment involved five media conditions, it can also be used for analyzing the interaction effect across a number of comparable media.
+In terms of how to gauge the persuasion power of deepfake, they isolated the measurement of deception and affect from a single clip. Furthermore, they compared the attitudinal effects of a single deepfake to its related textual, audio, and un-deepfake video counterparts in order to investigate the relative influence deepfake has on political misinformation compared to other traditional media.
+One of the major drawbacks is that the original survey dataset consists of too many missing values. According to Appendix A, more than 40 variables involve missing data. To be more precise, there are 15 attributes containing more than 1,000 missing values such as script, believed_funny, believed_offensive, and PID_presurvey, four of which have over 4,000 incomplete data such as comments and PID_learner. In addition, although the experiment was anonymous, the geographical information such as zip and regions of the participants was still recorded in the dataset. 
+## Methodology
+They used the Lucid survey research platform which is one of the world’s biggest survey panels. It is a platform aiming to provide data-driven knowledge in the workplaces. It delivers powerful answers, inspired by the sentiments of real people (CITATION2).
+As for the treatment conditions, the experiment randomly paired informational messages about deepfake to one of six conditions. The six conditions included video, audio, text, skit, campaign attack ad, and control which is no clip. 
+In particular, the audio condition consists of the audio recording of the actor making a scandalous announcement. The video condition exploits a deepfake created by the face-swap algorithm in the skit condition. The text condition only keeps the title and subtitle describing the event captured on video. A skit displays an audio recording accompanying a video of the actor impersonates a campaign event in a realistic setting. Campaign attack advertisement subjects are exposed to a real negative campaign ad title, which is an actual campaign stimulus used in the primary election to activate negative emotions towards Warren. The control means no clips presented. 
+## Sampling/experiment Approach
+According to the article, the authors used a post-stratification sampling method to correct demographic skews in the sample. Post-stratification refers to the weights being adjusted so that the weighted totals equal to the known population totals. They applied post-stratification weights estimated from the US Census in aspects of education, age, household income, gender, race, and hispanic, and consequently compared the demographic traits of their sample with the demographic trait in the most recent Current Population Survey (CPS). A weighted regression was implemented to guard against measurement error from possible demographic skews. (CITATION 3)To adjust for remaining discrepancies, they generate post-stratification weights via raking to match the CPS marginal population totals.
+## Discuss the intervention
+In this experiment, the intervention is receiving a concise informational message about the existence of deepfakes prior to the news feed treatment. The authors would like to analyze if receiving an information prompt about deepfakes before the news feed will affect the reliability and trustworthiness of all fake news clippings
+Through this experiment, participants had the opportunity to detect fake media, enclosing a debrief which demonstrates how the deepfake process works. We believe that this experiment will help to educate the public about the growing ubiquity of deepfakes and the potential threat they might pose to information processing for the general public. By understanding how deepfakes function from their low-cost interventions, citizens can effectively prevent the harm caused by the misinformation.
 
 ```{r loaddata, echo=FALSE, warning=FALSE, message=FALSE}
 library(here) # locate the file path
@@ -55,12 +87,9 @@ EDA<- dat%>%
 
 
 ## EDA
-
+According to the experiment, there are six treatment conditions including deepfake video, audio, text, skit, campaign attack ad, and control. From figure 1, we can see that the six types of treatments are equally sampled. In other words, in the process of exposure, all media have the same chance of being viewed. 
 ### treat distribution 
 ```{r treat, fig.cap = "Employee numbers distribution",echo=FALSE, fig.width=10, fig.height=4}
-
-
-
 EDA<-EDA%>%
   drop_na(treat)
 
@@ -76,7 +105,7 @@ treat_map <-
 treat_map
 
 ```
-
+The grouped bar chart (Figure 2) below shows the distribution of political parties for four educational levels. We notice that most participants identified themselves as Democrats, followed by the Republicans. Therefore, there are grounds to consider Democrat and Republican as the two major political parties in American society. Among the citizens with college degrees, more than 1,250 citizens identify themselves as Democrats and over 1,000 citizens have a disposition to Republican.
 
 ### education level distribution by PID 
 ```{r educationPID, fig.cap = "Educational level by PID",echo=FALSE, warning=FALSE,fig.width=10, fig.height=7}
@@ -89,7 +118,7 @@ edu <-
 
 edu
 ```
-
+Figure 3 uses the box plot method to show sexism by partisanship. As we can see from the chart, voters in the Republican party have the most number of  sexists, which also explains one potential reason why their support rate is relatively lower for Warren. Next comes the Independent party. People’s sexism level is approximately level 3. At last, people in the Democratic party mostly hold the fairest attitude about sexism. 
 ### sexism by education level 
 ```{r sexism, fig.cap = "sexism by education level",echo=FALSE, fig.width=5, fig.height=4}
 EDA<-EDA%>%
@@ -104,6 +133,7 @@ s1<-
   theme_economist() + scale_fill_economist() 
 s1
 ```
+Figure 4 demonstrates internet usage frequency by educational level, devices, and age groups respectively. Participants with college education level are the most frequent internet users (more than 5 days per week), followed by people with high school education and people with postgraduate education. In addition, the dataset also shows desktop devices are more popular than mobile devices in terms of how participants’ access the internet. People younger than 65 will use the internet more often than those older than 65.
 
 
 ## internet usage frequency by education level
@@ -135,8 +165,7 @@ ggarrange(
   )
 ```
 
-
-
+Figure 5 illustrates the distribution of feeling towards Elizabeth Warren after receiving different news feed treatments. We realize that there is no significant difference in the distribution of affective response. The x-axis stands for the affective response towards Elizabeth Warren, ranging from 0 to 100. No matter what treatment subjects were exposed, a certain number of participants rated their feeling towards Warren as 0, along with a number of people who voted 50. It is worth mentioning that deepfake videos do increase the negative sentiment towards Elizabeth Warren compared to the control group.
 ### post favor by treat
 ```{r postfavor, fig.cap="Distribution of feelings towards Sanders in six different situations",echo=FALSE}
 #histogram for each treat
@@ -153,6 +182,40 @@ ggplot(EDA, aes(x = post_favor_Warren,fill=treat)) +
 
 
 ```
+# FEATURE SELECTION
+
+Before building our model, feature selection is conducted on the selected dataset variables. In general, feature selection has the following advantages:
+* Enhance the understanding between features and feature importances
+* Reduce features overfitting and features dimensionality to improve the model accuracy
+Feature importance plays a vital role in predictive modelling projects. It can provide insights on data, models, and how to reduce dimensionality and select features, thereby improving efficiency and effectiveness of the model prediction.
+
+Random Forest is the chosen method for our feature selection model because it can handle multi-dimensional data and output feature importance according to maximized information gain in node splitting. The random forest algorithm forms a series of classification methods that rely on a combination of several decision trees. According  to the guideline from Liaw, the random forest algorithm is optimized via three parameters in our project: we set ntree=500 (the number of trees), mtry=all the variables in FS dataset divided by 3 (the number of predictors randomly tested at each node) and node size=5 (the minimal size of the terminal node). 
+
+The slip plot [crossref] shows the feature selection results.  As we can see, `PID` partisanship is the most vital variable to affect the sentiment score towards Warren. As we know, partisanship is one of the most important factors affecting voters' voting. In us, there is a large group of fanatic political supporters. They don’t care about who is the candidate, or what those candidates’ ideas are. They just vote for the right party. Warren is a representative of the Democratic Party, so voters who are optimistic about the Democratic Party are willing to give higher sentiment scores. On the other hand, people who are in the Republican party and the Independent party would not support Warren. 
+
+Next important variable comes to `sexism`. Lovenduski mentioned that “Women remain significantly under-represented in political life.” A big reason behind this is that people still associate toughness and leadership qualities with men. “Female marginalisation is hardwired into the traditional institutions within which politics takes place.” Of course, things have two sides. American feminists also let Warren have a large number of loyal female supporters. 
+
+We are interested to find the variable “HHI” (household income) plays an important role in Warren’s sentiment score. Before we go to see the regression model result, we are guessing people with higher annual income care more about the candidate’s attitudes towards economic development. Because they might have their investment in different industries which will be affected. In addition, income is usually correlated with education level. People with higher income tend to have more general knowledge and thus are less likely to be fooled by deepfake.
+
+The last two top five variables which have high feature importance are `age over 65` and `political knowledge`. The year 65 is like a threshold. While younger people would have more open ideas, older people usually have more conservative political ideas and slow to follow technology trends. Therefore, they might be more susceptible to false information fabricated by new technology such as deepfake. Older people generally stand in different positions and hold different expectations, therefore their sentiment score might vary a lot. 
+
+Finally, we decided to drop variables with lower than feature importance value of 0.5 to reduce dimensions for the regression model. So, `quality`, `script_loans`, and `hispanic` would be dropped and the remaining 20 features will go into the regression model.
+
+## MULTIPLE LINEAR REGRESSION
+We are using RStudio to run the multiple linear regression model. The following reasons explain why we decide to choose multiple linear regression:
+* It account for all of the potentially important factors in one model
+* It leads to a more precise understanding of the relationship between dependent variables and independent variables
+* It is able to identify outliers or anomalies in the dataset. 
+
+One-hot encoding needs to be implemented to transform categorical textual variables to dummies since multiple linear regression can only take in numeric variables. All these steps are implemented by the [lm] package.  
+The results of the regression model will be detailed in the next section. We are focusing on three model parameters for variable interpretation and performance evaluation. 
+
+R squared : 
+R-squared  is a measure of the goodness of fit of the model. A larger R-squared  indicates a closer fit of the model to the data. It is used as an optimality criterion in parameter selection and model selection.
+P-value:
+P-value is used to describe the occurrence possibility of the extreme outcome when the null hypothesis is true. If the p-value is small, it means that the probability of occurrence of the null hypothesis to be true is very small. And if it does occur, we have a reason to reject the null hypothesis. In short, the smaller the p-value, the more significant the result. Usually the threshold for significant p value is set to 0.05.
+Regression coefficient:
+The sign of the regression coefficient describes whether there is a positive or negative correlation between each feature variable and the dependent variable (Warren affective score). A positive coefficient means that as the value of the independent variable increases, the average value of the affective score also tends to increase. A negative coefficient indicates that as the independent variable increases, the affective score tends to decrease.
 
 
 # Model
@@ -213,10 +276,10 @@ m2<-tidy(t2, digits=1)
 
 m2 %>%
   select(-c(estimate,statistic,parameter))%>%
-  rename(
-    AVG_deception_video=estimate1,
-    AVG_deception_text=estimate2
-  )%>%
+ # rename(
+   # AVG_deception_video=estimate1,
+   # AVG_deception_audio=estimate2
+ # )%>%
   kableExtra::kbl(caption="T test: Deception level of video vs text")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -231,10 +294,10 @@ m3<-tidy(t3, digits=1)
 
 m3 %>%
   select(-c(estimate,statistic,parameter))%>%
-  rename(
-    AVG_deception_video=estimate1,
-    AVG_deception_skit=estimate2
-  )%>%
+ # rename(
+   # AVG_deception_video=estimate1,
+   # AVG_deception_audio=estimate2
+ # )%>%
   kableExtra::kbl(caption="T test: Deception level of video vs skit")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -258,10 +321,10 @@ m1_a<-tidy(t1_a,digits=1)
 
 m1_a%>%
   select(-c(estimate,statistic,parameter))%>%
-  rename(
-    AVG_affect_video=estimate1,
-    AVG_affect_control=estimate2
-  )%>%
+ # rename(
+   # AVG_deception_video=estimate1,
+   # AVG_deception_audio=estimate2
+ # )%>%
   kableExtra::kbl(caption = "T test: Affect level of video vs control")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -282,10 +345,10 @@ m2_a<-tidy(t2_a,digits=1)
 
 m2_a%>%
   select(-c(estimate,statistic,parameter))%>%
-  rename(
-    AVG_affect_video=estimate1,
-    AVG_affect_text=estimate2
-  )%>%
+ # rename(
+   # AVG_deception_video=estimate1,
+   # AVG_deception_audio=estimate2
+ # )%>%
   kableExtra::kbl(caption = "T test: Affect level of video vs text")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -308,10 +371,10 @@ m3_a<-tidy(t3_a,digits=1)
 
 m3_a%>%
   select(-c(estimate,statistic,parameter))%>%
-  rename(
-    AVG_affect_video=estimate1,
-    AVG_affect_audio=estimate2
-  )%>%
+ # rename(
+   # AVG_deception_video=estimate1,
+   # AVG_deception_audio=estimate2
+ # )%>%
   kableExtra::kbl(caption = "T test: Affect level of video vs audio")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -331,10 +394,10 @@ m4_a<-tidy(t4_a,digits=1)
 
 m4_a%>%
   select(-c(estimate,statistic,parameter))%>%
-  rename(
-    AVG_affect_video=estimate1,
-    AVG_affect_skit=estimate2
-  )%>%
+ # rename(
+   # AVG_deception_video=estimate1,
+   # AVG_deception_audio=estimate2
+ # )%>%
   kableExtra::kbl(caption = "T test: Affect level of video vs skit")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -346,51 +409,19 @@ m4_a%>%
 ## Feature selection 
 
 
-```{r fs, echo=FALSE, warning=FALSE,fig.width=10, fig.height=10 }
-# deal with missing value
+```{r fs, echo=FALSE, warning=FALSE,fig.width=4, fig.height=6 }
+# more codes are in the scripts (path: scripts/02_feature selection)
 FS<- dat%>%
- select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt_control,exp_1_prompt_info,exp_2_prompt_control,exp_2_prompt_accuracy,post_favor_Klobuchar,post_favor_Sanders,post_favor_Biden,post_favor_Bloomberg,,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main,crt1,crt2,crt3,agegroup,treat_control,treat_attackad,treat_fake_text,treat_fake_video,treat_fake_audio,treat_skit,polknow_speaker,polknow_boris,polknow_house,polknow_senate,polknow_veto,polknow_warren,polknow_medicare,quality_demographic_mismatch,quality_failed_backend_attncheck,duration_secs,age,meta_screenres,StartDate,EndDate,meta_resolution,exp_2_hifake,exp_2_lofake,exp_2_nofake,exp_2,exp_2_prompt_accuracy,exp_2_after_debrief,exp_2_prompt,Zip,believed_true))%>% na.omit()
+  select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt_control,exp_1_prompt_info,exp_2_prompt_control,exp_2_prompt_accuracy,post_favor_Klobuchar,post_favor_Sanders,post_favor_Biden,post_favor_Bloomberg,,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main,crt1,crt2,crt3,agegroup,treat_control,treat_attackad,treat_fake_text,treat_fake_video,treat_fake_audio,treat_skit,polknow_speaker,polknow_boris,polknow_house,polknow_senate,polknow_veto,polknow_warren,polknow_medicare,quality_demographic_mismatch,quality_failed_backend_attncheck,duration_secs,age,meta_screenres,StartDate,EndDate,meta_resolution,exp_2_hifake,exp_2_lofake,exp_2_nofake,exp_2,exp_2_prompt_accuracy,exp_2_after_debrief,exp_2_prompt,Zip,believed_true))%>% na.omit()
 
-## feature selection 
-
-set.seed(123)
-FS_tree<-randomForest(post_favor_Warren~., data=FS, ntree=500, importance=TRUE,proximity=TRUE) ## variable importance
-
-FS_tree<-as.data.frame(FS_tree$importanceSD) # transform to dataframe
-
-FS_tree<- FS_tree[order(-FS_tree[,]),,drop=FALSE] # sort importance by descending order
-
-FS_tree<- cbind(Variable_name = rownames(FS_tree), FS_tree)
-rownames(FS_tree) <- 1:nrow(FS_tree)
-FS_tree<- as.data.frame(FS_tree)
-
-
-```
-
-
-
-```{r tree, echo=FALSE, warning=FALSE, fig.width=8, fig.height=7,results=FALSE,include=FALSE,message=FALSE}
-
-FS_tree%>%
-  mutate(name = fct_reorder(FS_tree$Variable_name,FS_tree$`FS_tree$importanceSD`))%>%
-  ggplot(aes(x=FS_tree$Variable_name, y=FS_tree$`FS_tree$importanceSD`)) +
-  geom_segment( aes(x=FS_tree$Variable_name,xend=FS_tree$Variable_name, y=0, yend=FS_tree$`FS_tree$importanceSD`), color="grey") +
-  geom_point( color="orange", size=4) +
-  theme_light() +
-  coord_flip()+
-  theme(
-    panel.grid.major.x = element_blank(),
-    panel.border = element_blank(),
-    axis.ticks.x = element_blank()
-  ) +
-  xlab("") +
-  ylab("Importance value")+
-  ggtitle("Variable importance plot")
+# include the plot from script
+library(here)
+knitr::include_graphics(here::here("outputs/paper/Variable importance plot.png"))
 
 ## remove low importance feature 
 FS<- FS%>%select(-c(script_loans,quality,Hispanic))
-```
 
+```
 
 
 
