@@ -48,7 +48,11 @@ Ethical concerns about deepfake experiments are addressed by an extensive post-e
 
 Deepfake technology has the potency to sway viewer’s belief on their political understanding and in turn exert real impact in altering viewer’s sentiment towards the targeted politician. Consequently, deepfake and other false media can dispute politician’s  credibility and even manipulate election results. Given that heterogeneity in affective response is observed for subgroups with different levels of internet usage and cognitive reflection, which are intervenable characteristics in information processing for viewers, we can reduce deepfake’s deceptive potential by intervening via information provision and promoting public digital literacy.   
 
-The remainder of the paper is constructed as follows. Section 2 describes the dataset, experiment design, and exploratory data analysis on feature visualization. Section 3 outlines the reproduced experiment models, which is designed to discover relationships between features and the target variable. Section 4 summarizes the model results according to evaluation criteria. Finally, Section 5 discusses our research findings and provides directions for future research.    
+The remainder of the paper is constructed as follows. Section 2 describes the dataset, experiment design, and exploratory data analysis on feature visualization. Section 3 outlines the reproduced experiment models, which is designed to discover relationships between features and the target variable. Section 4 summarizes the model results according to evaluation criteria. Finally, Section 5 discusses our research findings and provides directions for future research. 
+
+We replicate this paper using R statistical programming language [@citeR]. In particular, we use packages `tidyverse` [@citetidyverse],  `here` [@citehere], `ggpubr` [@citeggpubr] to manipulate data and packages, `kableExtra` [@citekableExtra] to generate tables, and `ggplot2` [@citeggplot], `ggthemes` [@citeggthemes] to adjust diagrams themes. 
+
+## Intervention
 
 # Data
 ## Dataset features
@@ -93,6 +97,7 @@ Through this experiment, participants had the opportunity to detect fake media, 
 ```{r loaddata, echo=FALSE, warning=FALSE, message=FALSE}
 library(here) # locate the file path
 data<- load(here::here("inputs/data/deepfake.RData"))
+
 EDA<- dat%>%
         select(treat, response_wave_ID, exp_1_prompt, meta_OS, age_65, educ, PID, crt, gender, age, polknow, internet_usage, ambivalent_sexism, post_favor_Warren,believed_true)
 
@@ -235,6 +240,7 @@ Finally, we decided to drop variables with lower than feature importance value o
 
 ## Multiple Linear Regression
 We are using RStudio to run the multiple linear regression model. The following reasons explain why we decide to choose multiple linear regression:
+
 * It account for all of the potentially important factors in one model
 * It leads to a more precise understanding of the relationship between dependent variables and independent variables
 * It is able to identify outliers or anomalies in the dataset. 
@@ -243,10 +249,15 @@ One-hot encoding needs to be implemented to transform categorical textual variab
 The results of the regression model will be detailed in the next section. We are focusing on three model parameters for variable interpretation and performance evaluation. 
 
 R squared : 
+
 R-squared  is a measure of the goodness of fit of the model. A larger R-squared  indicates a closer fit of the model to the data. It is used as an optimality criterion in parameter selection and model selection.
+
 P-value:
+
 P-value is used to describe the occurrence possibility of the extreme outcome when the null hypothesis is true. If the p-value is small, it means that the probability of occurrence of the null hypothesis to be true is very small. And if it does occur, we have a reason to reject the null hypothesis. In short, the smaller the p-value, the more significant the result. Usually the threshold for significant p value is set to 0.05.
+
 Regression coefficient:
+
 The sign of the regression coefficient describes whether there is a positive or negative correlation between each feature variable and the dependent variable (Warren affective score). A positive coefficient means that as the value of the independent variable increases, the average value of the affective score also tends to increase. A negative coefficient indicates that as the independent variable increases, the affective score tends to decrease.
 
 
@@ -665,25 +676,28 @@ Based on the regression model result of adjusted R-squared, the model fit outper
 # Appendix
 
 ## Appendix A {#appendixA}
-```{r missing, fig.cap="Missing value Visualization ", echo=FALSE, fig.width=10, fig.height=10}
+```{r missing, fig.cap="Missing value Visualization ", echo=FALSE, warning =FALSE, out.width = "50%", fig.width=10, fig.height=10}
 
-library("VIM")
-aggr(dat,prop=FALSE,numbers=TRUE)
+# library("VIM")
+# aggr(dat,prop=FALSE,numbers=TRUE)
 
+# include the plot from script
+# library(here)
+knitr::include_graphics(here::here("outputs/paper/Missing values.png"))
 ```
 
 
-```{r figure1,fig.cap="Scale-Location plot", echo=FALSE, fig.width=10, fig.height=10}
+```{r figure1,fig.cap="Scale-Location plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
 plot(model,which = 3)
 ```
 
 
 
-```{r figure2,fig.cap="Normal QQ-plot", echo=FALSE, fig.width=10, fig.height=10}
+```{r figure2,fig.cap="Normal QQ-plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
 plot(model,which = 2)
 ```
 
-```{r figure3,fig.cap="Residual versus Leverage plot", echo=FALSE, fig.width=10, fig.height=10}
+```{r figure3,fig.cap="Residual versus Leverage plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
 plot(model,which = 5)
 ```
 
