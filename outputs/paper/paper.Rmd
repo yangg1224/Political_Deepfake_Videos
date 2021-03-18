@@ -1,6 +1,5 @@
 ---
-title: "TBD"
-subtitle: "TBD"
+title: "Revisiting the impact of deepfake technology towards viewer's political choice: A replication of Soubhik Barari (2021)"
 author: "Yingying Zhou, Yang Wu, Xinyi Xu, Hong Pan"
 output:
  bookdown::pdf_document2:
@@ -32,7 +31,7 @@ library(kableExtra)
 library(broom)
 library(randomForest)
 library(plyr)
-
+library(qqplotr)
 ```
 
 # Introduction
@@ -132,7 +131,7 @@ treat_map
 
 The grouped bar chart (Figure \@ref(fig:education)) below shows the distribution of political parties for four educational levels. We notice that most participants identified themselves as Democrats, followed by the Republicans. Therefore, there are grounds to consider Democrat and Republican as the two major political parties in American society. Among the citizens with college degrees, more than 1,250 citizens identify themselves as Democrats and over 1,000 citizens have a disposition to Republican.
 
-```{r education, fig.cap = "Educational level by PID",echo=FALSE, warning=FALSE,fig.width=10, fig.height=7}
+```{r education, fig.cap = "Educational level by PID",echo=FALSE, warning=FALSE,fig.width=10, fig.height=4}
 edu <- 
   EDA%>%
   ggplot(aes(x = educ,fill=PID, )) +
@@ -224,44 +223,60 @@ Before building our model, feature selection is conducted on the selected datase
 * Enhance the understanding between features and feature importances
 * Reduce features overfitting and features dimensionality to improve the model accuracy
 
-Feature importance plays a vital role in predictive modelling projects. It can provide insights on data, models, and how to reduce dimensionality and select features, thereby improving efficiency and effectiveness of the model prediction.
+Feature importance plays a vital role in predictive modelling projects. It can provide insights on data, models, and how to reduce dimensionality and select features, thereby improving efficiency and effectiveness of the model prediction. [@guyon2003introduction]
 
-Random Forest is the chosen method for our feature selection model because it can handle multi-dimensional data and output feature importance according to maximized information gain in node splitting. The random forest algorithm forms a series of classification methods that rely on a combination of several decision trees. According  to the guideline from Liaw, the random forest algorithm is optimized via three parameters in our project: we set ntree=500 (the number of trees), mtry=all the variables in FS dataset divided by 3 (the number of predictors randomly tested at each node) and node size=5 (the minimal size of the terminal node). 
+Random Forest is the chosen method for our feature selection model because it can handle multi-dimensional data and output feature importance according to maximized information gain in node splitting. [@nguyen2013random]The random forest algorithm forms a series of classification methods that rely on a combination of several decision trees. According  to the guideline from Liaw, the random forest algorithm is optimized via three parameters in our project: we set ntree=500 (the number of trees), mtry=all the variables in FS dataset divided by 3 (the number of predictors randomly tested at each node) and node size=5 (the minimal size of the terminal node). [@liaw2018classification]
 
-The slip plot [crossref] shows the feature selection results.  As we can see, `PID` partisanship is the most vital variable to affect the sentiment score towards Warren. As we know, partisanship is one of the most important factors affecting voters' voting. In us, there is a large group of fanatic political supporters. They don’t care about who is the candidate, or what those candidates’ ideas are. They just vote for the right party. Warren is a representative of the Democratic Party, so voters who are optimistic about the Democratic Party are willing to give higher sentiment scores. On the other hand, people who are in the Republican party and the Independent party would not support Warren. 
+The slip plot (Figure \@ref(fig:fs)) shows the feature selection results.  As we can see, `PID` partisanship is the most vital variable to affect the sentiment score towards Warren. As we know, partisanship is one of the most important factors affecting voters' voting. In us, there is a large group of fanatic political supporters. They don’t care about who is the candidate, or what those candidates’ ideas are. They just vote for the right party. Warren is a representative of the Democratic Party, so voters who are optimistic about the Democratic Party are willing to give higher sentiment scores. On the other hand, people who are in the Republican party and the Independent party would not support Warren. 
 
-Next important variable comes to `sexism`. Lovenduski mentioned that “Women remain significantly under-represented in political life.” A big reason behind this is that people still associate toughness and leadership qualities with men. “Female marginalisation is hardwired into the traditional institutions within which politics takes place.” Of course, things have two sides. American feminists also let Warren have a large number of loyal female supporters. 
+```{r fs, fig.cap = "feature importance", echo=FALSE, warning=FALSE,fig.width=6, fig.height=6 }
+# more codes are in the scripts (path: scripts/02_feature selection)
+FS<- dat%>%
+  select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt_control,exp_1_prompt_info,exp_2_prompt_control,exp_2_prompt_accuracy,post_favor_Klobuchar,post_favor_Sanders,post_favor_Biden,post_favor_Bloomberg,,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main,crt1,crt2,crt3,agegroup,treat_control,treat_attackad,treat_fake_text,treat_fake_video,treat_fake_audio,treat_skit,polknow_speaker,polknow_boris,polknow_house,polknow_senate,polknow_veto,polknow_warren,polknow_medicare,quality_demographic_mismatch,quality_failed_backend_attncheck,duration_secs,age,meta_screenres,StartDate,EndDate,meta_resolution,exp_2_hifake,exp_2_lofake,exp_2_nofake,exp_2,exp_2_prompt_accuracy,exp_2_after_debrief,exp_2_prompt,Zip,believed_true))%>% na.omit()
+
+# include the plot from script
+library(here)
+knitr::include_graphics(here::here("outputs/paper/Variable importance plot.png"))
+
+## remove low importance feature 
+FS<- FS%>%select(-c(script_loans,quality,Hispanic))
+
+```
+Next important variable comes to `sexism`. Lovenduski mentioned that “Women remain significantly under-represented in political life.” A big reason behind this is that people still associate toughness and leadership qualities with men. “Female marginalisation is hardwired into the traditional institutions within which politics takes place.” Of course, things have two sides. American feminists also let Warren have a large number of loyal female supporters. [@lovenduski2014institutionalisation]
 
 We are interested to find the variable “HHI” (household income) plays an important role in Warren’s sentiment score. Before we go to see the regression model result, we are guessing people with higher annual income care more about the candidate’s attitudes towards economic development. Because they might have their investment in different industries which will be affected. In addition, income is usually correlated with education level. People with higher income tend to have more general knowledge and thus are less likely to be fooled by deepfake.
 
-The last two top five variables which have high feature importance are `age over 65` and `political knowledge`. The year 65 is like a threshold. While younger people would have more open ideas, older people usually have more conservative political ideas and slow to follow technology trends. Therefore, they might be more susceptible to false information fabricated by new technology such as deepfake. Older people generally stand in different positions and hold different expectations, therefore their sentiment score might vary a lot. 
+The last two top five variables which have high feature importance are `age over 65` and `political knowledge`. As for why we chose `Age over 65` over its numeric counterpart `Age`, the age 65 is like a threshold and we are interested in the differential effect between the two age groups instead of the incremental effect from aging. While younger people would have more open ideas, older people usually have more conservative political ideas and slow to follow technology trends. Therefore, they might be more susceptible to false information fabricated by new technology such as deepfake. Older people generally stand in different positions and hold different expectations, therefore their sentiment score might vary a lot. 
 
 Finally, we decided to drop variables with lower than feature importance value of 0.5 to reduce dimensions for the regression model. So, `quality`, `script_loans`, and `hispanic` would be dropped and the remaining 20 features will go into the regression model.
 
 ## Multiple Linear Regression
-We are using RStudio to run the multiple linear regression model. The following reasons explain why we decide to choose multiple linear regression:
+
+We have made a choice between linear and non-linear models. Random forest regression is an alternative form of regression. It works well with both categorical and continuous features. And it can handle nonlinear elements in the model. Normalizing of data is not required as it uses a rule-based approach. However, despite these advantages, a random forest algorithm also has some drawbacks. Although it achieves higher prediction accuracy than linear regression models, random forest regression suffers from weak interpretability. It does not output estimated variable coefficients or p-values to determine significance of each variable, which are indispensable for statistical inference and model interpretation. Besides, it demands more computational power as it builds numerous trees to combine their outputs. Furthermore, the random forest regression model is susceptible to overfitting and the ultimate model performance relies on manual hyperparameter tuning. Consequently, our group decided to choose the multiple linear regression model. [@strobl2008danger]
+
+We are using RStudio to run the multiple linear regression model. The following reasons explain why we decide to choose multiple linear regression[@WinNT]:
 
 * It account for all of the potentially important factors in one model
 * It leads to a more precise understanding of the relationship between dependent variables and independent variables
 * It is able to identify outliers or anomalies in the dataset. 
 
-One-hot encoding needs to be implemented to transform categorical textual variables to dummies since multiple linear regression can only take in numeric variables. All these steps are implemented by the [lm] package.  
+One-hot encoding needs to be implemented to transform categorical textual variables to dummies since multiple linear regression can only take in numeric variables. All these steps are implemented by the [lm] function.  ^[Multiple Linear Regression are implemented by the 'lm' function in 'dplyr' package. @dplyr]
 The results of the regression model will be detailed in the next section. We are focusing on three model parameters for variable interpretation and performance evaluation. 
 
-R squared : 
+**R squared** : 
 
-R-squared  is a measure of the goodness of fit of the model. A larger R-squared  indicates a closer fit of the model to the data. It is used as an optimality criterion in parameter selection and model selection.
+R-squared  is a measure of the goodness of fit of the model. A larger R-squared  indicates a closer fit of the model to the data. It is used as an optimality criterion in parameter selection and model selection.[@johansen1980welch]
 
-P-value:
+**P-value**:
 
-P-value is used to describe the occurrence possibility of the extreme outcome when the null hypothesis is true. If the p-value is small, it means that the probability of occurrence of the null hypothesis to be true is very small. And if it does occur, we have a reason to reject the null hypothesis. In short, the smaller the p-value, the more significant the result. Usually the threshold for significant p value is set to 0.05.
+P-value is used to describe the occurrence possibility of the extreme outcome when the null hypothesis is true. If the p-value is small, it means that the probability of occurrence of the null hypothesis to be true is very small. And if it does occur, we have a reason to reject the null hypothesis. In short, the smaller the p-value, the more significant the result. Usually the threshold for significant p value is set to 0.05.[@ioannidis2018proposal]
 
-Regression coefficient:
+**Regression coefficient**:
 
-The sign of the regression coefficient describes whether there is a positive or negative correlation between each feature variable and the dependent variable (Warren affective score). A positive coefficient means that as the value of the independent variable increases, the average value of the affective score also tends to increase. A negative coefficient indicates that as the independent variable increases, the affective score tends to decrease.
+The sign of the regression coefficient describes whether there is a positive or negative correlation between each feature variable and the dependent variable (Warren affective score). A positive coefficient means that as the value of the independent variable increases, the average value of the affective score also tends to increase. A negative coefficient indicates that as the independent variable increases, the affective score tends to decrease.[@uyanik2013study]
 
 
-
+The equation for the model is shown below: 
 
 $$\hat Y=\hat \beta_0+\sum_{a=male}^{other}\hat \beta_1\cdot Gender_a+\sum_{b=High\ school}^{Postgraduate}\hat \beta_2\cdot educ_b+\sum_{c=25K\ -49K}^{>150K}\hat \beta_3\cdot HHI_c+\sum_{d=white}^{black}\hat \beta_4\cdot Ethnicity_d$$
 
@@ -270,8 +285,47 @@ $$+\hat \beta_{10}\cdot {Ambivalent\ Sexism}+\hat \beta_{11}\cdot {Polknow}+\sum
 
 $$+\hat \beta_{15}\cdot {post\_dig\_lit}+\hat \beta_{16}\cdot {Internet\_usage}+\hat \beta_{17}\cdot {CRT}+\epsilon$$
 
+## Regression diagnostics
+Before conducting a linear regression, the following assumptions on data need to be checked :
+whether there exists a linear relationship between independent variables and the target variable; 
+whether residuals are independently normally distributed; 
+if residuals have constant variance (homoscedasticity).
+^[Regression diagnostics plots (Figure \@ref(fig:diagnostic)) can be created using the autoplot function in the “ggfortify” package @tang2016ggfortify] The results are shown in the graph below (Figure \@ref(fig:diagnostic)).
+```{r model, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4,message=FALSE}
+
+## transfer data into dummy
+#  select(-c(4))#  change categorical var to factors 
+##create model
+
+model <- lm(post_favor_Warren ~., data =FS )
+
+```
+
+```{r diagnostic, fig.cap = "Regression diagnostics", echo=FALSE, warning=FALSE, fig.width=10, fig.height=10}
+par(mfrow = c(2, 2))
+plot(model)
+```
 
 
+```{r model_improved, echo=FALSE, warning=FALSE, fig.width=10, fig.height=2}
+#model2 <- lm(sqrt(post_favor_Warren)~., data = FS)
+#autoplot(model2,3)
+```
+**Residual and fitted plot: **
+This plot  is used to check the linear relationship assumptions. A horizontal line, without distinct patterns is an indication for a linear relationship. Here we see that linearity seems to hold reasonably well, as the red line is close to the horizontal level (at 0). This suggests that we can assume a linear relationship between the predictors and the outcome variables. [@bruce2020practical]
+
+**Normal QQ plot:  **
+It is used to examine whether the residuals are normally distributed. It’s good if residuals points follow the straight dashed line. Here we can see our data points closely follow the dash line, we can assume normality.[@bruce2020practical]
+
+**Scale Location plot:**
+It is used to check the homogeneity of variance. A horizontal line with equally spread points is a good indication of homoscedasticity. however, in our case, we can see the blue line has a concave pattern, which indicates our model’s homoscedasticity is not good enough. [@bruce2020practical]
+
+To fix this, we will take a square root transformation of our dependent variable (Warren sentiment score).  After fixing, the model’s homoscedasticity became better. The new scale location plot is shown in the appendix. 
+
+**Residual vs leverage plot:**
+It is used to identify influential cases, that is extreme values that might influence the regression results when included or excluded from the analysis. In our case, the fitness is not good, we can find points with high leverage influence.[@bruce2020practical]
+
+# Results
 
 ## Two-Sample T-test results
 
@@ -445,28 +499,6 @@ m4_a%>%
 ```
 
 
-
-
-## Feature selection 
-
-
-```{r fs, echo=FALSE, warning=FALSE,fig.width=10, fig.height=10 }
-# more codes are in the scripts (path: scripts/02_feature selection)
-FS<- dat%>%
-  select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt_control,exp_1_prompt_info,exp_2_prompt_control,exp_2_prompt_accuracy,post_favor_Klobuchar,post_favor_Sanders,post_favor_Biden,post_favor_Bloomberg,,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main,crt1,crt2,crt3,agegroup,treat_control,treat_attackad,treat_fake_text,treat_fake_video,treat_fake_audio,treat_skit,polknow_speaker,polknow_boris,polknow_house,polknow_senate,polknow_veto,polknow_warren,polknow_medicare,quality_demographic_mismatch,quality_failed_backend_attncheck,duration_secs,age,meta_screenres,StartDate,EndDate,meta_resolution,exp_2_hifake,exp_2_lofake,exp_2_nofake,exp_2,exp_2_prompt_accuracy,exp_2_after_debrief,exp_2_prompt,Zip,believed_true))%>% na.omit()
-
-# include the plot from script
-library(here)
-knitr::include_graphics(here::here("outputs/paper/Variable importance plot.png"))
-
-## remove low importance feature 
-FS<- FS%>%select(-c(script_loans,quality,Hispanic))
-
-```
-
-
-
-
 ### Model Results
 
 Multiple linear regression was applied to use the top 20 important explanatory variables generated from the random forest model to predict the affect level.
@@ -486,30 +518,6 @@ In this model, the intercept represents the average affect level for the referen
 *	Partisan: Democrat
 * Media condition: Control
 *	Prompt: Control
-
-```{r model, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4,message=FALSE}
-
-## transfer data into dummy
-#  select(-c(4))#  change categorical var to factors 
-##create model
-
-model <- lm(post_favor_Warren ~., data =FS )
-
-```
-
-
-```{r diagnostic, echo=FALSE, warning=FALSE, fig.width=10, fig.height=10}
-#install.packages("see")
-library(performance) ## creates a ggplot2-based graphics 
-performance::check_model(model)
-```
-
-
-```{r model_improved, echo=FALSE, warning=FALSE, fig.width=10, fig.height=2}
-#model2 <- lm(sqrt(post_favor_Warren)~., data = FS)
-#autoplot(model2,3)
-```
-
 
 The coefficient for 
 Postgraduate is 9.32, suggesting that the average affect level from people whose education level is postgraduate is on average 9.32 units higher than people whose education level is less than high school level, holding other variables constant.
@@ -676,7 +684,8 @@ Based on the regression model result of adjusted R-squared, the model fit outper
 # Appendix
 
 ## Appendix A {#appendixA}
-```{r missing, fig.cap="Missing value Visualization ", echo=FALSE, warning =FALSE, out.width = "50%", fig.width=10, fig.height=10}
+Missing value in the 
+```{r missing, fig.cap="Missing value Visualization ", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
 
 # library("VIM")
 # aggr(dat,prop=FALSE,numbers=TRUE)
@@ -686,18 +695,20 @@ Based on the regression model result of adjusted R-squared, the model fit outper
 knitr::include_graphics(here::here("outputs/paper/Missing values.png"))
 ```
 
-
+## Appendix B {#appendixB}
 ```{r figure1,fig.cap="Scale-Location plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
 plot(model,which = 3)
 ```
 
 
-
+## Appendix C {#appendixC}
 ```{r figure2,fig.cap="Normal QQ-plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
 plot(model,which = 2)
 ```
 
-```{r figure3,fig.cap="Residual versus Leverage plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
+
+## Appendix D {#appendixD}
+```{r figure3,fig.cap="Residual versus Leverage plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=4}
 plot(model,which = 5)
 ```
 
