@@ -198,7 +198,7 @@ ggarrange(
 
 Figure \@ref(fig:postfavor) illustrates the distribution of feeling towards Elizabeth Warren after receiving different news feed treatments. We realize that there is no significant difference in the distribution of affective response. The x-axis stands for the affective response towards Elizabeth Warren, ranging from 0 to 100. No matter what treatment subjects were exposed, a certain number of participants rated their feeling towards Warren as 0, along with a number of people who voted 50. It is worth mentioning that deepfake videos do increase the negative sentiment towards Elizabeth Warren compared to the control group.
 
-```{r postfavor, fig.cap="Distribution of feelings towards Sanders in six different situations",echo=FALSE}
+```{r postfavor, fig.cap="Distribution of feelings towards Warren in six different situations",echo=FALSE,fig.width=5, fig.height=4}
 #histogram for each treat
 EDA<-EDA%>%
   drop_na(post_favor_Warren)
@@ -301,7 +301,7 @@ model <- lm(post_favor_Warren ~., data =FS )
 
 ```
 
-```{r diagnostic, fig.cap = "Regression diagnostics", echo=FALSE, warning=FALSE, fig.width=10, fig.height=10}
+```{r diagnostic, fig.cap = "Regression diagnostics", echo=FALSE, warning=FALSE, fig.width=8, fig.height=8}
 par(mfrow = c(2, 2))
 plot(model)
 ```
@@ -330,20 +330,20 @@ It is used to identify influential cases, that is extreme values that might infl
 ## Two-Sample T-test results
 
 ### Deception Level
-In the descriptive analysis aspect, Table \@ref(tab:table1), shown below, illustrates the average deception level of each media format. The result shows that although deepfake videos have an average deception level of 3.23 out of 5, it is lower than the average level of audio(3.35) and text(3.30). Audio has the highest average deception level, and skit (2.57) has the lowest average deception level.
+In the descriptive analysis aspect, Table \@ref(tab:table1)^[ Table \@ref(tab:table1) uses the "plyr" package @cite_plyr to calculate the average deception level for each media condition], shown below, illustrates the average deception level of each media format. The result shows that although deepfake videos have an average deception level of 3.23 out of 5, it is lower than the average level of audio(3.35) and text(3.31). Audio has the highest average deception level, and skit (2.57) has the lowest average deception level.
 
 
 ```{r table1,tab.cap="Average deception level of each media format", echo = FALSE,warning=FALSE}
-#Average deception level by treat
+#Average deception level by each media condition except the control group
+
 EDA%>%
-  group_by(treat)%>%
-  filter(treat != "control")%>%
-  summarise("Average Deception Level"=mean(believed_true,na.rm = T))%>%
+  filter(treat !='control')%>%
+  ddply(.(treat), summarize,  "Average Deception Level"=round(mean(believed_true,na.rm = T),2))%>%
   knitr::kable(caption = "Average deception level of each media format")
 ```
 
 
-In the statistical analysis aspect, unpaired two-sample t-tests were applied to test whether deepfake videos are statistically different from other media formats at the deception level. The results from Table \@ref(tab:ttest1) to Table \@ref(tab:ttest3) show that only the difference in the deception level between video and skit is significant (p<0.01). The p-values for comparing video and text, video and audio are larger than 0.05, which means there is not sufficient evidence to support that video is different from the audio or text. In other words, videos do not differ from audio or text significantly. 
+In the statistical analysis aspect, unpaired two-sample t-tests were applied to test whether deepfake videos are statistically different from other media formats at the deception level. The results from Table \@ref(tab:ttest1) to Table \@ref(tab:ttest3)^[Table \@ref(tab:ttest1) to Table \@ref(tab:ttest3) use 'KableExtra' @citekableExtra to modify the table style and add title] show that only the difference in the deception level between video and skit is significant (p<0.01). The p-values for comparing video and text, video and audio are larger than 0.05, which means there is not sufficient evidence to support that video is different from the audio or text. In other words, videos do not differ from audio or text significantly. 
 
 
 ```{r ttest1, echo=FALSE, fig.width=10, fig.height=3}
@@ -428,7 +428,7 @@ m1_a%>%
 Similarly, the same analysis has been done for the rest unpaired two-sample t-tests. In our study, we used a 5% significance level. Table \@ref(tab:attest2) shows the test result of how deepfake videos and texts impact audiences' feelings. The result shows that the difference in affect level between video (Mean = 41.28) and text (Mean=44.22) was not significant given the p-value is greater than 0.05.
 
 
-### t-test 2
+
 
 ```{r attest2, echo=FALSE, fig.width=10, fig.height=3}
 
@@ -449,7 +449,7 @@ m2_a%>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-### t-test 3
+
 
 
 Table \@ref(tab:attest3) shows the test result of how deepfake videos and audios impact audiences' feelings. The difference in affect level between video(Mean = 41.28) and audio (Mean=43.93) was not significant given the p-value is greater than 0.05.
@@ -475,7 +475,7 @@ m3_a%>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-### t-test 4
+
 
 Table \@ref(tab:attest4) shows the test result of how deepfake videos and skit impact audiences feeling. The difference in affect level between video(Mean = 41.28) and skit (Mean=43) was not significant given the p-value is greater than 0.05.
 
@@ -503,7 +503,7 @@ m4_a%>%
 
 Multiple linear regression was applied to use the top 20 important explanatory variables generated from the random forest model to predict the affect level.
 
-As shown in the summary table, only 9 variables are significant (p<0.05) to the affect level to Elizabeth Warren which are postgraduate education level is; income ranging in $100k to $150k; living in the Northeast of  US; whether age older  than 65; partisan; ambivalent sexism; and treat is advertisement.
+As shown in the summary table,Table \@ref(tab:modelsummary)^[The 'modelsummary' package @cite_modelsummary was helped to create the table.], there are 12 variables are significant (p<0.05) to the affect level to Elizabeth Warren which are postgraduate education level is; income ranging in $100k to $150k; income ranging larger than $150k; living in the Northeast of  US; whether age older  than 65; partisan; ambivalent sexism; treat is advertisement;treat is audio; treat is skit; and internet usage.
 
 In this model, the intercept represents the average affect level for the reference group which includes the following characteristics: 
 
@@ -519,8 +519,34 @@ In this model, the intercept represents the average affect level for the referen
 * Media condition: Control
 *	Prompt: Control
 
-The coefficient for 
-Postgraduate is 9.32, suggesting that the average affect level from people whose education level is postgraduate is on average 9.32 units higher than people whose education level is less than high school level, holding other variables constant.
+```{r modelsummary, echo=FALSE, warning=FALSE, fig.width=8, fig.height=10}
+# install.packages("modelsummary")
+library(modelsummary)
+
+ms<-
+modelsummary(
+model,
+output = "default",
+fmt = 3,
+estimate = "estimate",
+statistic = "std.error",
+vcov = NULL,
+conf_level = 0.95, #confidence level to use for confidence intervals
+stars = TRUE,
+align = NULL,
+notes = NULL,
+title = "Regression results")
+
+ms%>%
+  kableExtra::kable_styling(bootstrap_options = "basic",
+                            latex_options = "HOLD_position",
+                            table.envir = "table",
+                            font_size =5
+                           )
+  
+```
+
+The coefficient for Postgraduate is 9.32, suggesting that the average affect level from people whose education level is postgraduate is on average 9.32 units higher than people whose education level is less than high school level, holding other variables constant.
 
 The coefficient for HHI\$100k to \$150k is 3.90, suggesting that the average affect level from people whose income are in the range of \$100k to \$150k is on average 3.90 units higher than people whose income are less than $25k, holding other variables constant.
 
@@ -550,36 +576,11 @@ The coefficient for Internet Usage is 1.12, suggesting that one unit increase in
 ### Model Assessment Results
 The summary table above shows that the R-square value for the multiple linear regression model is 0.39, which means about 39% of the variation in the dependent variable(affect level) can be explained by the multiple linear regression model. 
 
-In addition, in the Scale-Location plot (Figure \@ref(fig:figure1) in Appendix), an approximately horizontal line is shown, which means the residuals are randomly distributed and have constant variance. The Normal QQ-plot (Figure \@ref(fig:figure2) in Appendix) shows almost all the residuals match the diagonal line, meaning the residuals are normally distributed. The Residual versus Leverage plot (Figure \@ref(fig:figure3) in Appendix) shows that there is no evidence of outliers, and none of the points come close to having both high residual and leverage.
+In addition, in the Scale-Location plot (Figure \@ref(fig:diagnostic)), an approximately horizontal line is shown, which means the residuals are randomly distributed and have constant variance. The Normal QQ-plot (Figure \@ref(fig:diagnostic)) shows almost all the residuals match the diagonal line, meaning the residuals are normally distributed. The Residual versus Leverage plot (Figure \@ref(fig:diagnostic)) shows that there is no evidence of outliers, and none of the points come close to having both high residual and leverage.
 
 
 
-```{r modelsummary, echo=FALSE, warning=FALSE, fig.width=8, fig.height=10}
-# install.packages("modelsummary")
-library(modelsummary)
 
-ms<-
-modelsummary(
-model,
-output = "default",
-fmt = 3,
-estimate = "estimate",
-statistic = "std.error",
-vcov = NULL,
-conf_level = 0.95, #confidence level to use for confidence intervals
-stars = TRUE,
-align = NULL,
-notes = NULL,
-title = "Regression results")
-
-ms%>%
-  kableExtra::kable_styling(bootstrap_options = "basic",
-                            latex_options = "HOLD_position",
-                            table.envir = "table",
-                            font_size =5
-                           )
-  
-```
 
 
 
@@ -695,22 +696,6 @@ Missing value in the
 knitr::include_graphics(here::here("outputs/paper/Missing values.png"))
 ```
 
-## Appendix B {#appendixB}
-```{r figure1,fig.cap="Scale-Location plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
-plot(model,which = 3)
-```
-
-
-## Appendix C {#appendixC}
-```{r figure2,fig.cap="Normal QQ-plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
-plot(model,which = 2)
-```
-
-
-## Appendix D {#appendixD}
-```{r figure3,fig.cap="Residual versus Leverage plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=4}
-plot(model,which = 5)
-```
 
 \newpage
 
