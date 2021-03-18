@@ -587,6 +587,9 @@ ms%>%
 
 Deepfake technology can be used against candidates to synthesize false videos, which would potentially disrupt the elections. The purpose of the research is to inform the public of the existence of deepfake technology and consequently to improve the resilience of democratic politics to this AI threat. 
 
+This paper replicates the first experiment of Soubhik Barari (2021) to further study the persuasion power of deepfake through the channel of its affective manipulation on viewer’s political perception. Media heterogeneity effects are reviewed via t-tests between other false media and deepfake.  The heterogeneity in affective response by viewer traits is examined with a multiple linear regression model. Feature selection is performed via the Random Forest classifier to select the top 20 relevant variables into our model input, which identified additional important socioeconomic features other than the ones from the original paper. 
+
+
 ## Bias and ethical concerns
 
 Some modelling bias and ethical concerns are addressed:
