@@ -50,7 +50,7 @@ Deepfake technology has the potency to sway viewer’s belief on their political
 
 The remainder of the paper is constructed as follows. Section 2 describes the dataset, experiment design, and exploratory data analysis on feature visualization. Section 3 outlines the reproduced experiment models, which is designed to discover relationships between features and the target variable. Section 4 summarizes the model results according to evaluation criteria. Finally, Section 5 discusses our research findings and provides directions for future research. 
 
-We replicate this paper using R statistical programming language [@citeR]. In particular, we use packages `tidyverse` [@citetidyverse],  `here` [@citehere], `ggpubr` [@citeggpubr] to manipulate data and packages, `kableExtra` [@citekableExtra] to generate tables, and `ggplot2` [@citeggplot], `ggthemes` [@citeggthemes] to adjust diagrams themes. 
+We replicate this paper using R statistical programming language [@citeR]. In particular, we use packages `tidyverse` [@citeTidyverse],  `here` [@citehere], `ggpubr` [@citeggpubr] to manipulate data and packages, `kableExtra` [@citekableExtra] to generate tables, and `ggplot2` [@citeggplot], `ggthemes` [@citeggthemes] to adjust diagrams themes. 
 
 ## Intervention
 
