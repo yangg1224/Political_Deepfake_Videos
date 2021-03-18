@@ -5,17 +5,17 @@ With the growing ubiquity of deepfake technology, here comes one more channel fo
 The paper intends to replicate the experimental report by Soubhik Barari, Christopher Lucas, and Kevin Munger. We are going to analyze the dataset collected by their experiment. The survey dataset records 5,750 observations with 100 variables. In this case, we focus on the top 20 most important features related to the favorability towards the Democratic politician Elizabeth Warren. 
 
 The description of the variables are as followed:
-* Age group: categorical variable with two levels, <65 and 65+.
-* Ambivalent Sexism: evaluates negative stereotypes towards women on a scale of 1 to 5.
-* PID: shows the party identification of Republican, Independent, or Democrat.
-* Polknow: scaled to be within 0 to 1, reflecting respondents’ political knowledge that might influence public attitudes and opinions.
-* Treat: one of the six treatment conditions in the experiment: deepfake video, false media in audio, text, skit, campaign attack ad, or control.
-* Exp_1_prompt: information about the intervention: received information and received no information on deepfake prior to the newsfeed experiment.
-* Internet_usage: information about the frequency of using the internet per week.
-* Meta_OS:the platforms of internet access, namely either mobile devices or desktop.
-* Educ: four categories by educational level including <High school, High school, College, and Postgraduates.
-* HHI: income levels including <$25k, $25k-$49k, $50k-$74k, $75k-$99k, $100k-$150k, and >$150k.
-* Post_favor_Warren: ranging from 0 to 100  as the effective response to Warren after subjects receive the news feed treatment.
+* `Age group`: categorical variable with two levels, <65 and 65+.
+* `Ambivalent Sexism`: evaluates negative stereotypes towards women on a scale of 1 to 5.
+* `PID`: shows the party identification of Republican, Independent, or Democrat.
+* `Polknow`: scaled to be within 0 to 1, reflecting respondents’ political knowledge that might influence public attitudes and opinions.
+* `Treat`: one of the six treatment conditions in the experiment: deepfake video, false media in audio, text, skit, campaign attack ad, or control.
+* `Exp_1_prompt`: information about the intervention: received information and received no information on deepfake prior to the newsfeed experiment.
+* `Internet_usage`: information about the frequency of using the internet per week.
+* `Meta_OS`:the platforms of internet access, namely either mobile devices or desktop.
+* `Educ`: four categories by educational level including <High school, High school, College, and Postgraduates.
+* `HHI`: income levels including <$25k, $25k-$49k, $50k-$74k, $75k-$99k, $100k-$150k, and >$150k.
+* `Post_favor_Warren`: ranging from 0 to 100  as the effective response to Warren after subjects receive the news feed treatment.
 
 # File Structure
 * Scripts: the folder contains R codes to import and clean data.
