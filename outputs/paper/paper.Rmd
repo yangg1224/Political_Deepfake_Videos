@@ -7,9 +7,14 @@ output:
  toc: no
 abstract: "With the growing ubiquity of deepfake technology, here comes one more channel for the spread of misinformation. We reproduce Soubhik Barari (2021) paper and identify several additional demographic traits contributing to the persuasion power of deepfake on political defamation through its material effect on feeling manipulation in a RCT field experiment on the 2020 Presidential election. We find little evidence that deepfake videos have a unique ability to shift viewers’ perceptions on politicians. Apart from partisanship, education, and other socioeconomic factors identified by the original paper, we discover that income and internet usage would also significantly impact the candidate’s affective appeal to the news feed viewer. "
 
+header-includes:
+ - \usepackage{float}
+ - \floatplacement{figure}{H}
+ - \floatplacement{table}{H}
 
 thanks: "Code and data are available at: https://github.com/yangg1224/Political_Deepfake_Videos.git."
 bibliography: references.bib
+
 ---
 
 ```{r setup, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
@@ -249,8 +254,8 @@ The sign of the regression coefficient describes whether there is a positive or 
 
 $$\hat Y=\hat \beta_0+\sum_{a=male}^{other}\hat \beta_1\cdot Gender_a+\sum_{b=High\ school}^{Postgraduate}\hat \beta_2\cdot educ_b+\sum_{c=25K\ -49K}^{>150K}\hat \beta_3\cdot HHI_c+\sum_{d=white}^{black}\hat \beta_4\cdot Ethnicity_d$$
 
-$$+\sum_{e=Northeast}^{West}\hat \beta_5\cdot Region_e+\hat \beta_{6}\cdot I_{WaveID}+\hat \beta_{7}\cdot I_{Meta:OSmobile}+\hat \beta_{8}\cdot I_{Age>65}+\sum_{i=Independent}^{Republican}\hat \beta_9\cdot PID_i
-+\hat \beta_{10}\cdot {Ambivalent\ Sexism}+\hat \beta_{11}\cdot$$ $${Polknow}+\sum_{l=video}^{ad}\hat \beta_{12}\cdot Treat_l+\sum_{m=bidenshit}^{lgbtq}\hat \beta_{13}\cdot Script_m+\hat \beta_{14}\cdot I_{exp\_1\_prompt:\ info}$$
+$$+\sum_{e=Northeast}^{West}\hat \beta_5\cdot Region_e+\hat \beta_{6}\cdot I_{WaveID}+\hat \beta_{7}\cdot I_{Meta:OSmobile}+\hat \beta_{8}\cdot I_{Age>65}+\sum_{i=Independent}^{Republican}\hat \beta_9\cdot PID_i$$
+$$+\hat \beta_{10}\cdot {Ambivalent\ Sexism}+\hat \beta_{11}\cdot {Polknow}+\sum_{l=video}^{ad}\hat \beta_{12}\cdot Treat_l+\sum_{m=bidenshit}^{lgbtq}\hat \beta_{13}\cdot Script_m+\hat \beta_{14}\cdot I_{exp\_1\_prompt:\ info}$$
 
 $$+\hat \beta_{15}\cdot {post\_dig\_lit}+\hat \beta_{16}\cdot {Internet\_usage}+\hat \beta_{17}\cdot {CRT}+\epsilon$$
 
