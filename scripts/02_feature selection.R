@@ -22,6 +22,11 @@ library(randomForest)
 library(plyr)
 
 ####Clean the data 
+library(here) # locate the file path
+data<- load(here::here("inputs/data/deepfake.RData"))
+
+EDA<- dat%>%
+  select(treat, response_wave_ID, exp_1_prompt, meta_OS, age_65, educ, PID, crt, gender, age, polknow, internet_usage, ambivalent_sexism, post_favor_Warren,believed_true)
 
 # delete the columns we dont need
 FS<- dat%>%
@@ -60,9 +65,10 @@ FS_tree%>%
   ylab("Importance value")+
   ggtitle("Variable importance plot")%>%
   ggsave(device = "png",
-         width = 8,
-         height = 6,
-         dpi = 300,
+         width = 6,
+         height = 4,
+         dpi = 72,
+         limitsize = TRUE,
          path =  'outputs/paper/')
 
 ## remove low importance feature 
