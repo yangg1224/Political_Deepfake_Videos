@@ -301,7 +301,7 @@ model <- lm(post_favor_Warren ~., data =FS )
 
 ```
 
-```{r diagnostic, fig.cap = "Regression diagnostics", echo=FALSE, warning=FALSE, fig.width=8, fig.height=8}
+```{r diagnostic, fig.cap = "Regression diagnostics", echo=FALSE, warning=FALSE, fig.width=6, fig.height=6}
 par(mfrow = c(2, 2))
 plot(model)
 ```
