@@ -198,7 +198,9 @@ ggarrange(
 
 Figure \@ref(fig:postfavor) illustrates the distribution of feeling towards Elizabeth Warren after receiving different news feed treatments. We realize that there is no significant difference in the distribution of affective response. The x-axis stands for the affective response towards Elizabeth Warren, ranging from 0 to 100. No matter what treatment subjects were exposed, a certain number of participants rated their feeling towards Warren as 0, along with a number of people who voted 50. It is worth mentioning that deepfake videos do increase the negative sentiment towards Elizabeth Warren compared to the control group.
 
+
 ```{r postfavor, fig.cap="Distribution of feelings towards Warren in six different situations",echo=FALSE,fig.width=5, fig.height=4}
+
 #histogram for each treat
 EDA<-EDA%>%
   drop_na(post_favor_Warren)
@@ -223,9 +225,9 @@ Before building our model, feature selection is conducted on the selected datase
 * Enhance the understanding between features and feature importances
 * Reduce features overfitting and features dimensionality to improve the model accuracy
 
-Feature importance plays a vital role in predictive modelling projects. It can provide insights on data, models, and how to reduce dimensionality and select features, thereby improving efficiency and effectiveness of the model prediction. [@guyon2003introduction]
+Feature importance plays a vital role in predictive modelling projects. It can provide insights on data, models, and how to reduce dimensionality and select features, thereby improving efficiency and effectiveness of the model prediction [@guyon2003introduction]. 
 
-Random Forest is the chosen method for our feature selection model because it can handle multi-dimensional data and output feature importance according to maximized information gain in node splitting. [@nguyen2013random]The random forest algorithm forms a series of classification methods that rely on a combination of several decision trees. According  to the guideline from Liaw, the random forest algorithm is optimized via three parameters in our project: we set ntree=500 (the number of trees), mtry=all the variables in FS dataset divided by 3 (the number of predictors randomly tested at each node) and node size=5 (the minimal size of the terminal node). [@liaw2018classification]
+Random Forest is the chosen method for our feature selection model because it can handle multi-dimensional data and output feature importance according to maximized information gain in node splitting [@nguyen2013random]. Random forest algorithm forms a series of classification methods that rely on a combination of several decision trees. According  to the guideline from Liaw [@nguyen2013random], the random forest algorithm is optimized via three parameters in our project: we set ntree=500 (the number of trees), mtry=all the variables in FS dataset divided by 3 (the number of predictors randomly tested at each node) and node size=5 (the minimal size of the terminal node). 
 
 The slip plot (Figure \@ref(fig:fs)) shows the feature selection results.  As we can see, `PID` partisanship is the most vital variable to affect the sentiment score towards Warren. As we know, partisanship is one of the most important factors affecting voters' voting. In us, there is a large group of fanatic political supporters. They don’t care about who is the candidate, or what those candidates’ ideas are. They just vote for the right party. Warren is a representative of the Democratic Party, so voters who are optimistic about the Democratic Party are willing to give higher sentiment scores. On the other hand, people who are in the Republican party and the Independent party would not support Warren. 
 
@@ -242,7 +244,7 @@ knitr::include_graphics(here::here("outputs/paper/Variable importance plot.png")
 FS<- FS%>%select(-c(script_loans,quality,Hispanic))
 
 ```
-Next important variable comes to `sexism`. Lovenduski mentioned that “Women remain significantly under-represented in political life.” A big reason behind this is that people still associate toughness and leadership qualities with men. “Female marginalisation is hardwired into the traditional institutions within which politics takes place.” Of course, things have two sides. American feminists also let Warren have a large number of loyal female supporters. [@lovenduski2014institutionalisation]
+Next important variable comes to `sexism`. Lovenduski [@lovenduski2014institutionalisation] mentioned that “Women remain significantly under-represented in political life.” A big reason behind this is that people still associate toughness and leadership qualities with men. “Female marginalisation is hardwired into the traditional institutions within which politics takes place.” Of course, things have two sides. American feminists also let Warren have a large number of loyal female supporters. 
 
 We are interested to find the variable “HHI” (household income) plays an important role in Warren’s sentiment score. Before we go to see the regression model result, we are guessing people with higher annual income care more about the candidate’s attitudes towards economic development. Because they might have their investment in different industries which will be affected. In addition, income is usually correlated with education level. People with higher income tend to have more general knowledge and thus are less likely to be fooled by deepfake.
 
@@ -252,9 +254,9 @@ Finally, we decided to drop variables with lower than feature importance value o
 
 ## Multiple Linear Regression
 
-We have made a choice between linear and non-linear models. Random forest regression is an alternative form of regression. It works well with both categorical and continuous features. And it can handle nonlinear elements in the model. Normalizing of data is not required as it uses a rule-based approach. However, despite these advantages, a random forest algorithm also has some drawbacks. Although it achieves higher prediction accuracy than linear regression models, random forest regression suffers from weak interpretability. It does not output estimated variable coefficients or p-values to determine significance of each variable, which are indispensable for statistical inference and model interpretation. Besides, it demands more computational power as it builds numerous trees to combine their outputs. Furthermore, the random forest regression model is susceptible to overfitting and the ultimate model performance relies on manual hyperparameter tuning. Consequently, our group decided to choose the multiple linear regression model. [@strobl2008danger]
+We have made a choice between linear and non-linear models. Random forest regression is an alternative form of regression. It works well with both categorical and continuous features. And it can handle nonlinear elements in the model. Normalizing of data is not required as it uses a rule-based approach. However, despite these advantages, a random forest algorithm also has some drawbacks [@strobl2008danger]. Although it achieves higher prediction accuracy than linear regression models, random forest regression suffers from weak interpretability. It does not output estimated variable coefficients or p-values to determine significance of each variable, which are indispensable for statistical inference and model interpretation. Besides, it demands more computational power as it builds numerous trees to combine their outputs. Furthermore, the random forest regression model is susceptible to overfitting and the ultimate model performance relies on manual hyperparameter tuning. Consequently, our group decided to choose the multiple linear regression model. 
 
-We are using RStudio to run the multiple linear regression model. The following reasons explain why we decide to choose multiple linear regression[@WinNT]:
+We are using RStudio to run the multiple linear regression model. The following reasons explain why we decide to choose multiple linear regression [@WinNT]:
 
 * It account for all of the potentially important factors in one model
 * It leads to a more precise understanding of the relationship between dependent variables and independent variables
@@ -265,15 +267,15 @@ The results of the regression model will be detailed in the next section. We are
 
 **R squared** : 
 
-R-squared  is a measure of the goodness of fit of the model. A larger R-squared  indicates a closer fit of the model to the data. It is used as an optimality criterion in parameter selection and model selection.[@johansen1980welch]
+R-squared  is a measure of the goodness of fit of the model. A larger R-squared  indicates a closer fit of the model to the data. It is used as an optimality criterion in parameter selection and model selection [@johansen1980welch].
 
 **P-value**:
 
-P-value is used to describe the occurrence possibility of the extreme outcome when the null hypothesis is true. If the p-value is small, it means that the probability of occurrence of the null hypothesis to be true is very small. And if it does occur, we have a reason to reject the null hypothesis. In short, the smaller the p-value, the more significant the result. Usually the threshold for significant p value is set to 0.05.[@ioannidis2018proposal]
+P-value is used to describe the occurrence possibility of the extreme outcome when the null hypothesis is true [@ioannidis2018proposal]. If the p-value is small, it means that the probability of occurrence of the null hypothesis to be true is very small. And if it does occur, we have a reason to reject the null hypothesis. In short, the smaller the p-value, the more significant the result. Usually the threshold for significant p value is set to 0.05.
 
 **Regression coefficient**:
 
-The sign of the regression coefficient describes whether there is a positive or negative correlation between each feature variable and the dependent variable (Warren affective score). A positive coefficient means that as the value of the independent variable increases, the average value of the affective score also tends to increase. A negative coefficient indicates that as the independent variable increases, the affective score tends to decrease.[@uyanik2013study]
+The sign of the regression coefficient describes whether there is a positive or negative correlation between each feature variable and the dependent variable (Warren affective score). A positive coefficient means that as the value of the independent variable increases, the average value of the affective score also tends to increase. A negative coefficient indicates that as the independent variable increases, the affective score tends to decrease [@uyanik2013study].
 
 
 The equation for the model is shown below: 
@@ -301,6 +303,7 @@ model <- lm(post_favor_Warren ~., data =FS )
 
 ```
 
+
 ```{r diagnostic, fig.cap = "Regression diagnostics", echo=FALSE, warning=FALSE, fig.width=8, fig.height=8}
 par(mfrow = c(2, 2))
 plot(model)
@@ -312,18 +315,18 @@ plot(model)
 #autoplot(model2,3)
 ```
 **Residual and fitted plot: **
-This plot  is used to check the linear relationship assumptions. A horizontal line, without distinct patterns is an indication for a linear relationship. Here we see that linearity seems to hold reasonably well, as the red line is close to the horizontal level (at 0). This suggests that we can assume a linear relationship between the predictors and the outcome variables. [@bruce2020practical]
+This plot  is used to check the linear relationship assumptions. A horizontal line, without distinct patterns is an indication for a linear relationship. Here we see that linearity seems to hold reasonably well, as the red line is close to the horizontal level (at 0). This suggests that we can assume a linear relationship between the predictors and the outcome variables [@bruce2020practical]. 
 
 **Normal QQ plot:  **
-It is used to examine whether the residuals are normally distributed. It’s good if residuals points follow the straight dashed line. Here we can see our data points closely follow the dash line, we can assume normality.[@bruce2020practical]
+It is used to examine whether the residuals are normally distributed. It’s good if residuals points follow the straight dashed line. Here we can see our data points closely follow the dash line, we can assume normality [@bruce2020practical].
 
 **Scale Location plot:**
-It is used to check the homogeneity of variance. A horizontal line with equally spread points is a good indication of homoscedasticity. however, in our case, we can see the blue line has a concave pattern, which indicates our model’s homoscedasticity is not good enough. [@bruce2020practical]
+It is used to check the homogeneity of variance. A horizontal line with equally spread points is a good indication of homoscedasticity. however, in our case, we can see the blue line has a concave pattern, which indicates our model’s homoscedasticity is not good enough [@bruce2020practical]. 
 
 To fix this, we will take a square root transformation of our dependent variable (Warren sentiment score).  After fixing, the model’s homoscedasticity became better. The new scale location plot is shown in the appendix. 
 
 **Residual vs leverage plot:**
-It is used to identify influential cases, that is extreme values that might influence the regression results when included or excluded from the analysis. In our case, the fitness is not good, we can find points with high leverage influence.[@bruce2020practical]
+It is used to identify influential cases, that is extreme values that might influence the regression results when included or excluded from the analysis. In our case, the fitness is not good, we can find points with high leverage influence [@bruce2020practical].
 
 # Results
 
@@ -507,17 +510,17 @@ As shown in the summary table,Table \@ref(tab:modelsummary)^[The 'modelsummary' 
 
 In this model, the intercept represents the average affect level for the reference group which includes the following characteristics: 
 
-* Gender: Female
-*	Education Level: lower than high school degree 
-* Income: Less than $25K
-*	Ethnicity: Asian
-* Region: Midwest
-*	Response_wave_ID: SV_OxlqWIOfO10wuYI
-* Device: Desktop
-*	Age group: Less than 65 years old
-*	Partisan: Democrat
-* Media condition: Control
-*	Prompt: Control
+* `Gender`: Female
+*	`Education Level`: Lower than high school degree 
+* `Income`: Less than $25K
+*	`Ethnicity`: Asian
+* `Region`: Midwest
+*	`Response_wave_ID`: SV_OxlqWIOfO10wuYI
+* `Device`: Desktop
+*	`Age group`: Younger than 65 years old
+*	`Partisan`: Democrat
+* `Media condition`: Control
+*	`Promp`t: Control
 
 ```{r modelsummary, echo=FALSE, warning=FALSE, fig.width=8, fig.height=10}
 # install.packages("modelsummary")
@@ -588,6 +591,9 @@ In addition, in the Scale-Location plot (Figure \@ref(fig:diagnostic)), an appro
 
 Deepfake technology can be used against candidates to synthesize false videos, which would potentially disrupt the elections. The purpose of the research is to inform the public of the existence of deepfake technology and consequently to improve the resilience of democratic politics to this AI threat. 
 
+This paper replicates the first experiment of Soubhik Barari (2021) to further study the persuasion power of deepfake through the channel of its affective manipulation on viewer’s political perception. Media heterogeneity effects are reviewed via t-tests between other false media and deepfake.  The heterogeneity in affective response by viewer traits is examined with a multiple linear regression model. Feature selection is performed via the Random Forest classifier to select the top 20 relevant variables into our model input, which identified additional important socioeconomic features other than the ones from the original paper. 
+
+
 ## Bias and ethical concerns
 
 Some modelling bias and ethical concerns are addressed:
@@ -631,7 +637,7 @@ Although Warren has long been delisted as a Democratic presidential candidate, s
 ## Internal validity & external validity of model
 
 ### Internal validity
-The internal validity of the model can be justified by the procedures of sampling, randomization in experiment intervention, controlling for confounders and having sufficient sample size in the regression model, so that alternative explanations but the treatment can be eliminated from the cause of effect on the outcome.
+The internal validity of the model can be justified by the procedures of sampling, randomization in experiment intervention, controlling for confounders and having sufficient sample size in the regression model [@citeValidity], so that alternative explanations but the treatment can be eliminated from the cause of effect on the outcome.
 
 **Sampling**: Subjects were stratified sampled at a nationally representative weight in this field experiment, and sample’s demographic traits were cross-compared with the demographic traits in the most recent Current Population Survey (CPS) to ensure the randomization in sampling which simulates real world demographic distributions. 
 
@@ -642,7 +648,7 @@ The internal validity of the model can be justified by the procedures of samplin
 **Sufficient sample size**: There were 5,750 subjects participated in the experiment and after cleaning of missing values, 4,131 rows of observations data were fed to the multiple linear regression model. The sample size was sufficient to bring about statistical power in conducting inference on variable significance. 
 
 ### External validity
-External validity of conclusion on deepfakes was enhanced by the use of 5 customized deepfake contents instead of recycling one well-recognized deepfake example in the treatment experiment. The sampling population is from the U.S. national level, so that the study conclusion and subject trait summary are applicable to the domestic level. The study consists of two waves between Sep. 29th and Oct. 29th. The repetition of experiment conducted at different time periods is to smooth out some possible time effects in the result. However, the model result cannot be generalized to outside the U.S. due to the limitation in the topic itself - U.S. presidential election.  
+External validity of conclusion on deepfakes was enhanced by the use of 5 customized deepfake contents instead of recycling one well-recognized deepfake example in the treatment experiment [@externalv]. The sampling population is from the U.S. national level, so that the study conclusion and subject trait summary are applicable to the domestic level. The study consists of two waves between Sep. 29th and Oct. 29th. The repetition of experiment conducted at different time periods is to smooth out some possible time effects in the result. However, the model result cannot be generalized to outside the U.S. due to the limitation in the topic itself - U.S. presidential election.  
 
 
 ## Weaknesses and opportunities for future work
@@ -654,7 +660,9 @@ External validity of conclusion on deepfakes was enhanced by the use of 5 custom
 **Within the U.S. only**: The nature of the U.S. domestic election topic limits the conclusion only applicable to regions within the U.S. on the study of political misinformation impact by deepfake media.
 
 ### Opportunities
+
 The study investigates the impact of deepfake media on political misinformation through two field experiments conducted within a month period through the topic of 2020 Democratic presidential election. The external validity of the study can be further improved in order for the result to be generalizable to other political parties, time periods and situations. 
+
 **Time window**: for the experiment time window, it can be prolonged or randomized in a series of experiment repetitions as long as they are conducted after the time point when the in-party presidential nominee has been finalized.
 
 **Candidate from other parties**: The same experiment could be repeated using candidates from other parties (Republican, or Independent) to test the robustness and generalizability of the model result.
@@ -662,7 +670,9 @@ The study investigates the impact of deepfake media on political misinformation 
 **Bayesian modelling**: The persuasion effect of deepfake on politics misinformation is measured through two channels, deception level and affective score. When interpreting the regression result on respondent’s affective response to the candidate in the deepfake experiment, the assumption is made that the viewer forms their belief on the media content before they change their mind on the involved candidate. We assume that the direction of change in affective score in the experiment is caused by whether the viewer believed the newsfeed content. A negative coefficient indicates that they were fooled by the content and thus further dislike Warren based on their belief in the false content. Bayesian inference modelling [@citeBayes] can be used to incorporate the conditional probability of whether the viewer believed the media content to be true into the analysis on affective response. 
 
 ## Differences and difficulties
+
 ### Differences
+
 **Feature selection**: Before building the multiple linear regression model, feature engineering was used to visualize feature importance and select the top 20 most important features from a total of 100 variables with the Random Forest classifier [@citeRandomforest]. The tree-based algorithm splits nodes based on how well they improve the purity of the node through maximizing information gain. The most informative features are at the start of the trees, and less relevant features are places at lower nodes. This process naturally ranks the importance of features, therefore it can be used for feature selection. 
 
 **Additional features**: Apart from the treatment variable and regressors describing demographic and socioeconomic traits (age, education, gender, party identification, political knowledge, metrics on internet usage, .etc) in the original model, the random forest algorithm identified household income (`HHI`), region, script type, and ethnicity as relevant features. Income confounds with deepfake deception and affective appeal through its correlation with digital literacy and internet usage. Region and ethnicity are correlated with partisanship. The five types of script contents were included to control for any differential effect of persuasion ability by deepfake. 
