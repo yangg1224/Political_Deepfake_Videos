@@ -51,7 +51,7 @@ The remainder of the paper is constructed as follows. Section 2 describes the da
 
 We replicate this paper using R statistical programming language [@citeR]. In particular, we use packages `tidyverse` [@tidy],  `here` [@citehere], `ggpubr` [@citeggpubr] to manipulate data and packages, `kableExtra` [@citekableExtra] to generate tables, and `ggplot2` [@citeggplot], `ggthemes` [@citeggthemes] to adjust diagrams themes. 
 
-## Intervention
+
 
 # Data
 ## Dataset features
@@ -227,17 +227,44 @@ Feature importance plays a vital role in predictive modelling projects. It can p
 
 Random Forest is the chosen method for our feature selection model because it can handle multi-dimensional data and output feature importance according to maximized information gain in node splitting [@nguyen2013random]. Random forest algorithm forms a series of classification methods that rely on a combination of several decision trees. According  to the guideline from Liaw [@nguyen2013random], the random forest algorithm is optimized via three parameters in our project: we set ntree=500 (the number of trees), mtry=all the variables in FS dataset divided by 3 (the number of predictors randomly tested at each node) and node size=5 (the minimal size of the terminal node). 
 
-The slip plot (Figure \@ref(fig:fs)) shows the feature selection results.  As we can see, `PID` partisanship is the most vital variable to affect the sentiment score towards Warren. As we know, partisanship is one of the most important factors affecting voters' voting. In us, there is a large group of fanatic political supporters. They don’t care about who is the candidate, or what those candidates’ ideas are. They just vote for the right party. Warren is a representative of the Democratic Party, so voters who are optimistic about the Democratic Party are willing to give higher sentiment scores. On the other hand, people who are in the Republican party and the Independent party would not support Warren. 
-
-```{r fs, fig.cap = "feature importance", echo=FALSE, warning=FALSE,fig.width=6, fig.height=6 }
+The slip plot (Figure \@ref(fig:fs1)) shows the feature selection results.  As we can see, `PID` partisanship is the most vital variable to affect the sentiment score towards Warren. As we know, partisanship is one of the most important factors affecting voters' voting. In us, there is a large group of fanatic political supporters. They don’t care about who is the candidate, or what those candidates’ ideas are. They just vote for the right party. Warren is a representative of the Democratic Party, so voters who are optimistic about the Democratic Party are willing to give higher sentiment scores. On the other hand, people who are in the Republican party and the Independent party would not support Warren. 
+```{r fs1, fig.cap = "feature importance", echo=FALSE, warning=FALSE,fig.width=6, fig.height=6 }
 # more codes are in the scripts (path: scripts/02_feature selection)
 FS<- dat%>%
   select(-c(PID_presurvey,comments,PID_leaners,script,quality_pretreat_duration_tooquick,quality_pretreat_duration_tooslow,ambivalent_sexism_1,ambivalent_sexism_2,ambivalent_sexism_3,ambivalent_sexism_4,ambivalent_sexism_5,believed1_true,believed_attackad_true,believed1_attackad_true,believed_offensive,believed_offensive1,believed_funny,believed_funny1,believed_informative,believed_informative1,exp_1_prompt_control,exp_1_prompt_info,exp_2_prompt_control,exp_2_prompt_accuracy,post_favor_Klobuchar,post_favor_Sanders,post_favor_Biden,post_favor_Bloomberg,,exp_2_pct_correct,exp_2_pct_false_fake,exp_2_pct_false_real,post_media_trust1,post_media_trust2,post_media_trust3,post_media_trust,post_dig_lit_1,post_dig_lit_2,post_dig_lit_3,post_dig_lit_4,post_dig_lit_5,post_dig_lit_6,post_dig_lit_7,PID_main,crt1,crt2,crt3,agegroup,treat_control,treat_attackad,treat_fake_text,treat_fake_video,treat_fake_audio,treat_skit,polknow_speaker,polknow_boris,polknow_house,polknow_senate,polknow_veto,polknow_warren,polknow_medicare,quality_demographic_mismatch,quality_failed_backend_attncheck,duration_secs,age,meta_screenres,StartDate,EndDate,meta_resolution,exp_2_hifake,exp_2_lofake,exp_2_nofake,exp_2,exp_2_prompt_accuracy,exp_2_after_debrief,exp_2_prompt,Zip,believed_true))%>% na.omit()
 
-# include the plot from script
-library(here)
-knitr::include_graphics(here::here("outputs/paper/Variable importance plot.png"))
+# build feature selection model
 
+set.seed(123)
+
+FS_tree<-randomForest(post_favor_Warren~., data=FS, ntree=500, importance=TRUE,proximity=TRUE) ## variable importance
+
+FS_tree<-as.data.frame(FS_tree$importanceSD) # transform to dataframe
+
+FS_tree<- FS_tree[order(-FS_tree[,]),,drop=FALSE] # sort importance by descending order
+
+FS_tree<- cbind(Variable_name = rownames(FS_tree), FS_tree)
+
+rownames(FS_tree) <- 1:nrow(FS_tree)
+
+FS_tree<- as.data.frame(FS_tree)
+
+# create a slip plot for feature importance 
+FS_tree%>%
+  mutate(name = fct_reorder(FS_tree$Variable_name,FS_tree$`FS_tree$importanceSD`))%>%
+  ggplot(aes(x=FS_tree$Variable_name, y=FS_tree$`FS_tree$importanceSD`)) +
+  geom_segment( aes(x=FS_tree$Variable_name,xend=FS_tree$Variable_name, y=0, yend=FS_tree$`FS_tree$importanceSD`), color="grey") +
+  geom_point( color="orange", size=4) +
+  theme_light() +
+  coord_flip()+
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.x = element_blank()
+  ) +
+  xlab("") +
+  ylab("Importance value")+
+  ggtitle("Variable importance plot")
 ## remove low importance feature 
 FS<- FS%>%select(-c(script_loans,quality,Hispanic))
 
@@ -691,7 +718,7 @@ Based on the regression model result of adjusted R-squared, the model fit outper
 # Appendix
 
 ## Appendix A {#appendixA}
-Missing value in the 
+Missing value in the dataset. 
 ```{r missing, fig.cap="Missing value Visualization ", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
 
 # library("VIM")
@@ -700,23 +727,6 @@ Missing value in the
 # include the plot from script
 # library(here)
 knitr::include_graphics(here::here("outputs/paper/Missing values.png"))
-```
-
-## Appendix B {#appendixB}
-```{r figure1,fig.cap="Scale-Location plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
-plot(model,which = 3)
-```
-
-
-## Appendix C {#appendixC}
-```{r figure2,fig.cap="Normal QQ-plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
-plot(model,which = 2)
-```
-
-
-## Appendix D {#appendixD}
-```{r figure3,fig.cap="Residual versus Leverage plot", echo=FALSE, warning =FALSE, fig.width=10, fig.height=4}
-plot(model,which = 5)
 ```
 
 \newpage
