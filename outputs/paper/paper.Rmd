@@ -51,7 +51,7 @@ The remainder of the paper is constructed as follows. Section 2 describes the da
 
 We replicate this paper using R statistical programming language [@citeR]. In particular, we use packages `tidyverse` [@tidy],  `here` [@citehere], `ggpubr` [@citeggpubr] to manipulate data and packages, `kableExtra` [@citekableExtra] to generate tables, and `ggplot2` [@citeggplot], `ggthemes` [@citeggthemes] to adjust diagrams themes. 
 
-## Intervention
+
 
 # Data
 ## Dataset features
