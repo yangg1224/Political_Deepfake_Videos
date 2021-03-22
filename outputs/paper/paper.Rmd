@@ -114,7 +114,7 @@ EDA<- dat%>%
 
 ### Treat distribution 
 
-According to the experiment, there are six treatment conditions including deepfake video, audio, text, skit, campaign attack ad, and control. From Figure \@ref(fig:treat) , we can see that the six types of treatments are equally sampled. In other words, in the process of exposure, all media have the same chance of being viewed. 
+According to the experiment, there are six treatment conditions including deepfake video, audio, text, skit, campaign attack ad, and control. During the experiment, informational contents are randomly paired to one of six conditions. From Figure \@ref(fig:treat) , we can see that the six types of treatments are equally sampled. In other words, in the process of exposure, all media have the same chance of being viewed. As a result, it eliminates the impact of alternative characteristics on the final results.
 
 
 ```{r treat, fig.cap = "Employee numbers distribution",echo=FALSE, fig.width=10, fig.height=4}
@@ -151,7 +151,7 @@ edu
 
 ### Sexism by education level 
 
-Figure \@ref(fig:sexism) uses the box plot method to show sexism by partisanship. As we can see from the chart, voters in the Republican party have the most number of  sexists, which also explains one potential reason why their support rate is relatively lower for Warren. Next comes the Independent party. People’s sexism level is approximately level 3. At last, people in the Democratic party mostly hold the fairest attitude about sexism. 
+Figure \@ref(fig:sexism) uses the jitter plot to visualize the distribution of sexism levels by partisanship. As we can see from the chart, people’s sexism level is approximately at level 3. In particular, voters in the Republican party have the most number of  sexists, which also explains one potential reason why their support rate is relatively lower for Warren. Next comes the Independent party. In contrast, respondents who identify as Democrat party are less likely to have prejudice or discrimination based on a person's sex or gender. According to the Figure \@ref(fig:sexism), people in the Democratic party are deem to hold the fairest attitude about sexism. 
 
 
 ```{r sexism, fig.cap = "sexism by education level",echo=FALSE, fig.width=5, fig.height=4}
@@ -159,12 +159,11 @@ EDA<-EDA%>%
   drop_na(ambivalent_sexism)
 
 s1<-
-  ggplot(EDA, aes(x = PID, y= ambivalent_sexism)) +
-  geom_boxplot(outlier.colour="red", 
-               outlier.shape=5,
-               outlier.size=4) +
-  labs(title="Sexism by partisanship level", x="PID", y="Sexism")+
-  theme_economist() + scale_fill_economist() 
+  ggplot(EDA, aes(x = PID, y= ambivalent_sexism,color=PID)) +
+  geom_point(position = "jitter", alpha = 1/5)+
+  labs(title="Ambivalent sexism level by partisanship", x="Political Party", y="Sexism Level")+
+  theme_light() + 
+  scale_color_manual(name = "Political Parties", values = c("#DB7558", "#FFCF57","#8FCDD4")) 
 s1
 ```
 
@@ -172,7 +171,7 @@ s1
 
 Figure \@ref(fig:internet) demonstrates internet usage frequency by educational level, devices, and age groups respectively. Participants with college education level are the most frequent internet users (more than 5 days per week), followed by people with high school education and people with postgraduate education. In addition, the dataset also shows desktop devices are more popular than mobile devices in terms of how participants’ access the internet. People younger than 65 will use the internet more often than those older than 65.
 
-```{r internet, fig.cap = "internet usages",echo=FALSE, fig.width=15, fig.height=5}
+```{r internet, fig.cap = "internet usages",echo=FALSE, fig.width=15, fig.height=6}
 
 G1<-ggplot(EDA, aes(x=internet_usage, fill=educ)) + 
     geom_area(alpha=0.8 , size=0.2, colour="black", stat = "count")+
@@ -206,7 +205,7 @@ ggarrange(
 Figure \@ref(fig:postfavor) illustrates the distribution of feeling towards Elizabeth Warren after receiving different news feed treatments. We realize that there is no significant difference in the distribution of affective response. The x-axis stands for the affective response towards Elizabeth Warren, ranging from 0 to 100. No matter what treatment subjects were exposed, a certain number of participants rated their feeling towards Warren as 0, along with a number of people who voted 50. It is worth mentioning that deepfake videos do increase the negative sentiment towards Elizabeth Warren compared to the control group.
 
 
-```{r postfavor, fig.cap="Distribution of feelings towards Warren in six different situations",echo=FALSE,fig.width=5, fig.height=4}
+```{r postfavor, fig.cap="Distribution of feelings towards Warren in six different situations",echo=FALSE,fig.width=5, fig.height=7}
 
 #histogram for each treat
 EDA<-EDA%>%
