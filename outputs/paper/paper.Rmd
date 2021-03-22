@@ -4,11 +4,9 @@ author: "Yingying Zhou, Yang Wu, Xinyi Xu, Hong Pan"
 output:
  bookdown::pdf_document2:
  toc: no
-<<<<<<< HEAD
+
 abstract: "We reproduce Soubhik Barari (2021) paper and identify several additional demographic traits contributing to the persuasion power of deepfake on political defamation through its material effect on feeling manipulation in a RCT field experiment on the 2020 Presidential election. We find little evidence that deepfake videos have a unique ability to shift viewers’ perceptions on politicians. Apart from partisanship, education, and other socioeconomic factors identified by the original paper, we discover that income and internet usage would also significantly impact the candidate’s affective appeal to the news feed viewer. "
-=======
-abstract: "We reproduce Soubhik Barari (2021) paper and identify several additional demographic traits contributing to the persuasion power of deepfake on political defamation through its material effect on feeling manipulation in a RCT field experiment on the 2020 Presidential election. With the growing ubiquity of deepfake technology, here comes one more channel for the spread of misinformation. Despite it being a vicious threat, we find little evidence that deepfake videos have a unique ability to shift viewers’ perceptions on politicians. Apart from partisanship, education, and other socioeconomic factors identified by the original paper, we discover that income and internet usage would also significantly impact the candidate’s affective appeal to the news feed viewer. "
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+
 
 header-includes:
  - \usepackage{float}
@@ -41,11 +39,9 @@ library(qqplotr)
 # Introduction
 Political misinformation stems the spread of proper knowledge and threatens the electorate's ability to evaluate politicians’ public credibility [@citeMisInform]. Since the advent of popular deep learning technology that enables the fabrication of deepfake videos, concerns have been aroused about their defamation effect on the target politicians.
 
-<<<<<<< HEAD
+
 [@citePaper] examines the news feed intervention through two Randomized Controlled Trial field experiments on the 2020 U.S. Democratic presidential election to investigate the persuasion power of deepfake. In the first experiment, [@citePaper]exposes participants to one of five different forms of false media treatment including deepfaked videos and compares viewer’s deceptive level and affective response. In the second experiment, [@citePaper] measures the viewer's ability to discriminate between a feed of 8 real and fake videos. 
-=======
-[@citePaper] examines the news feed intervention through two Randomized Controlled Trial field experiments on the 2020 U.S. Democratic presidential election to investigate the persuasion power of deepfake. In the first experiment, [@citePaper] exposes participants to one of five different forms of false media treatment including deepfaked videos and compares viewer’s deceptive level and affective response. In the second experiment, [@citePaper] measures the viewer's ability to discriminate between a feed of 8 real and fake videos. 
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+
 
 [@citePaper] finds that the marginal deceptive and affective effects of a deepfaked political scandal are insignificant relative to other false media. In addition, subgroups aged above 65, with partisanship, holding ambivalent sexist views, being highly educated, constrained by cognitive resources, or with little political knowledge are more susceptible to deepfake misinformation.
 
@@ -64,11 +60,9 @@ We replicate this paper using R statistical programming language [@citeR]. In pa
 
 # Data
 ## Dataset features
-<<<<<<< HEAD
+
 The paper intends to replicate the experimental report by [@citePaper], Christopher Lucas, and Kevin Munger. We are going to analyze the dataset collected by their experiment. The survey dataset records 5,750 observations with 100 variables. In this case, we focus on the top 20 most important features related to the favorability towards the Democratic politician Elizabeth Warren. It covers viewer traits on demographic, socioeconomic status, and political related positions that are immutable or intervenable characteristics to deepfakes' misinformation. The authors hypothesized several risky subgroups that may be differentially susceptible to deepfakes. That included the following categories of media consumers:
-=======
-The paper intends to replicate the experimental report by [@citePaper]. We are going to analyze the dataset collected by their experiment. The survey dataset records 5,750 observations with 100 variables. In this case, we focus on the top 20 most important features related to the favorability towards the Democratic politician Elizabeth Warren. It covers viewer traits on demographic, socioeconomic status, and political related positions that are immutable or intervenable characteristics to deepfakes' misinformation. The authors hypothesized several risky subgroups that may be differentially susceptible to deepfakes. That included the following categories of media consumers:
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+
 
 * Age Group
 * Directional motivated reasoning
@@ -338,12 +332,7 @@ whether residuals are independently normally distributed;
 if residuals have constant variance (homoscedasticity).
 ^[Regression diagnostics plots (Figure \@ref(fig:diagnostic)) can be created using the autoplot function in the “ggfortify” package @tang2016ggfortify] The results are shown in the graph below (Figure \@ref(fig:diagnostic)).
 ```{r model, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4,message=FALSE}
-<<<<<<< HEAD
-=======
 
-## transfer data into dummy
-#  select(-c(4))#  change categorical var to factors 
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
 ##create model
 
 model <- lm(post_favor_Warren ~., data =FS )
@@ -357,13 +346,6 @@ plot(model)
 ```
 
 
-<<<<<<< HEAD
-=======
-```{r model_improved, echo=FALSE, warning=FALSE, fig.width=10, fig.height=2}
-#model2 <- lm(sqrt(post_favor_Warren)~., data = FS)
-#autoplot(model2,3)
-```
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
 **Residual and fitted plot: **
 This plot  is used to check the linear relationship assumptions. A horizontal line, without distinct patterns is an indication for a linear relationship. Here we see that linearity seems to hold reasonably well, as the red line is close to the horizontal level (at 0). This suggests that we can assume a linear relationship between the predictors and the outcome variables [@bruce2020practical]. 
 
@@ -405,14 +387,7 @@ t1<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]),
 m1<-tidy(t1, digits=1)
 m1 %>%
   select(-c(estimate,statistic,parameter))%>%
-<<<<<<< HEAD
   mutate_if(is.numeric, format, digits=3)%>%  #change significant figure
-=======
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
   kableExtra::kbl(caption="T test: Deception level of video vs audio")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -428,14 +403,7 @@ m2<-tidy(t2, digits=1)
 
 m2 %>%
   select(-c(estimate,statistic,parameter))%>%
-<<<<<<< HEAD
   mutate_if(is.numeric, format, digits=3)%>%
-=======
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
   kableExtra::kbl(caption="T test: Deception level of video vs text")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -450,14 +418,7 @@ m3<-tidy(t3, digits=1)
 
 m3 %>%
   select(-c(estimate,statistic,parameter))%>%
-<<<<<<< HEAD
   mutate_if(is.numeric, format, digits=3)%>%
-=======
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
   kableExtra::kbl(caption="T test: Deception level of video vs skit")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -481,24 +442,16 @@ m1_a<-tidy(t1_a,digits=1)
 
 m1_a%>%
   select(-c(estimate,statistic,parameter))%>%
-<<<<<<< HEAD
   mutate_if(is.numeric, format, digits=3)%>%
-=======
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
   kableExtra::kbl(caption = "T test: Affect level of video vs control")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-<<<<<<< HEAD
+
 Similarly, the same analysis has been done for the rest unpaired two-sample t-tests. In our study, we used a 5% significance level. Table \@ref(tab:attest2) shows the test result of how deepfake videos and texts impact audiences' feelings. The result shows that the difference in affect level between video (Mean = 41.3) and text (Mean=44.2) was not significant given the p-value is greater than 0.05.
-=======
-Similarly, the same analysis has been done for the rest unpaired two-sample t-tests. In our study, we used a 5% significance level. Table \@ref(tab:attest2) shows the test result of how deepfake videos and texts impact audiences' feelings. The result shows that the difference in affect level between video (Mean = 41.28) and text (Mean=44.22) was not significant given the p-value is greater than 0.05.
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+
+
 
 
 
@@ -513,14 +466,7 @@ m2_a<-tidy(t2_a,digits=1)
 
 m2_a%>%
   select(-c(estimate,statistic,parameter))%>%
-<<<<<<< HEAD
   mutate_if(is.numeric, format, digits=3)%>%
-=======
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
   kableExtra::kbl(caption = "T test: Affect level of video vs text")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -529,15 +475,14 @@ m2_a%>%
 
 
 
-<<<<<<< HEAD
+
 Table \@ref(tab:attest3) shows the test result of how deepfake videos and audios impact audiences' feelings. The difference in affect level between video(Mean = 41.3) and audio (Mean=43.9) was not significant given the p-value is greater than 0.05.
-=======
-Table \@ref(tab:attest3) shows the test result of how deepfake videos and audios impact audiences' feelings. The difference in affect level between video(Mean = 41.28) and audio (Mean=43.93) was not significant given the p-value is greater than 0.05.
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+
+
+
 
 
 ```{r attest3, echo=FALSE, fig.width=10, fig.height=3}
-
 
 #video vs audio
 t3_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]), 
@@ -545,30 +490,20 @@ t3_a<-t.test(na.omit(dat$post_favor_Warren[dat$treat_fake_video == 1]),
 
 m3_a<-tidy(t3_a,digits=1)
 
-m3_a%>%
+m3_a %>%
   select(-c(estimate,statistic,parameter))%>%
-<<<<<<< HEAD
   mutate_if(is.numeric, format, digits=3)%>%
   kableExtra::kbl(caption = "T test: Affect level of video vs audio")%>%
-  kableExtra::kable_styling(latex_options = "scale_down")%>%   # use scale_down option to make the font
-=======
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
-  kableExtra::kbl(caption = "T test: Affect level of video vs audio")%>%
-  kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+  kableExtra::kable_styling(latex_options = "scale_down")%>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
 
 
-<<<<<<< HEAD
+
 Table \@ref(tab:attest4) shows the test result of how deepfake videos and skit impact audiences feeling. The difference in affect level between video(Mean = 41.3) and skit (Mean=43) was not significant given the p-value is greater than 0.05.
-=======
-Table \@ref(tab:attest4) shows the test result of how deepfake videos and skit impact audiences feeling. The difference in affect level between video(Mean = 41.28) and skit (Mean=43) was not significant given the p-value is greater than 0.05.
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+
+
 
 ```{r attest4, echo=FALSE, fig.width=10, fig.height=3}
 
@@ -580,14 +515,7 @@ m4_a<-tidy(t4_a,digits=1)
 
 m4_a%>%
   select(-c(estimate,statistic,parameter))%>%
-<<<<<<< HEAD
   mutate_if(is.numeric, format, digits=3)%>%
-=======
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
   kableExtra::kbl(caption = "T test: Affect level of video vs skit")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -683,16 +611,15 @@ In addition, in the Scale-Location plot (Figure \@ref(fig:diagnostic)), an appro
 
 Deepfake technology can be used against candidates to synthesize false videos, which would potentially disrupt the elections. The purpose of the research is to inform the public of the existence of deepfake technology and consequently to improve the resilience of democratic politics to this AI threat. 
 
-<<<<<<< HEAD
+
 This paper replicates the first experiment of Soubhik Barari (2021) to further study the persuasion power of deepfake through the channel of its affective manipulation on viewer’s political perception. Media heterogeneity effects are reviewed via t-tests between other false media and deepfake.  The heterogeneity in affective response by viewer traits is examined with a multiple linear regression model. Feature selection is performed via the Random Forest classifier to select the top 20 relevant variables into our model input, which identified additional important socioeconomic features other than the ones from the original paper. 
-=======
-This paper replicates the first experiment of [@citePaper] to further study the persuasion power of deepfake through the channel of its affective manipulation on viewer’s political perception. Media heterogeneity effects are reviewed via t-tests between other false media and deepfake.  The heterogeneity in affective response by viewer traits is examined with a multiple linear regression model. Feature selection is performed via the Random Forest classifier to select the top 20 relevant variables into our model input, which identifies additional important socioeconomic features such as household income and region other than the ones from the original paper. 
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+
+
 
 
 ## Bias and ethical concerns
 
-<<<<<<< HEAD
+
 Some modelling bias and ethical concerns are addressed:
 
 ### Privacy problem on zip code
@@ -705,7 +632,7 @@ The one-month experiment was run prior to the 2020 U.S. presidential election, t
 
 ### Active debrief - post-experiment potential change in participants’ political behavior
 At the completion of the survey, an extensive debrief was conducted on all subjects which instructed respondents to affirm that the treatment media about Elizabeth Warren was false. The active debrief was done to educate participants on deepfake media. And thus it would be unlikely for the treated group to change their political behavior later on as a post-exposure consequence.
-=======
+
 Some modelling bias and ethical concerns in our model and the original paper are addressed:
 
 ### Privacy problem on zip code
@@ -718,13 +645,13 @@ In the original paper, the one-month experiment was run prior to the 2020 U.S. p
 
 ### Active debrief - post-experiment potential change in participants’ political behavior
 At the completion of the survey by [@citePaper], an extensive debrief was conducted on all subjects which instructed respondents to affirm that the treatment media about Elizabeth Warren was false. The active debrief was done to educate participants on deepfake media. And thus it would be unlikely for the treated group to change their political behavior later on as a post-exposure consequence.
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+
 
 
 ## Model results
 
 ### Heterogeneity in different socioeconomic groups
-<<<<<<< HEAD
+
 As for the regression model result on affective response towards Elizabeth Warren, heterogeneous effects in respondents from different socioeconomic groups were observed. All else held constant, on average people with a postgraduate degree significantly favor Warren by 9.3 points more than people with lower than high school education. High-incomers with annual income above $100k favor Warren by 4 points more than people who earn less than $25,000 a year. In contrast, people who were unwilling to disclose their salaries disliked the candidate by 4.94 points compared to the low-incomers. Elderly people aged over 65 deduct feeling marks by 4.35 points towards Warren after being exposed to the deepfake media about Warren. 
 
 ### Impact from partisan motivated reasoning and sexism discrimination
@@ -734,8 +661,7 @@ Partisanship accounts for a large part of the sentiment score towards Warren. Fo
 Although there is significant influence from the deepfake video on altering people’s sentiment towards the candidate, the two-sample t-test results between deepfake and other false media assure us that the its degree of detriment is no different from false audio or text in terms of deception and affective impression. 
 
 ### Political knowledge and internet usage
-It is worth our attention that compared to political knowledge, internet usage has a more significant effect on respondents’ affective impression. Perhaps that the more frequent interest users gain a more holistic understanding of political positions and current trends in the world thus they are more immune to the infamatory deepfake technologies. 
-=======
+It is worth our attention that compared to political knowledge, internet usage has a more significant effect on respondents’ affective impression. Perhaps that the more frequent interest 
 As for the regression model result on affective response towards Elizabeth Warren, heterogeneous effects in respondents from different socioeconomic groups were observed, which are in line with the findings by [@citePaper]. All else held constant, on average people with a postgraduate degree significantly favor Warren by 9.3 points more than people with lower than high school education. High-incomers with annual income above $100k favor Warren by 4 points more than people who earn less than $25,000 a year. In contrast, people who were unwilling to disclose their salaries disliked the candidate by 4.94 points compared to the low-incomers. Elderly people aged over 65 deduct feeling marks by 4.35 points towards Warren after being exposed to the deepfake media about Warren. [@citePaper] finds that on average postgraduates significantly favor Warren by 12.71 points more and elderly people dislike Warren more by 5.31 points than people younger than 65. The difference is that we include a new feature of income (HHI) which shares some of the variation in affective level with education compared with what [@citePaper] finds.
 
 ### Impact from partisan motivated reasoning and sexism discrimination
@@ -745,8 +671,7 @@ Partisanship accounts for a large part of the sentiment score towards Warren. Fo
 Although there is significant influence from the deepfake video on altering people’s sentiment towards the candidate, the two-sample t-test results between deepfake and other false media assure us that the its degree of detriment is no different from false audio or text in terms of deception and affective impression. Our conclusion is consistent with [@citePaper]’s. 
 
 ### Political knowledge and internet usage
-It is worth our attention that compared to political knowledge, internet usage has a more significant effect on respondents’ affective impression. On average, one unit increase in interest usage frequency will increase viewer’s affective score on Warren by 1.12, matching with [@citePaper]’s 1.30.  Perhaps that the more frequent interest users gain a more holistic understanding of political positions and current trends in the world thus they are more immune to the infamatory deepfake technologies. 
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+It is worth our attention that compared to political knowledge, internet usage has a more significant effect on respondents’ affective impression. On average, one unit increase in interest usage frequency will increase viewer’s affective score on Warren by 1.12, matching with [@citePaper]’s 1.30.  Perhaps that the more frequent interest users gain a more holistic understanding 
 
 ## Real world implication
 Based on the observed effects in affective response from different subject subgroups in the deepfake experiment, we conclude that deepfake can have real impact on the candidate through altering people’s perceptions and sentiment on the politicians. Once the participants believe the deepfake video content to be true, it is likely that they would negatively impact their impression on the politician. Elderly people, people holding hostile gender prejudice and those identifying with rival political parties are susceptible to the deepfake information; the impact can be observed through deducted affective score on the candidate. However, for people with a higher education degree, high-incomers, and people from the candidate’s home state, they tend to favor the politician more than other groups. Interestingly, political knowledge has less significant influence on participants’ affective response to the candidate than internet usage. 
@@ -779,11 +704,9 @@ External validity of conclusion on deepfakes was enhanced by the use of 5 custom
 ### Weakness
 **Discussion on race and ethnicity**: Despite the extensive investigation into the factors of perception bias in partisanship and gender prejudice on the impact of respondent’s sentiment score for the candidate under the deepfake scenario, the paper skips the discussion on race and ethnicity. Race and ethnicity are confounders that correlate with people’s party identification and affect people’s perception of the candidate as well [@citeRace]. 
 
-<<<<<<< HEAD
+
 **Democratic party only**: The paper chose the candidate to be a politician in the Democratic party, and focuses the topic on the Democratic election. It is possible that the experiment outcome was only valid for the analysis on Democratic party, especially supporter traits on socioeconomic and demographic characteristics. 
-=======
-**Democratic party only**: The paper follows [@citePaper] to choose the candidate to be a politician in the Democratic party, and focuses the topic on the Democratic election. It is possible that the experiment outcome was only valid for the analysis on Democratic party, especially supporter traits on socioeconomic and demographic characteristics. 
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+
 
 **Within the U.S. only**: The nature of the U.S. domestic election topic limits the conclusion only applicable to regions within the U.S. on the study of political misinformation impact by deepfake media.
 
@@ -791,11 +714,10 @@ External validity of conclusion on deepfakes was enhanced by the use of 5 custom
 
 The study investigates the impact of deepfake media on political misinformation through two field experiments conducted within a month period through the topic of 2020 Democratic presidential election. The external validity of the study can be further improved in order for the result to be generalizable to other political parties, time periods and situations. 
 
-<<<<<<< HEAD
+
 **Time window**: for the experiment time window, it can be prolonged or randomized in a series of experiment repetitions as long as they are conducted after the time point when the in-party presidential nominee has been finalized.
-=======
-**Time window**: For the experiment time window, it can be prolonged or randomized in a series of experiment repetitions as long as they are conducted after the time point when the in-party presidential nominee has been finalized.
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+
+
 
 **Candidate from other parties**: The same experiment could be repeated using candidates from other parties (Republican, or Independent) to test the robustness and generalizability of the model result.
 
@@ -807,11 +729,9 @@ The study investigates the impact of deepfake media on political misinformation 
 
 **Feature selection**: Before building the multiple linear regression model, feature engineering was used to visualize feature importance and select the top 20 most important features from a total of 100 variables with the Random Forest classifier [@citeRandomforest]. The tree-based algorithm splits nodes based on how well they improve the purity of the node through maximizing information gain. The most informative features are at the start of the trees, and less relevant features are places at lower nodes. This process naturally ranks the importance of features, therefore it can be used for feature selection. 
 
-<<<<<<< HEAD
 **Additional features**: Apart from the treatment variable and regressors describing demographic and socioeconomic traits (age, education, gender, party identification, political knowledge, metrics on internet usage, .etc) in the original model, the random forest algorithm identified household income (`HHI`), region, script type, and ethnicity as relevant features. Income confounds with deepfake deception and affective appeal through its correlation with digital literacy and internet usage. Region and ethnicity are correlated with partisanship. The five types of script contents were included to control for any differential effect of persuasion ability by deepfake. 
-=======
-**Additional features**: Apart from the treatment variable and regressors describing demographic and socioeconomic traits (age, education, gender, party identification, political knowledge, metrics on internet usage, .etc) in the original paper, the random forest algorithm identified household income (`HHI`), region, script type, and ethnicity as relevant features. Income confounds with deepfake deception and affective appeal through its correlation with digital literacy and internet usage. Region and ethnicity are correlated with partisanship. The five types of script contents were included to control for any differential effect of persuasion ability by deepfake. 
->>>>>>> 198660091eaa8aae73965d0d9950c63f73bc6db9
+
+
 
 **A different target variable, affective appeal**: The original model emphasized more on the study of deceptive level of deepfake technology. The persuasion power of deepfake can be measured through the channel of deception into believing and negative affect towards the politician. Furthermore, it is the consequence of the change in people’s affective response that influences the election outcome. Therefore, this paper decided to study the deepfake persuasive ability through the second channel, its impact on a candidate's affective appeal. 
 
