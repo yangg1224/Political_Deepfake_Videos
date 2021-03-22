@@ -326,9 +326,6 @@ whether residuals are independently normally distributed;
 if residuals have constant variance (homoscedasticity).
 ^[Regression diagnostics plots (Figure \@ref(fig:diagnostic)) can be created using the autoplot function in the “ggfortify” package @tang2016ggfortify] The results are shown in the graph below (Figure \@ref(fig:diagnostic)).
 ```{r model, echo=FALSE, warning=FALSE, fig.width=10, fig.height=4,message=FALSE}
-
-## transfer data into dummy
-#  select(-c(4))#  change categorical var to factors 
 ##create model
 
 model <- lm(post_favor_Warren ~., data =FS )
@@ -342,10 +339,6 @@ plot(model)
 ```
 
 
-```{r model_improved, echo=FALSE, warning=FALSE, fig.width=10, fig.height=2}
-#model2 <- lm(sqrt(post_favor_Warren)~., data = FS)
-#autoplot(model2,3)
-```
 **Residual and fitted plot: **
 This plot  is used to check the linear relationship assumptions. A horizontal line, without distinct patterns is an indication for a linear relationship. Here we see that linearity seems to hold reasonably well, as the red line is close to the horizontal level (at 0). This suggests that we can assume a linear relationship between the predictors and the outcome variables [@bruce2020practical]. 
 
@@ -387,10 +380,7 @@ t1<-t.test(na.omit(dat$believed_true[dat$treat_fake_video == 1]),
 m1<-tidy(t1, digits=1)
 m1 %>%
   select(-c(estimate,statistic,parameter))%>%
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
+  mutate_if(is.numeric, format, digits=3)%>%  #change significant figure
   kableExtra::kbl(caption="T test: Deception level of video vs audio")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -406,10 +396,7 @@ m2<-tidy(t2, digits=1)
 
 m2 %>%
   select(-c(estimate,statistic,parameter))%>%
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
+  mutate_if(is.numeric, format, digits=3)%>%
   kableExtra::kbl(caption="T test: Deception level of video vs text")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -424,10 +411,7 @@ m3<-tidy(t3, digits=1)
 
 m3 %>%
   select(-c(estimate,statistic,parameter))%>%
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
+  mutate_if(is.numeric, format, digits=3)%>%
   kableExtra::kbl(caption="T test: Deception level of video vs skit")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -451,16 +435,13 @@ m1_a<-tidy(t1_a,digits=1)
 
 m1_a%>%
   select(-c(estimate,statistic,parameter))%>%
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
+  mutate_if(is.numeric, format, digits=3)%>%
   kableExtra::kbl(caption = "T test: Affect level of video vs control")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-Similarly, the same analysis has been done for the rest unpaired two-sample t-tests. In our study, we used a 5% significance level. Table \@ref(tab:attest2) shows the test result of how deepfake videos and texts impact audiences' feelings. The result shows that the difference in affect level between video (Mean = 41.28) and text (Mean=44.22) was not significant given the p-value is greater than 0.05.
+Similarly, the same analysis has been done for the rest unpaired two-sample t-tests. In our study, we used a 5% significance level. Table \@ref(tab:attest2) shows the test result of how deepfake videos and texts impact audiences' feelings. The result shows that the difference in affect level between video (Mean = 41.3) and text (Mean=44.2) was not significant given the p-value is greater than 0.05.
 
 
 
@@ -475,10 +456,7 @@ m2_a<-tidy(t2_a,digits=1)
 
 m2_a%>%
   select(-c(estimate,statistic,parameter))%>%
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
+  mutate_if(is.numeric, format, digits=3)%>%
   kableExtra::kbl(caption = "T test: Affect level of video vs text")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
@@ -487,7 +465,7 @@ m2_a%>%
 
 
 
-Table \@ref(tab:attest3) shows the test result of how deepfake videos and audios impact audiences' feelings. The difference in affect level between video(Mean = 41.28) and audio (Mean=43.93) was not significant given the p-value is greater than 0.05.
+Table \@ref(tab:attest3) shows the test result of how deepfake videos and audios impact audiences' feelings. The difference in affect level between video(Mean = 41.3) and audio (Mean=43.9) was not significant given the p-value is greater than 0.05.
 
 
 ```{r attest3, echo=FALSE, fig.width=10, fig.height=3}
@@ -501,18 +479,15 @@ m3_a<-tidy(t3_a,digits=1)
 
 m3_a%>%
   select(-c(estimate,statistic,parameter))%>%
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
+  mutate_if(is.numeric, format, digits=3)%>%
   kableExtra::kbl(caption = "T test: Affect level of video vs audio")%>%
-  kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
+  kableExtra::kable_styling(latex_options = "scale_down")%>%   # use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
 
 
-Table \@ref(tab:attest4) shows the test result of how deepfake videos and skit impact audiences feeling. The difference in affect level between video(Mean = 41.28) and skit (Mean=43) was not significant given the p-value is greater than 0.05.
+Table \@ref(tab:attest4) shows the test result of how deepfake videos and skit impact audiences feeling. The difference in affect level between video(Mean = 41.3) and skit (Mean=43) was not significant given the p-value is greater than 0.05.
 
 ```{r attest4, echo=FALSE, fig.width=10, fig.height=3}
 
@@ -524,10 +499,7 @@ m4_a<-tidy(t4_a,digits=1)
 
 m4_a%>%
   select(-c(estimate,statistic,parameter))%>%
- # rename(
-   # AVG_deception_video=estimate1,
-   # AVG_deception_audio=estimate2
- # )%>%
+  mutate_if(is.numeric, format, digits=3)%>%
   kableExtra::kbl(caption = "T test: Affect level of video vs skit")%>%
   kableExtra::kable_styling(latex_options = "scale_down")%>%# use scale_down option to make the font
   kableExtra::kable_styling(latex_options = c("hold_position"))
