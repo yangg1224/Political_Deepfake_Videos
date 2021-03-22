@@ -11,15 +11,10 @@
 #### Workspace setup ####
 library(tinytex)
 library(tidyverse)
-library(palmerpenguins)
 library(ggplot2)
 library(ggthemes)
 library(ggpubr)
-library(hrbrthemes)
 library(kableExtra)
-library(broom)
-library(randomForest)
-library(plyr)
 
 library(here) # locate the file path
 data<- load(here::here("inputs/data/deepfake.RData"))
