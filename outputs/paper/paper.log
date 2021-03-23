@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.14)  22 MAR 2021 20:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.14)  22 MAR 2021 21:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -680,6 +680,14 @@ e.6}) has been already used, duplicate ignored
                                                   
 l.279 
        <./paper_files/figure-latex/fs1-1.pdf>] [12]
+Overfull \hbox (10.96414pt too wide) detected at line 316
+[] \OT1/lmr/m/n/10 = [] + [] [] \OMS/lmsy/m/n/10 ^^A \OML/lmm/m/it/10 Gender[] 
+\OT1/lmr/m/n/10 + [] [] \OMS/lmsy/m/n/10 ^^A \OML/lmm/m/it/10 educ[] \OT1/lmr/m
+/n/10 + [] [] \OMS/lmsy/m/n/10 ^^A \OML/lmm/m/it/10 HHI[] \OT1/lmr/m/n/10 + [] 
+[] \OMS/lmsy/m/n/10 ^^A \OML/lmm/m/it/10 Ethnicity[]
+ []
+
+
 Overfull \hbox (5.93051pt too wide) detected at line 319
 \OT1/lmr/m/n/10 +[] \OMS/lmsy/m/n/10 ^^A [] \OT1/lmr/m/n/10 + [] \OMS/lmsy/m/n/
 10 ^^A [] \OT1/lmr/m/n/10 + [] [] \OMS/lmsy/m/n/10 ^^A \OML/lmm/m/it/10 Treat[]
@@ -813,7 +821,7 @@ r9.pfb></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb
 ></Users/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Use
 rs/yang/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/yang
 /Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on paper.pdf (28 pages, 2147398 bytes).
+Output written on paper.pdf (28 pages, 2147339 bytes).
 PDF statistics:
  667 PDF objects out of 1000 (max. 8388607)
  589 compressed objects within 6 object streams

@@ -317,7 +317,7 @@ The sign of the regression coefficient describes whether there is a positive or 
 
 The equation for the model is shown below: 
 
-$$\hat Y=\hat \beta_0+\sum_{a=male}^{other}\hat \beta_1\cdot Gender_a+\sum_{b=High\ school}^{Postgraduate}\hat \beta_2\cdot educ_b+\sum_{c=25K\ -49K}^{>150K}\hat \beta_3\cdot HHI_c+\sum_{d=white}^{black}\hat \beta_4\cdot Ethnicity_d$$
+$$\hat Y_{Sentiment\ Score}=\hat \beta_0+\sum_{a=male}^{other}\hat \beta_1\cdot Gender_a+\sum_{b=High\ school}^{Postgraduate}\hat \beta_2\cdot educ_b+\sum_{c=25K\ -49K}^{>150K}\hat \beta_3\cdot HHI_c+\sum_{d=white}^{black}\hat \beta_4\cdot Ethnicity_d$$
 
 $$+\sum_{e=Northeast}^{West}\hat \beta_5\cdot Region_e+\hat \beta_{6}\cdot I_{WaveID}+\hat \beta_{7}\cdot I_{Meta:OSmobile}+\hat \beta_{8}\cdot I_{Age>65}+\sum_{i=Independent}^{Republican}\hat \beta_9\cdot PID_i$$
 $$+\hat \beta_{10}\cdot {Ambivalent\ Sexism}+\hat \beta_{11}\cdot {Polknow}+\sum_{l=video}^{ad}\hat \beta_{12}\cdot Treat_l+\sum_{m=bidenshit}^{lgbtq}\hat \beta_{13}\cdot Script_m+\hat \beta_{14}\cdot I_{exp\_1\_prompt:\ info}$$
@@ -611,7 +611,7 @@ In addition, in the Scale-Location plot (Figure \@ref(fig:diagnostic)), an appro
 Deepfake technology can be used against candidates to synthesize false videos, which would potentially disrupt the elections. The purpose of the research is to inform the public of the existence of deepfake technology and consequently to improve the resilience of democratic politics to this AI threat. 
 
 
-This paper replicates the first experiment of Soubhik Barari (2021) to further study the persuasion power of deepfake through the channel of its affective manipulation on viewer’s political perception. Media heterogeneity effects are reviewed via t-tests between other false media and deepfake.  The heterogeneity in affective response by viewer traits is examined with a multiple linear regression model. Feature selection is performed via the Random Forest classifier to select the top 20 relevant variables into our model input, which identified additional important socioeconomic features other than the ones from the original paper. 
+This paper replicates the first experiment of [@citePaper] to further study the persuasion power of deepfake through the channel of its affective manipulation on viewer’s political perception. Media heterogeneity effects are reviewed via t-tests between other false media and deepfake.  The heterogeneity in affective response by viewer traits is examined with a multiple linear regression model. Feature selection is performed via the Random Forest classifier to select the top 20 relevant variables into our model input, which identified additional important socioeconomic features other than the ones from the original paper. 
 
 
 
