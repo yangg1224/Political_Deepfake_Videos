@@ -223,6 +223,7 @@ ggplot(EDA, aes(x = post_favor_Warren,fill=treat)) +
 ```
 
 # Model 
+[@citePaper] paper used a multiple regression model to test the effect of treatment conditions towards Warren Feeling Thermometer, which are randomly paired informational messages about deepfake to one of six conditions. The six conditions included video, audio, text, skit, campaign attack ad, and control which is no clip. Based on Munger's model, we get inspirations to reinforce the model. Firstly, we use feature selection method to go through all the dataset variables. It helps us find out all the potential influential features besides the six excrement treatments. After we remove the low feature importance variables, we rebuild the multiple linear regression model. The detailed process are illustrate in the following sub-sections. 
 
 ## Feature Selection
 
@@ -749,8 +750,8 @@ Based on the regression model result of adjusted R-squared, the model fit outper
 
 # Appendix
 
-## Appendix A {#appendixA}
-Missing value in the dataset. 
+## Appendix A 
+All the Missing value in the dataset. 
 ```{r missing, fig.cap="Missing value Visualization ", echo=FALSE, warning =FALSE, fig.width=10, fig.height=10}
 
 # library("VIM")
@@ -760,9 +761,15 @@ Missing value in the dataset.
 # library(here)
 knitr::include_graphics(here::here("outputs/paper/Missing values.png"))
 ```
-
-
-
+## Appendix B 
+The first 20 rows of raw data which will be used in regression is shown in the Table below. (Table \@ref(tab:rowdata))
+#plot row data set in table
+```{r rowdata, echo=FALSE}
+  head(FS,100)%>%
+  kableExtra::kbl(caption = "First 100 rows Raw data ") %>%
+  kableExtra::kable_styling(latex_options = "scale_down")%>% # use scale_down option to make the font
+  kable_styling()
+```
 \newpage
 
 
